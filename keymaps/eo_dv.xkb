@@ -1,0 +1,67 @@
+// based on a keyboard map from an 'xkb/symbols/dk' file
+// Esperanto orthographics added by <andreas@unstable.nl>
+// eg AltGr-j gives j^
+//
+// $XFree86: xc/programs/xkbcomp/symbols/dvorak,v 1.5 2004/01/03 16:35:07 herrb Exp $
+
+partial alphanumeric_keys
+xkb_symbols "dvorak" {
+
+    name[Group1]= "U.S. English - Dvorak";
+
+    // Alphanumeric section
+
+    key <TLDE> { [       grave,	asciitilde, dead_grave, dead_tilde	] };
+
+    key <AE01> { [	    1,	exclam 		]	};
+    key <AE02> { [	    2,	at		]	};
+    key <AE03> { [	    3,	numbersign	]	};
+    key <AE04> { [	    4,	dollar		]	};
+    key <AE05> { [	    5,	percent		]	};
+    key <AE06> { [	    6,	asciicircum, dead_circumflex, dead_circumflex ]	};
+    key <AE07> { [	    7,	ampersand	]	};
+    key <AE08> { [	    8,	asterisk	]	};
+    key <AE09> { [	    9,	parenleft,  dead_grave]	};
+    key <AE10> { [	    0,	parenright	]	};
+    key <AE11> { [ bracketleft,	braceleft	]	};
+    key <AE12> { [ bracketright, braceright,  dead_tilde] };
+
+    key <AD01> { [  apostrophe,	quotedbl, dead_acute, dead_diaeresis	] };
+    key <AD02> { [	comma,	less,   dead_cedilla, dead_caron	] };
+    key <AD03> { [      period,	greater, dead_abovedot, periodcentered	] };
+    key <AD04> { [	    p,	P		]	};
+    key <AD05> { [	    y,	Y		]	};
+    key <AD06> { [	    f,	F		]	};
+    key <AD07> { [	    g,	G, gcircumflex, Gcircumflex	]	};
+    key <AD08> { [	    c,	C, ccircumflex,  Ccircumflex	]	};
+    key <AD09> { [	    r,	R		]	};
+    key <AD10> { [	    l,	L		]	};
+    key <AD11> { [	slash,	question	]	};
+    key <AD12> { [	equal,	plus		]	};
+
+    key <AC01> { [	    a,	A 		]	};
+    key <AC02> { [	    o,	O		]	};
+    key <AC03> { [	    e,	E		]	};
+    key <AC04> { [	    u,	U, ubreve, Ubreve	]	};
+    key <AC05> { [	    i,	I		]	};
+    key <AC06> { [	    d,	D		]	};
+    key <AC07> { [	    h,	H, hcircumflex, Hcircumflex	]	};
+    key <AC08> { [	    t,	T		]	};
+    key <AC09> { [	    n,	N		]	};
+    key <AC10> { [	    s,	S, scircumflex, Scircumflex	]	};
+    key <AC11> { [	minus,	underscore	]	};
+
+    key <AB01> { [   semicolon,	colon, dead_ogonek, dead_doubleacute ] };
+    key <AB02> { [	    q,	Q		]	};
+    key <AB03> { [	    j,	J, jcircumflex, Jcircumflex	]	};
+    key <AB04> { [	    k,	K		]	};
+    key <AB05> { [	    x,	X		]	};
+    key <AB06> { [	    b,	B		]	};
+    key <AB07> { [	    m,	M		]	};
+    key <AB08> { [	    w,	W		]	};
+    key <AB09> { [	    v,	V		]	};
+    key <AB10> { [	    z,	Z		]	};
+
+    key <RWIN> { [ ISO_Level3_Shift ] };
+};
+
