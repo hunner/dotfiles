@@ -1,0 +1,11 @@
+" load all of the HTML info
+"source $VIMRUNTIME/syntax/html.vim
+runtime! syntax/html.vim
+unlet b:current_syntax
+
+" load all of the ruby info into @Ruby
+syntax include @Ruby $VIMRUNTIME/syntax/ruby.vim
+unlet b:current_syntax
+syntax region rhtmlRuby start="<%" end="%" contains=@Ruby,rhtmlRuby
+
+let b:current_syntax = "rhtml"
