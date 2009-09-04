@@ -1,0 +1,46 @@
+URxvt*scrollBar: false
+URxvt*background: rgba:0000/0000/0000/eeee
+URxvt*foreground: #dddddd
+URxvt*transparent: true
+URxvt*shading: 15
+URxvt*cursorColor: green
+
+
+
+!URxvt.borderLess:True
+!URxvt.reverseVideo:True
+!URxvt.scrollBar:False
+!URxvt.linespace:5
+!URxvt.internalBorder:6
+
+!UXTerm*utf8:1
+!UXTerm*scrollBar:False
+!UXTerm*title:term
+!UXTerm*saveLines:10000
+!UXTerm*termName:xterm
+
+!UXTerm*background:black
+!UXTerm*foreground:gray
+!UXTerm*cursorColor:yellow
+!UXTerm*pointerColor:white
+!XTerm*vt100.metaSendsEscape:true
+
+!Requiresxfonts-terminusandaXrestartforanychanges
+!UXTerm*font:terminus-16
+
+!Pastefromclipboardwithshift
+!http://linux.seindal.dk/item71.html
+!UXTerm*VT100.Translations:#override\
+!Shift<Btn1Down>:select-start()\n\
+!Shift<Btn1Motion>:select-extend()\n\
+!Shift<Btn1Up>:select-end(CLIPBOARD)\n\
+!Shift<Btn2Up>:insert-selection(CLIPBOARD)\n\
+!Shift<Btn3Down>:start-extend()\n\
+!Shift<Btn3Motion>:select-extend()\n\
+!Shift<BtnUp>:select-end(CLIPBOARD)
+
+!http://www.linuxpowertop.org/known.php
+!UXTerm*sessionMgt:False
+
+!Emacs*background:black
+!Emacs*foreground:white
