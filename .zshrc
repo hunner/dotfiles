@@ -28,7 +28,7 @@ for dir in $paths ; do
     fi
 done
 if [ -d ~/local/bin ] ; then
-    export PATH=~/local/bin:$PATH
+    export PATH=~/local/bin:~/local/sbin:$PATH
     export MANPATH=~/local/man:$MANPATH
     export MANPATH=~/local/share/man:$MANPATH
 fi
