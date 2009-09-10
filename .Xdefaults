@@ -4,7 +4,7 @@ URxvt*foreground: #dddddd
 URxvt*transparent: true
 URxvt*shading: 15
 URxvt*cursorColor: green
-
+URxvt*perl-ext-common: default
 
 
 !URxvt.borderLess:True
