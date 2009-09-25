@@ -268,6 +268,7 @@ keycode 255 =
 add Shift   = Shift_L Shift_R
 add Lock    = Caps_Lock
 add Control = Control_L Control_R
+add Mod1    = Alt_L Meta_L Alt_R Meta_R
 add Mod2    = Num_Lock
 add Mod3    = ISO_Level3_Shift
 add Mod4    = Super_L Hyper_L Super_R Hyper_R

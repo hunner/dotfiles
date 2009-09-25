@@ -55,7 +55,8 @@ HISTFILE=~/.history
 PS1="%m%# "
 export LC_COLLATE='C' #order files in ls
 #export LC_ALL='en_US.utf8'
-export LANG='en_US.utf8'
+#export LANG='en_US.utf8'
+export DIALOGOPTS='--visit-items'
 export MAIL=~/mail
 export MAILCHECK=0
 export AWT_TOOLKIT=MToolkit
@@ -126,6 +127,7 @@ alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
 alias gem="nice -n19 gem"
+alias uzbl="uzbl-browser"
 
 # Functions
 args() { echo $#; }
