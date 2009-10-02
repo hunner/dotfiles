@@ -4,8 +4,11 @@ URxvt*foreground: #dddddd
 URxvt*transparent: true
 URxvt*shading: 15
 URxvt*cursorColor: green
-URxvt*perl-ext-common: default
+!URxvt*perl-ext-common: default
 
+URxvt.perl-ext-common: default,matcher
+URxvt*urlLauncher: urxvt-to-uzbl.sh
+URxvt.colorUL: #cc0000
 
 !URxvt.borderLess:True
 !URxvt.reverseVideo:True
