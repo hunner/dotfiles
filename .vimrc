@@ -734,7 +734,7 @@ map <F23> <S-F11>
 map <F24> <S-F12>
 map <S-F2> :vsplit ~/.vim/ref_full.vim<CR>
 map <F2> :11vsplit ~/.vim/ref.vim<CR>
-map <F3> :Sexplore /home/bass/<CR>
+map <F3> :Sexplore /home/hunner/<CR>
 map <S-F3> :2split ~/.vim/fun_ref.vim<CR>
 map <F4> :set nu<CR>
 map <S-F4> :set nu!<CR>

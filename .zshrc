@@ -44,18 +44,23 @@ fi
 #TERM=rxvt
 export GEM_HOME="$HOME/.gems"
 export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
-zshhosts=(hunner@mint.cic.pdx.edu aragog.cat.pdx.edu zabava.cat.pdx.edu
-verne.hunnur.com drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu
-spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu stratton.cat.pdx.edu
+zshhosts=(firefly.cat.pdx.edu hunner@mint.cic.pdx.edu aragog.cat.pdx.edu
+zabava.cat.pdx.edu verne.hunnur.com drkatz.cat.pdx.edu walt.ece.pdx.edu
+bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu
 serenity.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com
-firefly.cat.pdx.edu mir.cat.pdx.edu geppetto.cat.pdx.edu 131.252.134.134)
+mir.cat.pdx.edu geppetto.cat.pdx.edu 131.252.134.134)
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.history
 PS1="%m%# "
-export LC_COLLATE='C' #order files in ls
+export LANG="en_US.UTF-8"
+#export LC_CTYPE="en_US.UTF-8"
+export LC_COLLATE="C" #order files in ls
+#export LC_TIME="en_US.UTF-8"
+#export LC_NUMERIC="en_US.UTF-8"
+#export LC_MONETARY="en_US.UTF-8"
+#export LC_MESSAGES="en_US.UTF-8"
 #export LC_ALL='en_US.utf8'
-#export LANG='en_US.utf8'
 export DIALOGOPTS='--visit-items'
 export MAIL=~/mail
 export MAILCHECK=0
@@ -67,10 +72,10 @@ else
 fi
 if [ -z "$PERL5LIB" ] ; then
         # If PERL5LIB wasn't previously defined, set it...
-        PERL5LIB=~/.perl/lib/perl5/site_perl:~/local/lib/perl5/site_perl
+        export PERL5LIB=~/local/lib/perl5:~/local/lib/perl5/site_perl
 else
         # ...otherwise, extend it.
-        PERL5LIB=$PERL5LIB:~/.perl/lib/perl5/site_perl:~/local/lib/perl5/site_perl
+        export PERL5LIB=$PERL5LIB:~/local/lib/perl5:~/local/lib/perl5/site_perl
 fi
 
 if [ -x `which vim` ] ; then
@@ -139,14 +144,22 @@ asdf() {
             xmodmap ~/keymaps/eo_dv_hunner_type7.pke
         fi
     else
-        xmodmap ~/keymaps/eo_dv_hunner.pke
+        if [ x`hostname` = x"ni" ] ; then
+            xmodmap ~/keymaps/nu_x61.pke
+        else
+            xmodmap ~/keymaps/nu_std.pke
+        fi
     fi
 }
 aoeu() {
     if [ `uname -s` = "SunOS" ] ; then
         xmodmap ~/keymaps/original-type7-sol.pke
     else
-        xmodmap ~/keymaps/original-linux.pke
+        if [ x`hostname` = x"ni" ] ; then
+            xmodmap ~/keymaps/qwerty_x61.pke
+        else
+            xmodmap ~/keymaps/kvar.pke
+        fi
     fi
 }
 type7() {
@@ -158,7 +171,7 @@ type7() {
 }
 zpush() {
     for host in $zshhosts ; do
-        files=(.zshrc .vim*)
+        files=(.zshrc .vim .vimrc)
         if [ x$(hostname) = x$host ] ; then
             continue
         fi
