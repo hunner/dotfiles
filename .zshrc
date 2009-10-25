@@ -78,7 +78,7 @@ else
         export PERL5LIB=$PERL5LIB:~/local/lib/perl5:~/local/lib/perl5/site_perl
 fi
 
-if [ -x `which vim` ] ; then
+if [ -n "`which vim`" ] ; then
     export VISUAL=vim
     export EDITOR=vim
     if [ -n "$DISPLAY" ] ; then
