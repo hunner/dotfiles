@@ -44,11 +44,7 @@ fi
 #TERM=rxvt
 export GEM_HOME="$HOME/.gems"
 export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
-zshhosts=(firefly.cat.pdx.edu hunner@mint.cic.pdx.edu aragog.cat.pdx.edu
-zabava.cat.pdx.edu verne.hunnur.com drkatz.cat.pdx.edu walt.ece.pdx.edu
-bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu
-serenity.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com
-mir.cat.pdx.edu geppetto.cat.pdx.edu 131.252.134.134)
+zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.history
@@ -136,12 +132,6 @@ alias uzbl="uzbl-browser"
 
 # Functions
 args() { echo $#; }
-#title() { printf '\33]2;%s\007' $* }
-#TITLE=$HOSTTITLE
-#case $TERM in (xterm*|*rxvt*|screen)
-#  precmd () { printf '\33]2;%s\007' "$TITLE" }
-#  preexec () { printf '\33]2;%s\007' "$TITLE" } ;;
-#esac
 #title (){
 #    if (( ${#argv} == 0 )); then
 #        TITLE=$HOSTTITLE
@@ -149,6 +139,7 @@ args() { echo $#; }
 #    fi
 #    TITLE=$*
 #}
+title() { print -Pn "\e]0;$*\a" }
 if [ x$WINDOW != x ]; then
     # Running under screen(1)
     precmd () { print -Pn "\e]0;%m [W$WINDOW] [%~]\a" }
