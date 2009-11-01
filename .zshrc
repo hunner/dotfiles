@@ -132,21 +132,14 @@ alias uzbl="uzbl-browser"
 
 # Functions
 args() { echo $#; }
-#title (){
-#    if (( ${#argv} == 0 )); then
-#        TITLE=$HOSTTITLE
-#        return
-#    fi
-#    TITLE=$*
-#}
-title() { print -Pn "\e]0;$*\a" }
+title() { WINTITLE="$*"; print -Pn "\e]0;$WINTITLE\a" }
 if [ x$WINDOW != x ]; then
     # Running under screen(1)
-    precmd () { print -Pn "\e]0;%m [W$WINDOW] [%~]\a" }
-    preexec () { print -Pn "\e]0;%m [W$WINDOW] [$1]\a" }
+    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [%~]\a" || : }
+    preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [$1]\a" || : }
 else
-    precmd () { print -Pn "\e]0;%m [%~]\a" }
-    preexec () { print -Pn "\e]0;%m [$1]\a" }
+    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
+    preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
 resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ",xft:IPAGothic:antialias=true" }
 asdf() {
