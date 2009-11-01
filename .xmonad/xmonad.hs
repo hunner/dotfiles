@@ -14,6 +14,8 @@ import System.Exit
 import XMonad.Layout.NoBorders ( noBorders, smartBorders )
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
+import XMonad.Actions.GridSelect
+import XMonad.Actions.WindowBringer
 import XMonad.Actions.NoBorders
 import Data.Monoid
 
@@ -23,7 +25,8 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "urxvtc;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
+-- myTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
+myTerminal      = "urxvtc"
 
 -- Width of the window border in pixels.
 --
@@ -143,6 +146,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- toggle the status bar gap
     -- TODO, update this binding with avoidStruts , ((modMask              , xK_b     ),
+
+    -- Gridselect to pick windows
+    --, ((modMask              , xK_f     ), (gridselect defaultGSConfig) >>= (\w -> case w of
+    --                                         Just w -> windows (bringWindow w) >> focus w >> windows W.shiftMaster
+    --                                         Nothing -> return ()))
+    , ((modMask              , xK_g     ), goToSelected defaultGSConfig)
 
     -- Quit xmonad
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))

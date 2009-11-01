@@ -136,6 +136,8 @@ alias uzbl="uzbl-browser"
 
 # Functions
 args() { echo $#; }
+title() { printf '\33]2;%s\007' $* }
+resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ",xft:IPAGothic:antialias=true" }
 asdf() {
     if [ `uname -s` = "SunOS" ] ; then
         if [ x`hostname` = x"chandra.cs.pdx.edu" ] ; then
