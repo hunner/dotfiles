@@ -136,7 +136,27 @@ alias uzbl="uzbl-browser"
 
 # Functions
 args() { echo $#; }
-title() { printf '\33]2;%s\007' $* }
+#title() { printf '\33]2;%s\007' $* }
+#TITLE=$HOSTTITLE
+#case $TERM in (xterm*|*rxvt*|screen)
+#  precmd () { printf '\33]2;%s\007' "$TITLE" }
+#  preexec () { printf '\33]2;%s\007' "$TITLE" } ;;
+#esac
+#title (){
+#    if (( ${#argv} == 0 )); then
+#        TITLE=$HOSTTITLE
+#        return
+#    fi
+#    TITLE=$*
+#}
+if [ x$WINDOW != x ]; then
+    # Running under screen(1)
+    precmd () { print -Pn "\e]0;%m [W$WINDOW] [%~]\a" }
+    preexec () { print -Pn "\e]0;%m [W$WINDOW] [$1]\a" }
+else
+    precmd () { print -Pn "\e]0;%m [%~]\a" }
+    preexec () { print -Pn "\e]0;%m [$1]\a" }
+fi
 resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ",xft:IPAGothic:antialias=true" }
 asdf() {
     if [ `uname -s` = "SunOS" ] ; then
