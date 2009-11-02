@@ -15,11 +15,17 @@ import System.Exit
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
+import XMonad.Actions.CopyWindow
+import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.NoBorders
 import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
+import XMonad.Prompt
+import XMonad.Util.EZConfig (additionalKeysP)
 import Data.Monoid
+import Data.List
+import Data.Maybe
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -28,18 +34,18 @@ import qualified Data.Map        as M
 -- certain contrib modules.
 --
 -- myTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
-myTerminal      = "urxvtc"
+mterminal      = "urxvtc"
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 1
+mborderWidth   = 1
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
-myModMask       = mod4Mask
+mmodMask       = mod4Mask
 
 -- | The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
@@ -50,52 +56,61 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces :: [WorkspaceId]
-myWorkspaces = map show [1 .. 9 :: Int]
+mworkspaces :: [WorkspaceId]
+mworkspaces = map show [1 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#999999"
-myFocusedBorderColor = "#dd0000"
+mnormalBorderColor  = "#999999"
+mfocusedBorderColor = "#dd0000"
 
 -- Custom keys
-myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-myKeys =
-    -- Window management
-    [ ((modMask .|. shiftMask, xK_n     ), sendMessage MirrorShrink) -- %! Expand current window
-    , ((modMask .|. shiftMask, xK_t     ), sendMessage MirrorExpand) -- %! Shrink current window
+mkeys = [ ("M-S-n", sendMessage MirrorShrink) -- Expand current window
+        , ("M-S-t", sendMessage MirrorExpand) -- Shrink current window
 
-    -- Bring dzen to the front
-    , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1")
+        -- Bring dzen to the front
+        , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1")
 
-    -- Toggle the border of the currently focused window
-    , ((modMask              , xK_b     ), withFocused toggleBorder)
+        -- Toggle the border of the currently focused window
+        , ("M-b" , withFocused toggleBorder)
 
-    -- Gridselect to pick windows
-    --, ((modMask              , xK_g     ), goToSelected defaultGSConfig)
-    --, ((modMask              , xK_g     ), goToSelected gsconfig3)
-    , ((modMask               , xK_a      ), warpToCentre >> wsgrid)
+        -- Gridselect to pick windows
+        --, ((modMask              , xK_g     ), goToSelected defaultGSConfig)
+        --, ((modMask              , xK_g     ), goToSelected gsconfig3)
+        --, ("M-g"  , warpToCentre >> wsgrid)
+        --, ("M-g"  , wsgrid)
+        , ("M-g"  , warpToCentre >> promptedWs)
 
-    -- Goes to window or bring up window
-    , ((modMask .|. shiftMask, xK_g     ), gotoMenu)
-    , ((modMask .|. shiftMask, xK_b     ), bringMenu)
-    ]
-    ++
-    -- mod-[1..9] %! Switch to workspace N
-    -- mod-shift-[1..9] %! Move client to workspace N
-    [((m .|. modMask, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-    ++
-    -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
-    [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+        -- Goes to window or bring up window
+        , ("M-S-g", gotoMenu)
+        , ("M-S-b", bringMenu)
+
+        -- Multimedia
+        , ("<XF86AudioPlay>"       , spawn "mpc toggle"       ) -- play/pause mpd
+        , ("<XF86AudioStop>"       , spawn "mpc stop"         ) -- stop mpd
+        , ("<XF86AudioPrev>"       , spawn "mpc prev"         ) -- prev song
+        , ("<XF86AudioNext>"       , spawn "mpc next"         ) -- next song
+        , ("<XF86AudioMute>"       , spawn "amixer -q -- sset Headphone togglemute") -- toggle mute via custom script
+        , ("<XF86AudioLowerVolume>", spawn "mpc volume -3"    ) -- volume down via custom script
+        , ("<XF86AudioRaiseVolume>", spawn "mpc volume +3"    ) -- volume up via custom script
+        , ("M-S-<Backspace>"       , removeWorkspace)
+
+        -- Dynamic workspace commands
+        , ("M-S-w"                 , selectWorkspace myXPConfig)
+        , ("M-m"                   , withWorkspace myXPConfig (windows . W.shift))
+        , ("M-S-m"                 , withWorkspace myXPConfig (windows . copy))
+        , ("M-S-r"                 , renameWorkspace myXPConfig)
+        ]
+        -- Don't auto-assign the key shortcuts
+        -- ++
+        -- zip (map (("M-" ++) . show) [1..9]) (map (withNthWorkspace W.greedyView) [0..])
+        -- ++
+        -- zip (map (("M-S-" ++) . show) [1..9]) (map (withNthWorkspace W.shift) [0..])
+
+warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
 
 {-
 [10:28]  dschoepe : gets (map W.tag . W.workspaces . windowset) should work
-[10:28]    aavogt : dschoepe: yeah
 [10:31]    aavogt : somewhat useful variation on that is:
 [10:32]    aavogt : gets $ map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset
 [10:32]    aavogt : to put the populated ones towards the inside
@@ -103,30 +118,12 @@ myKeys =
 [10:34]    aavogt : needs imports of Data.List and Data.Maybe
 -}
 
-warpToCentre = gets (W.screen . map W.tag . W.workspaces . windowset) >>= \x -> warpToScreen x  0.5 0.5
-
-wsgrid = gridselect gsConfig =<< asks (map (\x -> (x,x)) . workspaces . config)
---promptedGoto = wsgrid >>= flip whenJust (switchTopic myTopicConfig)
---promptedShift = wsgrid >>= \x -> whenJust x $ \y -> windows (W.greedyView y . W.shift y)
+--wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset)) -- (map W.tag . W.workspaces . windowset))
+wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . W.workspaces . windowset))
+promptedWs = wsgrid >>= \x -> whenJust x $ \y -> windows $ W.greedyView y
 
 {-
--- | Like `gridSelect' but with the current windows and their titles as elements
-gridselectWorkspace :: GSConfig W.Workspace -> X (Maybe W.Workspace)
-gridselectWorkspace gsconf = workspaceMap >>= gridselect gsconf
-
-workspaceMap :: X [(String,W.Workspace)]
-workspaceMap = do
-    ws <- gets workspaceset
-    wins <- mapM keyValuePair (W.workspaces ws)
-    return wins
- where keyValuePair w = flip (,) w `fmap` decorateName' w
-
-decorateName' :: W.workspace -> X String
-decorateName' w = do
-  fmap show $ getName w
--}
-
-{-
+ - Fancy gsConfig
 gsConfig = defaultGSConfig { gs_navigate = neiu `M.union` gs_navigate (defaultGSConfig`asTypeOf`gsConfig) }
     where neiu = M.insert (0,xK_space) (const (0,0)) $ M.map (\(x,y) (a,b) -> (x+a,y+b)) $ M.fromList
             [((0,xK_n),(-1,0))
@@ -134,6 +131,9 @@ gsConfig = defaultGSConfig { gs_navigate = neiu `M.union` gs_navigate (defaultGS
             ,((0,xK_i),(1,0))
             ,((0,xK_u),(0,-1))]
 -}
+
+myXPConfig :: XPConfig
+myXPConfig = defaultXPConfig { fgColor = "#dd0000", bgColor = "black", borderColor = "#dd0000" }
 
 gsConfig = defaultGSConfig
    { gs_navigate = M.unions
@@ -152,10 +152,11 @@ gsConfig = defaultGSConfig
                               ]
         -- jump back to the center with the spacebar, regardless of the current position.
         reset = M.singleton (0,xK_space) (const (0,0))
+
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
-myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
+mmouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- mod-button1, Set the window to floating mode and move by dragging
     [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w))
@@ -180,7 +181,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
+mlayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
@@ -211,7 +212,7 @@ myLayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
+mmanageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , title =? "VLC media player"   --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -227,8 +228,8 @@ myManageHook = composeAll
     , resource  =? "kdesktop"       --> doIgnore ]
 
 -- Whether focus follows the mouse pointer.
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+mfocusFollowsMouse :: Bool
+mfocusFollowsMouse = True
 
 {-
 [14:25]  dschoepe : Hunner: http://hpaste.org/fastcgi/hpaste.fcgi/view?id=8798#a8798
@@ -252,23 +253,21 @@ pickyFocusEventHook _ = return $ All True
 
 -- Run xmonad!
 --
-main = xmonad defaults
+main = do
+  xmonad $ defaultConfig
+    { terminal           = mterminal
+    , focusFollowsMouse  = mfocusFollowsMouse
+    , borderWidth        = mborderWidth
+    , modMask            = mmodMask
+    , workspaces         = mworkspaces
+    , normalBorderColor  = mnormalBorderColor
+    , focusedBorderColor = mfocusedBorderColor
 
-defaults = defaultConfig
-    { -- simple stuff
-    , terminal           = myTerminal
-    , focusFollowsMouse  = myFocusFollowsMouse
-    , borderWidth        = myBorderWidth
-    , modMask            = myModMask
-    , workspaces         = myWorkspaces
-    , normalBorderColor  = myNormalBorderColor
-    , focusedBorderColor = myFocusedBorderColor
+    -- key bindings
+    , mouseBindings      = mmouseBindings
 
-    , -- key bindings
-    , mouseBindings      = myMouseBindings
-
-    , -- hooks, layouts
-    , layoutHook         = myLayout
-    , manageHook         = myManageHook
+    -- hooks, layouts
+    , layoutHook         = mlayout
+    , manageHook         = mmanageHook
     , handleEventHook    = pickyFocusEventHook
-    } `additionalKeysP` myKeys
+    } `additionalKeysP` mkeys
