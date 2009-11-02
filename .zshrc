@@ -114,6 +114,7 @@ alias x="exit"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
 alias mang="cd ~/zips/mangband ; DISPLAY=\"\" ./mangclient"
+alias nh="export HISTFILE=/dev/null"
 alias cl="co -l"
 alias cu="ci -u"
 alias sl="screen -ls"
@@ -141,7 +142,7 @@ else
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
-resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ",xft:IPAGothic:antialias=true" }
+resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ":antialias=true" }
 asdf() {
     if [ `uname -s` = "SunOS" ] ; then
         if [ x`hostname` = x"chandra.cs.pdx.edu" ] ; then
