@@ -1,10 +1,5 @@
 --
--- xmonad example config file.
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
+-- xmonad config file.
 --
 {-# LANGUAGE NoMonomorphismRestriction #-}
 
@@ -30,26 +25,25 @@ import Data.Maybe
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
--- myTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
---
-mterminal      = "urxvtc"
-mborderWidth   = 1
-mmodMask       = mod4Mask
+-- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
+mTerminal      = "urxvtc"
+mBorderWidth   = 1
+mModMask       = mod4Mask
 
 -- A tagging example:
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-mworkspaces :: [WorkspaceId]
-mworkspaces = map show [1 .. 9 :: Int]
+mWorkspaces :: [WorkspaceId]
+mWorkspaces = map show [1 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-mnormalBorderColor  = "#999999"
-mfocusedBorderColor = "#dd0000"
+mNormalBorderColor  = "#999999"
+mFocusedBorderColor = "#dd0000"
 
 -- Custom keys
 --
-mkeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
+mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-t", sendMessage MirrorExpand  ) -- Shrink current window
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
@@ -71,10 +65,10 @@ mkeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
 
         -- Dynamic workspace commands
         , ("M-S-<Backspace>"       , removeWorkspace)
-        , ("M-S-w"                 , selectWorkspace myXPConfig)
-        , ("M-S-r"                 , renameWorkspace myXPConfig)
-        , ("M-m"                   , withWorkspace myXPConfig (windows . W.shift))
-        , ("M-S-m"                 , withWorkspace myXPConfig (windows . copy))
+        , ("M-S-w"                 , selectWorkspace mXPConfig)
+        , ("M-S-r"                 , renameWorkspace mXPConfig)
+        , ("M-m"                   , withWorkspace mXPConfig (windows . W.shift))
+        , ("M-S-m"                 , withWorkspace mXPConfig (windows . copy))
         ]
         -- Don't auto-assign the key shortcuts
         -- ++
@@ -107,8 +101,8 @@ gsConfig = defaultGSConfig { gs_navigate = neiu `M.union` gs_navigate (defaultGS
             ,((0,xK_u),(0,-1))]
 -}
 
-myXPConfig :: XPConfig
-myXPConfig = defaultXPConfig { fgColor = "#dd0000", bgColor = "black", borderColor = "#dd0000" }
+mXPConfig :: XPConfig
+mXPConfig = defaultXPConfig { fgColor = "#dd0000", bgColor = "black", borderColor = "#dd0000" }
 
 gsConfig = defaultGSConfig
    { gs_navigate = M.unions
@@ -131,7 +125,7 @@ gsConfig = defaultGSConfig
 ------------------------------------------------------------------------
 -- Layouts:
 
-mlayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
+mLayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
@@ -151,7 +145,7 @@ mlayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
 -- Window rules:
 -- > xprop | grep WM_CLASS
 --
-mmanageHook = composeAll
+mManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , title =? "VLC media player"   --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -167,8 +161,8 @@ mmanageHook = composeAll
     , resource  =? "kdesktop"       --> doIgnore ]
 
 -- Whether focus follows the mouse pointer.
-mfocusFollowsMouse :: Bool
-mfocusFollowsMouse = True
+mFocusFollowsMouse :: Bool
+mFocusFollowsMouse = True
 
 {-
 [14:25]  dschoepe : Hunner: http://hpaste.org/fastcgi/hpaste.fcgi/view?id=8798#a8798
@@ -193,14 +187,14 @@ pickyFocusEventHook _ = return $ All True
 --
 main = do
   xmonad $ defaultConfig
-    { terminal           = mterminal
-    , focusFollowsMouse  = mfocusFollowsMouse
-    , borderWidth        = mborderWidth
-    , modMask            = mmodMask
-    , workspaces         = mworkspaces
-    , normalBorderColor  = mnormalBorderColor
-    , focusedBorderColor = mfocusedBorderColor
-    , layoutHook         = mlayout
-    , manageHook         = mmanageHook
+    { terminal           = mTerminal
+    , focusFollowsMouse  = mFocusFollowsMouse
+    , borderWidth        = mBorderWidth
+    , modMask            = mModMask
+    , workspaces         = mWorkspaces
+    , normalBorderColor  = mNormalBorderColor
+    , focusedBorderColor = mFocusedBorderColor
+    , layoutHook         = mLayout
+    , manageHook         = mManageHook
     , handleEventHook    = pickyFocusEventHook
-    } `additionalKeysP` mkeys
+    } `additionalKeysP` mKeys
