@@ -69,10 +69,18 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-r"                 , renameWorkspace mXPConfig)
         , ("M-m"                   , withWorkspace mXPConfig (windows . W.shift))
         , ("M-S-m"                 , withWorkspace mXPConfig (windows . copy))
+        -- todo: make a better command to "move" (rename) a whole workspace to a different name
+        --       if src is [1..9] then create a blank one after renaming
+        --       if there is a workspace existing target name that is empty, delete it before moving
+        --       else leave everything as it is (no move/rename)
         ]
-        -- Don't auto-assign the key shortcuts
+        ++ -- mod-{o,e,u} %! Switch to physical/Xinerama screens 0, 1, or 2
+        zip (map ("M-" ++)   ["o","e","u"]) (map (\x -> screenWorkspace x >>= flip whenJust (windows . W.view))  [0..])
+        ++ -- mod-shift-{o,e,u} %! Move client to screen 0, 1, or 2
+        zip (map ("M-S-" ++) ["o","e","u"]) (map (\x -> screenWorkspace x >>= flip whenJust (windows . W.shift)) [0..])
+        -- Don't auto-assign the key shortcuts to dynamic workspaces. I want them staying on [1..9] only
         -- ++
-        -- zip (map (("M-" ++) . show) [1..9]) (map (withNthWorkspace W.greedyView) [0..])
+        -- zip (map (("M-" ++) . show)   [1..9]) (map (withNthWorkspace W.greedyView) [0..])
         -- ++
         -- zip (map (("M-S-" ++) . show) [1..9]) (map (withNthWorkspace W.shift) [0..])
   where -- Make the mouse jump to the middle of the screen for gridselect
@@ -89,16 +97,6 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
 [10:32]    aavogt : to put the populated ones towards the inside
 [10:33]    aavogt : unfortunately, it is a bit more awkward to supply those ones with a different color
 [10:34]    aavogt : needs imports of Data.List and Data.Maybe
--}
-
-{-
- - Fancy gsConfig
-gsConfig = defaultGSConfig { gs_navigate = neiu `M.union` gs_navigate (defaultGSConfig`asTypeOf`gsConfig) }
-    where neiu = M.insert (0,xK_space) (const (0,0)) $ M.map (\(x,y) (a,b) -> (x+a,y+b)) $ M.fromList
-            [((0,xK_n),(-1,0))
-            ,((0,xK_e),(0,1))
-            ,((0,xK_i),(1,0))
-            ,((0,xK_u),(0,-1))]
 -}
 
 mXPConfig :: XPConfig
