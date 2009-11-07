@@ -130,6 +130,12 @@ alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
 alias gem="nice -n19 gem"
 alias uzbl="uzbl-browser"
+#startup aliases
+alias -s pdf="xpdf"
+alias -s txt="vi"
+alias -s flv="mplayer"
+alias -s avi="mplayer"
+alias -s mkv="mplayer"
 
 # Functions
 args() { echo $#; }
