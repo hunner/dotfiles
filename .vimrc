@@ -281,6 +281,22 @@ if has("autocmd")
         autocmd BufNewFile,BufRead *.php
                     \ set ai
 
+        autocmd BufNewFile *.htm,*.html
+                    \ 0put ='<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">' |
+                    \ $put ='<html xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">' |
+                    \ $put ='  <head>' |
+                    \ $put ='    <title></title>' |
+                    \ $put ='    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />' |
+                    \ $put ='    <link href=\"\" rel=\"stylesheet\" type=\"text/css\" />' |
+                    \ $put ='    <style type=\"text/css\">' |
+                    \ $put ='    </style>' |
+                    \ $put ='  </head>' |
+                    \ $put ='  <body>' |
+                    \ $put ='  </body>' |
+                    \ $put ='</html>' |
+                    \ $put ='<!-- vim: set sw=2 sts=2 et tw=80 : -->' |
+                    \ set sw=2 sts=2 et tw=80 | norm G
+
         autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
                     \ 1put ='' | call MakeIncludeGuards() |
                     \ 5put ='#include \"config.h\"' |
