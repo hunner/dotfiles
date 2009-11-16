@@ -86,6 +86,8 @@ else
     export VISUAL=vi
     export EDITOR=vi
 fi
+#xset fp+ /usr/APL2/fonts/X11
+#xset fp  rehash
 #if [ -d $HOME/.gems/gems ] ; then
 #    for rlib in $HOME/.gems/gems/*/lib ; do
 #        export RUBYLIB=$RUBYLIB:$rlib
