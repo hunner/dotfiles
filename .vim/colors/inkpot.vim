@@ -1,6 +1,8 @@
 " Vim color file
 " Name:       inkpot.vim
-" Maintainer: Ciaran McCreesh <ciaran.mccreesh@blueyonder.co.uk>
+" Maintainer: Ciaran McCreesh <ciaran.mccreesh@googlemail.com>
+" Homepage:   http://github.com/ciaranm/inkpot/
+"
 " This should work in the GUI, rxvt-unicode (88 colour mode) and xterm (256
 " colour mode). It won't work in 8/16 colour terminals.
 "
@@ -50,6 +52,8 @@ if has("gui_running")
     else
         hi Normal         gui=NONE   guifg=#cfbfad   guibg=#000000
     endif
+
+    hi CursorLine         guibg=#2e2e37
 
     hi IncSearch      gui=BOLD   guifg=#303030   guibg=#cd8b60
     hi Search         gui=NONE   guifg=#303030   guibg=#cd8b60
@@ -134,11 +138,11 @@ if has("gui_running")
         hi SpellLocal   gui=undercurl guisp=#cccc66
         hi SpellCap     gui=undercurl guisp=#66cccc
 
-        hi MatchParen   gui=NONE      guifg=#404040   guibg=#8fff8b
+        hi MatchParen   gui=NONE      guifg=#cfbfad   guibg=#4e4e8f
     endif
 else
     if ! g:inkpot_black_background
-        exec "hi Normal         cterm=NONE   ctermfg=" . <SID>X(79) . " ctermbg=" . <SID>X(80)
+        "exec "hi Normal         cterm=NONE   ctermfg=" . <SID>X(79) . " ctermbg=" . <SID>X(80)
     else
         exec "hi Normal         cterm=NONE   ctermfg=" . <SID>X(79) . " ctermbg=" . <SID>X(16)
     endif

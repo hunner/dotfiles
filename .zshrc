@@ -142,11 +142,15 @@ alias -s mkv="mplayer"
 # Functions
 args() { echo $#; }
 title() { WINTITLE="$*"; print -Pn "\e]0;$WINTITLE\a" }
-if [ x$WINDOW != x ]; then
-    # Running under screen(1)
-    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [%~]\a" || : }
-    preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [$1]\a" || : }
-else
+#if [ x$WINDOW != x ]; then
+#    # Running under screen(1)
+#    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [%~]\a" || : }
+#    preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [$1]\a" || : }
+#else
+#    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
+#    preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
+#fi
+if [ x$DISPLAY != x ]; then
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
