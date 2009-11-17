@@ -5,11 +5,15 @@
 
 
 
-import XMonad
+import XMonad hiding (Tall)
 import System.Exit
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
+import XMonad.Layout.Circle
+import XMonad.Layout.MagicFocus
+import XMonad.Layout.Magnifier
+import XMonad.Layout.HintedTile
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
@@ -18,6 +22,7 @@ import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
 import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Hooks.SetWMName
 import Data.Monoid
 import Data.List
 import Data.Maybe
@@ -123,11 +128,13 @@ gsConfig = defaultGSConfig
 ------------------------------------------------------------------------
 -- Layouts:
 
-mLayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat
+mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
-     tiled   = ResizableTall nmaster delta ratio []
+     --tiled   = ResizableTall nmaster delta ratio []
+     hintedTile = HintedTile nmaster delta ratio TopLeft
+     tiled      = hintedTile Tall
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -195,4 +202,5 @@ main = do
     , layoutHook         = mLayout
     , manageHook         = mManageHook
     , handleEventHook    = pickyFocusEventHook
+    , logHook            = setWMName "LG3D"
     } `additionalKeysP` mKeys
