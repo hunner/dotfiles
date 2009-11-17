@@ -5,9 +5,9 @@ URxvt*depth: 32
 URxvt*foreground: #dddddd
 #URxvt*transparent: true
 URxvt*transparent: false
-URxvt*fading: 2%
+#URxvt*fading: 2%
 URxvt*shading: 30
-URxvt*fadeColor: grey
+#URxvt*fadeColor: grey
 URxvt*buffered: true
 URxvt*cursorColor: green
 !URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true

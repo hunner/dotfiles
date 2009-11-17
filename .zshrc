@@ -150,7 +150,7 @@ title() { WINTITLE="$*"; print -Pn "\e]0;$WINTITLE\a" }
 #    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
 #    preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 #fi
-if [ x$DISPLAY != x ]; then
+if [ x$DISPLAY != x ] ; then
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
