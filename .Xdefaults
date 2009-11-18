@@ -1,12 +1,12 @@
 Xft.antialias: true
 URxvt*scrollBar: false
-URxvt*background: rgba:0000/0000/0000/dddd
+URxvt*background: rgba:0000/0000/0000/aaaa
 URxvt*depth: 32
 URxvt*foreground: #dddddd
 #URxvt*transparent: true
 URxvt*transparent: false
 #URxvt*fading: 2%
-URxvt*shading: 30
+#URxvt*shading: 30
 #URxvt*fadeColor: grey
 URxvt*buffered: true
 URxvt*cursorColor: green

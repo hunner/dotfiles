@@ -22,6 +22,8 @@ import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
 import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import Data.Monoid
 import Data.List
@@ -163,7 +165,8 @@ mManageHook = composeAll
     , className =? "Gvba"           --> doFloat
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , isFullscreen                  --> doFullFloat ]
 
 -- Whether focus follows the mouse pointer.
 mFocusFollowsMouse :: Bool
@@ -172,7 +175,7 @@ mFocusFollowsMouse = True
 {-
 [14:25]  dschoepe : Hunner: http://hpaste.org/fastcgi/hpaste.fcgi/view?id=8798#a8798
 [14:25]  dschoepe : that should work in darcs
-[14:28]  dschoepe : Hunner: you probably want something like `flip 
+[14:28]  dschoepe : Hunner: you probably want something like `flip
                     (/="cellwriterclass") `fmap` className' as shouldFollow
 [14:28]  dschoepe : err, without the flip
 
@@ -202,5 +205,5 @@ main = do
     , layoutHook         = mLayout
     , manageHook         = mManageHook
     , handleEventHook    = pickyFocusEventHook
-    , logHook            = setWMName "LG3D"
+    , startupHook        = ewmhDesktopsStartup >> setWMName "LG3D"
     } `additionalKeysP` mKeys
