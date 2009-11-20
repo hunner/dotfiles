@@ -11,6 +11,7 @@ scriptencoding utf-8
 " Extra terminal things
 set termencoding=utf-8
 set encoding=utf-8
+
 " Turn off the menubar so we don't get key accelerators with Meta.
 " Don't include the toolbar
 set guioptions=aegiLt
@@ -32,6 +33,15 @@ set nocompatible
 " Enable a nice big viminfo file
 set viminfo='1000,f1,:1000,/1000
 set history=500
+
+" Return to last line
+if has("autocmd")
+    autocmd BufReadPost *
+        \ if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif
+
+" Abbreviate output of commands
+set shortmess=a
 
 " Make backspace delete lots of things
 set backspace=indent,eol,start
@@ -730,7 +740,7 @@ let Tlist_Ctags_Cmd="/usr/bin/exuberant-ctags"
 " plegado ident para python
 au FileType python set foldmethod=indent
 " plegado syntax para sgml,htmls,xml y xsl
-au Filetype html,xml,xsl,sgml,docbook
+au Filetype html,xml,xsl,sgml ",docbook
 " explorador vertical
 let g:explVertical=1
 " define leader como =

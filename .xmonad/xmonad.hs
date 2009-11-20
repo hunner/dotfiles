@@ -33,7 +33,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
-mTerminal      = "urxvtc"
+mTerminal      = "urxvt"
 mBorderWidth   = 1
 mModMask       = mod4Mask
 

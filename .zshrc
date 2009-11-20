@@ -78,7 +78,8 @@ if [ -n "`which vim`" ] ; then
     export VISUAL=vim
     export EDITOR=vim
     if [ -n "$DISPLAY" ] ; then
-        alias vi="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
+        alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
+        alias vi=vim
     else
         alias vi=vim
     fi
