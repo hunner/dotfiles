@@ -27,6 +27,13 @@ for dir in $paths ; do
         fi
     fi
 done
+# Load profiles from /etc/profile.d
+if test -d /etc/profile.d/; then
+    for profile in /etc/profile.d/*.sh; do
+        test -x $profile && . $profile
+    done
+    unset profile
+fi
 if [ -d ~/local/bin ] ; then
     export PATH=~/local/bin:~/local/sbin:$PATH
     export MANPATH=~/local/man:$MANPATH
