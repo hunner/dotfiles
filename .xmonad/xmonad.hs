@@ -161,6 +161,7 @@ mManageHook = composeAll
     , className =? "googleearth"    --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "mangclient"     --> doFloat
+    , className =? "Emacs"          --> doFloat
     , className =? "CellWriter"     --> doFloat
     , className =? "Gvba"           --> doFloat
     , className =? "Cellwriter"     --> doIgnore

@@ -15,7 +15,7 @@ set encoding=utf-8
 " Turn off the menubar so we don't get key accelerators with Meta.
 " Don't include the toolbar
 set guioptions=aegiLt
-colorscheme inkpot
+"colorscheme ir_black
 set fenc=utf-8
 
 if exists('&t_SI')
@@ -111,8 +111,15 @@ elseif has("gui_running")
 endif
 
 " Try to load a nice colourscheme
-set t_Co=256
-color inkpot
+if ! has("gui_running")
+    set t_Co=256
+    colors inkpot
+else
+    colors ir_black
+endif
+" set background=light gives a different style, feel free to choose between them.
+set background=dark
+"colors peaksea
 
 " No icky toolbar, menu or scrollbars in the GUI
 "if has('gui')
@@ -650,6 +657,12 @@ if has("eval")
     " ruby options
     let ruby_operators=1
     let ruby_space_errors=1
+
+    " clojure options
+    let g:clj_want_gorilla = 1
+    let g:clj_highlight_builtins = 1
+    let g:clj_highlight_contrib = 1
+    let g:clj_paren_rainbow = 1
 
     " php specific options
     let php_sql_query=1
