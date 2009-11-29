@@ -238,6 +238,7 @@ ex () {
             *.tar)       $TAR xvf $1     ;;
             *.tbz2)      $TAR xvjf $1    ;;
             *.tgz)       $TAR xvzf $1    ;;
+            *.tbz)       $TAR xvjf $1    ;;
             *.zip)       unzip $1       ;;
             *.Z)         uncompress $1  ;;
             *.7z)        7z x $1        ;;
