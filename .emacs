@@ -59,6 +59,10 @@
 (setq url-proxy-services '(("no_proxy" . "localhost")
                            ("http" . "localhost:8118")))
 
+(setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
+(setq-default save-place t)                   ;; activate it for all buffers
+(require 'saveplace)                          ;; get the package
+
 ;; Prevent Emacs from stupidly auto-changing my working directory
 (defun find-file-save-default-directory ()
     (interactive)
