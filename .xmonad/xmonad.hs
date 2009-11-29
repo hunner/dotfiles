@@ -4,7 +4,6 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 
 
-
 import XMonad hiding (Tall)
 import System.Exit
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
@@ -55,6 +54,10 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
+          
+        -- Sticky/unsticky windows (does not work on workspaces created after the fact)
+        , ("M-a"  , windows copyToAll)  -- Copy focused window to all workspaces
+        , ("M-S-a", killAllOtherCopies) -- Uncopy focused window from all workspaces
 
         -- Goes to window or bring up window
         --, ("M-S-g", gotoMenu)
@@ -95,7 +98,6 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         promptedWs = wsgrid >>= \x -> whenJust x $ \y -> windows $ W.greedyView y
         wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . W.workspaces . windowset))
         --wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset)) -- (map W.tag . W.workspaces . windowset))
-
 
 {-
 [10:28]  dschoepe : gets (map W.tag . W.workspaces . windowset) should work
@@ -161,7 +163,6 @@ mManageHook = composeAll
     , className =? "googleearth"    --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "mangclient"     --> doFloat
-    , className =? "Emacs"          --> doFloat
     , className =? "CellWriter"     --> doFloat
     , className =? "Gvba"           --> doFloat
     , className =? "Cellwriter"     --> doIgnore
