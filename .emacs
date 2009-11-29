@@ -30,6 +30,7 @@
 (setq linum-format "%3d ")
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
+(setq make-backup-files nil)
 (set-language-environment "UTF-8")
 (winner-mode t)
 
@@ -54,6 +55,10 @@
     (indent-according-to-mode)))
 (global-set-key [C-tab] 'indent-according-to-mode)
 
+;; Proxy for ssh tunnel + privoxy
+(setq url-proxy-services '(("no_proxy" . "localhost")
+                           ("http" . "localhost:8118")))
+
 ;; Prevent Emacs from stupidly auto-changing my working directory
 (defun find-file-save-default-directory ()
     (interactive)
@@ -61,6 +66,21 @@
     (ido-find-file)
     (setq default-directory saved-default-directory))
 (global-set-key "\C-x\C-f" 'find-file-save-default-directory)
+
+;; Give killing lines advice
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (message "Copied line")
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
@@ -117,6 +137,17 @@
             )))
 
 (add-hook 'clojure-mode-hook 'tweak-clojure-syntax)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Translation
+(autoload 'babel "babel"
+  "Use a web translation service to translate the message MSG." t)
+(autoload 'babel-region "babel"
+  "Use a web translation service to translate the current region." t)
+(autoload 'babel-as-string "babel"
+  "Use a web translation service to translate MSG, returning a string." t)
+(autoload 'babel-buffer "babel"
+  "Use a web translation service to translate the current buffer." t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom
