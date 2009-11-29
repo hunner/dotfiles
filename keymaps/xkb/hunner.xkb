@@ -38,7 +38,7 @@ xkb_keymap {
         key <AD03> { [ period,          greater,        dead_breve,      dead_abovedot    ] };
         key <AD04> { [ p,               P,              paragraph ] };
         key <AD05> { [ y,               Y,              yen,             heart            ] };
-        key <BKSL> { [ BackSpace,       bar,            brokenbar ] };
+        key <BKSL> { [ BackSpace,       bar,            brokenbar        ] };
 
         // Upper row, right side
         key <AD06> { [ f,               F                                                 ] };
@@ -86,7 +86,8 @@ xkb_keymap {
         key <LCTL> { [ Caps_Lock ] };
         key <LWIN> { [ Super_L ] };
         key <SPCE> { [ space,           space ] };
-        key <COMP> { [ Menu ] };
+        key <COMP> { [ Super_R ] };
+//        key <COMP> { [ Menu ] };
 
         modifier_map Lock { <LCTL> };
         modifier_map Control { <CAPS> };

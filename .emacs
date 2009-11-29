@@ -1,8 +1,6 @@
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d"
-          "/usr/share/emacs/site-lisp/clojure-mode"
-          "/usr/share/emacs/site-lisp/slime"
-          "/usr/share/emacs/site-lisp/swank-clojure"))
+          ))
 
 (defun require-all (packages)
     (mapcar #'require packages))
@@ -12,6 +10,7 @@
                ido
                color-theme
                gentooish
+               irblack
                parenface
                bar-cursor
                ))
@@ -20,18 +19,18 @@
 ;; GLOBAL
 (color-theme-initialize)
 
-(if window-system
-    (color-theme-gentooish)
-    (color-theme-dark-laptop))
+;(if window-system
+;    (color-theme-gentooish)
+;    (color-theme-dark-laptop))
+(color-theme-irblack)
 
 (bar-cursor-mode 1)
-
-(tool-bar-mode 0)
 (menu-bar-mode 0)
 (global-linum-mode)
 (setq linum-format "%3d ")
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
+(set-language-environment "UTF-8")
 (winner-mode t)
 
 (tooltip-mode nil)
@@ -39,7 +38,7 @@
 (setq column-number-mode nil)
 (setq size-indication-mode nil)
 (setq mode-line-position nil)
-(ido-mode 1)
+(ido-mode t)
 
 (global-set-key "\C-m" 'reindent-then-newline-and-indent)  ;No tabs
 (global-set-key "\C-a" 'beginning-of-line-text)
@@ -79,7 +78,7 @@
 (defadvice yank (after indent-region activate)
   (if (member major-mode '(clojure-mode emacs-lisp-mode lisp-mode))
       (let ((mark-even-if-inactive t))
-        (indent-region (region-beginning) (region-end) nil)))) 
+        (indent-region (region-beginning) (region-end) nil))))
 
 (defun tab-fix ()
   (local-set-key [tab] 'indent-or-expand))
@@ -91,29 +90,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clojure / SLIME
 
-(require 'swank-clojure-autoload)
-(setq swank-clojure-binary "~/local/bin/clj-server")
-
-(require-all '(
-               slime
-               clojure-mode
-               ))
-
-;(setq slime-net-coding-system 'utf-8-unix)
-
-(setq auto-mode-alist
-      (cons '("\\.clj$" . clojure-mode)
-            auto-mode-alist))
-
-;(set-language-environment "UTF-8")
-;(setq slime-net-coding-system 'utf-8-unix)
-;;(slime-setup '(slime-fancy))
-(slime-setup)
-(define-key clojure-mode-map (kbd "<tab>") 'indent-or-expand)
-(add-hook 'slime-connected-hook 'slime-redirect-inferior-output)
-
-(defun lisp-enable-paredit-hook () (paredit-mode 1))
-(add-hook 'clojure-mode-hook 'lisp-enable-paredit-hook)
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+;(define-key clojure-mode-map (kbd "<tab>") 'indent-or-expand)
 
 (defmacro defclojureface (name color desc &optional others)
   `(defface ,name '((((class color)) (:foreground ,color ,@others))) ,desc :group 'faces))
@@ -140,8 +118,6 @@
 
 (add-hook 'clojure-mode-hook 'tweak-clojure-syntax)
 
-;;(add-to-list 'slime-lisp-implementations '(sbcl ("/usr/bin/sbcl")))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom
 (custom-set-variables
@@ -166,18 +142,21 @@
  '(mode-line-modes (quote ("%[" "(" (:propertize ("" mode-name)) ("" mode-line-process) (:propertize ("" minor-mode-alist)) "%n" ")" "%]")))
  '(require-final-newline t)
  '(savehist-mode t nil (savehist))
- '(scroll-bar-mode nil)
  '(scroll-conservatively 100000)
  '(scroll-down-aggressively 0.0)
- '(scroll-margin 0)
+ '(scroll-margin 4)
  '(scroll-step 1)
  '(scroll-up-aggressively 0.0)
  '(show-paren-mode t nil (paren))
- '(slime-compilation-finished-hook nil)
- '(swank-clojure-extra-classpaths (quote ("/usr/share/emacs/site-lisp/swank-clojure/src/main/clojure"))))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#171717" :foreground "#c0c0c0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "bitstream" :family "Bitstream Vera Sans Mono")))))
+ )
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))

@@ -55,3 +55,10 @@ URxvt.colorUL: #cc0000
 
 !Emacs*background:black
 !Emacs*foreground:white
+!Emacs*font: -*-bitstream vera sans mono-*-*-*-*-*-*-*-*-*-*-*-*
+!Emacs*font: -bitstream-bitstream vera sans mono-medium-r-normal-*-12-120-75-75-m-0-iso8859-1:antialias=True
+!Emacs*font: Bitstream Vera Sans Mono:antialias=True:pixelsize=11
+Emacs*font: Bitstream Vera Sans Mono-8:antialias=True
+Emacs*menuBar: off
+Emacs*toolBar: off
+Emacs.verticalScrollBars: off
