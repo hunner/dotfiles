@@ -9,6 +9,12 @@ bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
 umask 022
 
+# Fix $TERM
+case "$TERM" in
+    rxvt-unicode) export TERM=rxvt;;
+    rxvt-256color) export TERM=rxvt;;
+esac
+
 # Paths
 export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
