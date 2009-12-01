@@ -1,3 +1,5 @@
+(require 'cl)
+
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d"
           ))
@@ -6,7 +8,6 @@
     (mapcar #'require packages))
 
 (require-all '(
-               linum
                ido
                color-theme
                gentooish
@@ -32,13 +33,19 @@
 (setq indent-tabs-mode nil)
 (setq make-backup-files nil)
 (set-language-environment "UTF-8")
+(set-input-method "japanese-ascii")
 (winner-mode t)
+(display-battery-mode t)
+(setq display-time-24hr-format t)
+(display-time-mode t)
 
 (tooltip-mode nil)
-(setq line-number-mode nil)
+(setq midnight-mode t)
+(setq show-trailing-whitespace t)
 (setq column-number-mode nil)
 (setq size-indication-mode nil)
 (setq mode-line-position nil)
+(mouse-avoidance-mode 'animate)
 (ido-mode t)
 
 (global-set-key "\C-m" 'reindent-then-newline-and-indent)  ;No tabs
@@ -62,6 +69,12 @@
 (setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
 (setq-default save-place t)                   ;; activate it for all buffers
 (require 'saveplace)                          ;; get the package
+
+
+;; Enable ergoemacs layout
+(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "dv") ; US Dvorak layout
+(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
+(ergoemacs-mode 1)
 
 ;; Make % work like vi
 (global-set-key "%" 'match-paren)
@@ -94,6 +107,14 @@
    (if mark-active (list (region-beginning) (region-end))
      (list (line-beginning-position)
            (line-beginning-position 2)))))
+
+;; Set my location sunrise-sunset
+;; (setq calendar-latitude 40.1)
+;; (setq calendar-longitude -88.2)
+;; (setq calendar-location-name "Portland, OR")
+(setq calendar-latitude 17.5)
+(setq calendar-longitude 78.5)
+(setq calendar-location-name "Hyderabad, India")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
@@ -177,11 +198,10 @@
  '(ido-decorations (quote ("" "" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
  '(ido-everywhere t)
  '(inhibit-startup-screen t)
- '(line-number-mode nil)
  '(lisp-loop-forms-indentation 6)
  '(lisp-loop-keyword-indentation 6)
  '(lisp-simple-loop-indentation 6)
- '(mode-line-format (quote ("%e--[" mode-line-buffer-identification "]" (vc-mode vc-mode) "  " mode-line-modes global-mode-string " %-")))
+ '(mode-line-format (quote ("%e--[" mode-line-buffer-identification "]" (vc-mode vc-mode) " " mode-line-modes " " global-mode-string " %-")))
  '(mode-line-in-non-selected-windows t)
  '(mode-line-modes (quote ("%[" "(" (:propertize ("" mode-name)) ("" mode-line-process) (:propertize ("" minor-mode-alist)) "%n" ")" "%]")))
  '(require-final-newline t)
