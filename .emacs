@@ -41,7 +41,6 @@
 
 (tooltip-mode nil)
 (setq midnight-mode t)
-(setq show-trailing-whitespace t)
 (setq column-number-mode nil)
 (setq size-indication-mode nil)
 (setq mode-line-position nil)
@@ -76,6 +75,10 @@
 (load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
 (ergoemacs-mode 1)
 
+;; Highlight bad whitespace
+(global-whitespace-mode t)
+(setq whitespace-style (quote (tabs tab-mark)))
+
 ;; Make % work like vi
 (global-set-key "%" 'match-paren)
 (defun match-paren (arg)
@@ -108,6 +111,23 @@
      (list (line-beginning-position)
            (line-beginning-position 2)))))
 
+;; Tip of the day!
+(defun totd ()
+  (interactive)
+  (random t) ;; seed with time-of-day
+  (with-output-to-temp-buffer "*Tip of the day*"
+    (let* ((commands (loop for s being the symbols
+                           when (commandp s) collect s))
+           (command (nth (random (length commands)) commands)))
+      (princ
+       (concat "Your tip for the day is:\n"
+               "========================\n\n"
+               (describe-function command)
+               "\n\nInvoke with:\n\n"
+               (with-temp-buffer
+                 (where-is command t)
+                 (buffer-string)))))))
+
 ;; Set my location sunrise-sunset
 ;; (setq calendar-latitude 40.1)
 ;; (setq calendar-longitude -88.2)
@@ -115,6 +135,9 @@
 (setq calendar-latitude 17.5)
 (setq calendar-longitude 78.5)
 (setq calendar-location-name "Hyderabad, India")
+
+;; Custom key maps
+(global-set-key (kbd "C-c t") 'totd)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
