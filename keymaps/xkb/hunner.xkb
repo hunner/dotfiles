@@ -11,7 +11,7 @@ xkb_keymap {
         // Alphanumeric section
 
         //             Unmodified       Shift           AltGr            Shift+AltGr
-        key  <ESC> { [ backslash,       bar ] };
+        key  <ESC> { [ grave,           asciitilde,     dead_grave,      dead_tilde       ] };
 
         // Number row, left side
         key <TLDE> { [ Escape ] };
@@ -29,7 +29,7 @@ xkb_keymap {
         key <AE10> { [ 8,               asterisk                                          ] };
         key <AE11> { [ bracketleft,     braceleft,      hyphen                            ] };
         key <AE12> { [ bracketright,    braceright,     dead_tilde                        ] };
-        key <BKSP> { [ grave,           asciitilde,     dead_grave,      dead_tilde       ] };
+        key <BKSP> { [ backslash,       bar ] };
 
         // Upper row, left side
         key  <TAB> { [ Tab,             ISO_Left_Tab ] };
