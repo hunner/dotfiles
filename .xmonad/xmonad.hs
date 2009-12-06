@@ -44,8 +44,8 @@ mWorkspaces = map show [1 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-mNormalBorderColor  = "#999999"
-mFocusedBorderColor = "#dd0000"
+mNormalBorderColor  = "#c3c6c8"
+mFocusedBorderColor = "#007998"
 
 -- Custom keys
 --
