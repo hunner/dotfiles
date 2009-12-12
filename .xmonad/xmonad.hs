@@ -20,7 +20,7 @@ import XMonad.Actions.NoBorders
 import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
-import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Util.EZConfig
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
@@ -32,7 +32,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
-mTerminal      = "urxvt"
+mTerminal      = "urxvtc"
 mBorderWidth   = 1
 mModMask       = mod4Mask
 
@@ -99,6 +99,9 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . W.workspaces . windowset))
         --wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset)) -- (map W.tag . W.workspaces . windowset))
 
+mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
+             | (i, k) <- zip ([0..]) [0x22,0xab,0xbb,0x28,0x29,0x40,0x2b,0x2d,0x2f,0x2a]
+             , (f, m) <- [(withNthWorkspace W.greedyView, 0), (withNthWorkspace W.shift, shiftMask)]]
 {-
 [10:28]  dschoepe : gets (map W.tag . W.workspaces . windowset) should work
 [10:31]    aavogt : somewhat useful variation on that is:
@@ -109,7 +112,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
 -}
 
 mXPConfig :: XPConfig
-mXPConfig = defaultXPConfig { fgColor = "#dd0000", bgColor = "black", borderColor = "#dd0000" }
+mXPConfig = defaultXPConfig { fgColor = "#007998", bgColor = "#222222", borderColor = "#007998" }
 
 gsConfig = defaultGSConfig
    { gs_navigate = M.unions
@@ -159,12 +162,16 @@ mManageHook = composeAll
     , title =? "VLC media player"   --> doFloat
     , className =? "Gimp"           --> doFloat
     , className =? "Anki"           --> doFloat
+    , className =? "XCalc"          --> doFloat
+    , className =? "XClock"         --> doFloat
     , className =? "Skype"          --> doFloat
     , className =? "googleearth"    --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "mangclient"     --> doFloat
     , className =? "CellWriter"     --> doFloat
     , className =? "Gvba"           --> doFloat
+    , className =? "Thunar"         --> doFloat
+    , className =? "feh"            --> doFloat
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
@@ -195,17 +202,19 @@ pickyFocusEventHook _ = return $ All True
 
 -- Run xmonad!
 --
-main = do
-  xmonad $ defaultConfig
-    { terminal           = mTerminal
-    , focusFollowsMouse  = mFocusFollowsMouse
-    , borderWidth        = mBorderWidth
-    , modMask            = mModMask
-    , workspaces         = mWorkspaces
-    , normalBorderColor  = mNormalBorderColor
-    , focusedBorderColor = mFocusedBorderColor
-    , layoutHook         = mLayout
-    , manageHook         = mManageHook
-    , handleEventHook    = pickyFocusEventHook
-    , startupHook        = ewmhDesktopsStartup >> setWMName "LG3D"
-    } `additionalKeysP` mKeys
+main = xmonad $ mConfig
+mConfig = defaultConfig
+  { terminal           = mTerminal
+  , focusFollowsMouse  = mFocusFollowsMouse
+  , borderWidth        = mBorderWidth
+  , modMask            = mModMask
+  , workspaces         = mWorkspaces
+  , normalBorderColor  = mNormalBorderColor
+  , focusedBorderColor = mFocusedBorderColor
+  , layoutHook         = mLayout
+  , manageHook         = mManageHook
+  , handleEventHook    = pickyFocusEventHook
+  , startupHook        = do
+      ewmhDesktopsStartup >> setWMName "LG3D"
+      return () >> checkKeymap mConfig mKeys
+  } `additionalKeysP` mKeys `additionalKeys` mKeysExt
