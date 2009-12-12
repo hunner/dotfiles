@@ -20,9 +20,9 @@
 ;; GLOBAL
 (color-theme-initialize)
 
-;(if window-system
+(if window-system
 ;    (color-theme-gentooish)
-;    (color-theme-dark-laptop))
+    (color-theme-dark-laptop))
 (color-theme-irblack)
 
 (bar-cursor-mode 1)
@@ -71,9 +71,9 @@
 
 
 ;; Enable ergoemacs layout
-(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "dv") ; US Dvorak layout
-(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
-(ergoemacs-mode 1)
+;; (setenv "ERGOEMACS_KEYBOARD_LAYOUT" "dv") ; US Dvorak layout
+;; (load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
+;; (ergoemacs-mode 1)
 
 ;; Highlight bad whitespace
 (global-whitespace-mode t)
@@ -136,8 +136,66 @@
 (setq calendar-longitude 78.5)
 (setq calendar-location-name "Hyderabad, India")
 
+;; Start the server for emacsclient
+;(server-start)
+
 ;; Custom key maps
-(global-set-key (kbd "C-c t") 'totd)
+(defun set-keys (commands)
+  (mapcar (lambda (x)
+            (global-set-key (read-kbd-macro (first x)) (second x)))
+          commands))
+(set-keys '(
+            ("C-c t" totd)
+            ("C-c s p" (lambda () (interactive)
+                         (if (shellfm-running-p)
+                             (shellfm-pause)
+                           ((shellfm 1) (shellfm-station-recommended 1)))))
+            ("C-c s n" shellfm-skip-track)
+            ("C-c s r" shellfm-station-recommended)
+            ("C-c s s" shellfm-station-artist)
+            ("C-c s m" shellfm-station-playlist)
+            ("C-c s l" shellfm-love-track)
+            ("C-c s a" shellfm-add-to-playlist)
+            ("C-c s q" shellfm 0)
+            ("C-c s i" shellfm-track-info)
+            ("M-s" save-buffer)
+            ("M-N" make-frame)
+            ("M-W" delete-frame)
+            ("M-w" ido-kill-buffer)
+            ("M-1" delete-other-windows)
+            ("M-!" delete-window)
+            ("M-2" split-window-horizontally)
+            ("M-@" split-window-vertically)
+            ("C-c C-a" beginning-of-line)
+            ("M-o" other-window)
+            ("M-O" other-window)
+            ("M-`" switch-to-next-frame)
+            ("M-~" switch-to-previous-frame)
+            ))
+
+;; Transparency
+(set-frame-parameter (selected-frame) 'alpha '(85 85))
+(add-to-list 'default-frame-alist '(alpha 85 85))
+(eval-when-compile (require 'cl))
+(defun toggle-transparency ()
+  (interactive)
+  (if (/=
+       (cadr (find 'alpha (frame-parameters nil) :key #'car))
+       10)
+      (set-frame-parameter nil 'alpha '(10 10))
+    (set-frame-parameter nil 'alpha '(85 85))))
+(global-set-key (kbd "C-c C-t") 'toggle-transparency)
+
+;; (global-set-key (kbd "<XF86AudioPlay>")
+;;                 (lambda () (interactive)
+;;                   (if (shellfm-running-p)
+;;                       (shellfm-skip-track)
+;;                     (shellfm 1))))
+
+;; ERC stuff
+;; (setq erc-encoding-coding-alist (quote (("#lisp" . utf-8)
+;;                                         ("#nihongo" . iso-2022-jp) ("#truelambda" . iso-latin-1)
+;;                                         ("#bitlbee" . iso-latin-1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
@@ -246,4 +304,5 @@
 (when
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
+  (package-initialize)
+  (require 'starter-kit-elpa))

@@ -14,17 +14,17 @@
   (interactive)
   (color-theme-install
    '(color-theme-irblack
-     ((background-color . "#000000")
-      (background-mode . dark)
+     (;; (background-color . "#000000")
+      ;; (background-mode . dark)
       (border-color . "#454545")
       (cursor-color . "#A8FF60")
       (foreground-color . "#F6F3E8")
       (mouse-color . "#A8FF60"))
-     (default ((t (:background "#000000" :foreground "#F6F3E8"))))
+     (default ((t (:foreground "#F6F3E8"))))
      (vertical-border ((t (:background "#666666"))))
      (blue ((t (:foreground "blue"))))
      (border-glyph ((t (nil))))
-     (buffers-tab ((t (:background "#141414" :foreground "#CACACA"))))
+     (buffers-tab ((t (:background "#141414" :foreground "#cacaca"))))
      (font-lock-comment-face ((t (:foreground "#7C7C7C"))))
      (font-lock-constant-face ((t (:foreground "#99CC99"))))
      (font-lock-doc-string-face ((t (:foreground "#A8FF60"))))
@@ -80,6 +80,27 @@
      (nxml-element-local-name ((t (:foreground "#96CBFE"))))
      (nxml-attribute-local-name ((t (:foreground "#FFD7B1"))))
 
+     ;; erc
+     (erc-default-face ((t (nil))))
+     (erc-direct-msg-face ((t (:foreground "#007998"))))
+     (erc-input-face ((t (:foreground "#feffff"))))
+     (erc-bold-face ((t (:bold t :weight bold))))
+     (erc-inverse-face ((t (:background "Black" :foreground "White"))))
+     (erc-underline-face ((t (:underline t))))
+     (erc-prompt-face ((t (:foreground "#c3c6c8"))))
+     (erc-notice-face ((t (:foreground "#7c7c7c"))))
+     (erc-action-face ((t (:bold t :weight bold))))
+     (erc-error-face ((t (:foreground "#007998"))))
+     (erc-timestamp-face ((t (:foreground "#7c7c7c"))))
+     (erc-nick-default-face ((t (:foreground "#feffff"))))
+     (erc-nick-msg-face ((t (:bold t :foreground "#007998" :weight bold))))
+     ;; erc-dangerous-host-face
+     ;; erc-keyword-face
+     (erc-current-nick-face ((t (:foreground "#007998"))))
+     
+     ;; (erc-command-indicator-face ((t (:bold t :weight bold))))
+     ;; (erc-header-line ((t (:background "grey90" :foreground "grey20"))))
+     ;; (erc-my-nick-face ((t (:bold t :foreground "brown" :weight bold))))
      )))
 
 (provide 'irblack)
