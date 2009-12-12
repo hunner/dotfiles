@@ -61,4 +61,13 @@ URxvt.colorUL: #007998
 Emacs*font: Bitstream Vera Sans Mono-8:antialias=True
 Emacs*menuBar: off
 Emacs*toolBar: off
-Emacs.verticalScrollBars: off
+Emacs*verticalScrollBars: off
+
+XClock*Foreground: #007998
+XClock*Background: #222222
+XClock*chime:      True
+XClock*update:     1
+!XCalc*Foreground:    #007998
+!XCalc*Background:    #222222
+XCalc*customization: -color
+XCalc*rpn:           True
