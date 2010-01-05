@@ -6,13 +6,13 @@
 
 import XMonad hiding (Tall)
 import System.Exit
+import XMonad.Layout.Circle
+import XMonad.Layout.HintedTile
+import XMonad.Layout.MagicFocus
+import XMonad.Layout.Magnifier
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
-import XMonad.Layout.Circle
-import XMonad.Layout.MagicFocus
-import XMonad.Layout.Magnifier
-import XMonad.Layout.HintedTile
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
@@ -23,6 +23,7 @@ import XMonad.Prompt
 import XMonad.Util.EZConfig
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.SetWMName
 import Data.Monoid
 import Data.List

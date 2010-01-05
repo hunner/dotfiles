@@ -172,32 +172,10 @@ if [ x$DISPLAY != x ] ; then
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
 resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ":antialias=true" }
-asdf() {
-    if [ `uname -s` = "SunOS" ] ; then
-        if [ x`hostname` = x"chandra.cs.pdx.edu" ] ; then
-            xmodmap ~/keymaps/eo_dv_hunner_type7.pke
-        else
-            xmodmap ~/keymaps/eo_dv_hunner_type7.pke
-        fi
-    else
-        if [ x`hostname` = x"ni" ] ; then
-            xmodmap ~/keymaps/nu_x61.pke
-        else
-            xmodmap ~/keymaps/nu_std.pke
-        fi
-    fi
-}
-aoeu() {
-    if [ `uname -s` = "SunOS" ] ; then
-        xmodmap ~/keymaps/original-type7-sol.pke
-    else
-        if [ x`hostname` = x"ni" ] ; then
-            xmodmap ~/keymaps/qwerty_x61.pke
-        else
-            xmodmap ~/keymaps/kvar.pke
-        fi
-    fi
-}
+asdf() { xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY }
+auie() { xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY }
+aoeu() { setxkbmap us }
+bepo() { setxkbmap fr bepo "ctrl:swapcaps" }
 type7() {
     if [ `uname -s` = "SunOS" ] ; then
         xmodmap ~/keymaps/eo_dv_hunner_type7_sol.pke

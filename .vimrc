@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 "-----------------------------------------------------------------------
 "BaSS vimrc based con ciaran
 "-----------------------------------------------------------------------
@@ -12,10 +10,6 @@ scriptencoding utf-8
 set termencoding=utf-8
 set encoding=utf-8
 
-" Turn off the menubar so we don't get key accelerators with Meta.
-" Don't include the toolbar
-set guioptions=aegiLt
-"colorscheme ir_black
 set fenc=utf-8
 
 if exists('&t_SI')
@@ -116,6 +110,9 @@ if ! has("gui_running")
     colors inkpot
 else
     colors ir_black
+    " Turn off the menubar so we don't get key accelerators with Meta.
+    " Don't include the toolbar
+    set guioptions=aegit
 endif
 " set background=light gives a different style, feel free to choose between them.
 set background=dark

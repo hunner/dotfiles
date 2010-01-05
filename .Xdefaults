@@ -13,6 +13,8 @@ URxvt*cursorColor: #007998
 !URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 URxvt*font: 6x13,xft:IPAGothic:antialias=true
 !URxvt*perl-ext-common: default
+URxvt*color1:  #007998
+URxvt*color9:  #228bba
 
 URxvt.perl-ext-common: default,matcher
 URxvt*urlLauncher: urxvt-to-uzbl.sh

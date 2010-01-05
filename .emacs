@@ -129,12 +129,12 @@
                  (buffer-string)))))))
 
 ;; Set my location sunrise-sunset
-;; (setq calendar-latitude 40.1)
-;; (setq calendar-longitude -88.2)
-;; (setq calendar-location-name "Portland, OR")
-(setq calendar-latitude 17.5)
-(setq calendar-longitude 78.5)
-(setq calendar-location-name "Hyderabad, India")
+(setq calendar-latitude 45.4)
+(setq calendar-longitude -122.6)
+(setq calendar-location-name "Portland, OR")
+;; (setq calendar-latitude 17.5)
+;; (setq calendar-longitude 78.5)
+;; (setq calendar-location-name "Hyderabad, India")
 
 ;; Start the server for emacsclient
 ;(server-start)
