@@ -16,7 +16,7 @@ case "$TERM" in
 esac
 
 # Paths
-export LD_LIBRARY_PATH=/opt/csw/lib
+#export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=/usr/man:/usr/share/man
