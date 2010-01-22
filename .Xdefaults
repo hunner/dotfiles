@@ -1,24 +1,28 @@
 Xft.antialias: true
 URxvt*scrollBar: false
-URxvt*background: rgba:1111/1111/1111/dddd
+URxvt*background: rgba:0000/0000/0000/aaaa
+#URxvt*background: rgba:1111/1111/1111/dddd
 URxvt*depth: 32
-URxvt*foreground: #c3c6c8
+URxvt*foreground: #dddddd
+#URxvt*foreground: #c3c6c8
 #URxvt*transparent: true
 URxvt*transparent: false
 #URxvt*fading: 2%
 #URxvt*shading: 30
 #URxvt*fadeColor: grey
 URxvt*buffered: true
-URxvt*cursorColor: #007998
+URxvt*cursorColor: green
+#URxvt*cursorColor: #007998
 !URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 URxvt*font: 6x13,xft:IPAGothic:antialias=true
 !URxvt*perl-ext-common: default
-URxvt*color1:  #007998
-URxvt*color9:  #228bba
+#URxvt*color1:  #007998
+#URxvt*color9:  #228bba
 
 URxvt.perl-ext-common: default,matcher
 URxvt*urlLauncher: urxvt-to-uzbl.sh
-URxvt.colorUL: #007998
+URxvt.colorUL: #cc0000
+#URxvt.colorUL: #007998
 
 !URxvt.borderLess:True
 !URxvt.reverseVideo:True
