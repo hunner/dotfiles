@@ -16,20 +16,29 @@ case "$TERM" in
 esac
 
 # Paths
-export LD_LIBRARY_PATH=/opt/csw/lib
+#export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=/usr/man:/usr/share/man
-paths=(~/.cabal/bin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
-/pkgs/ghc/current/bin /usr/sfw/sbin /usr/sfw/bin /opt/SUNWut/sbin
-/opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
+paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
+/pkgs/ghc/current/bin /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin
+/opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
 /usr/bin/X11 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
+prepaths=(~/.cabal/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
         export PATH=$PATH:$dir
-        if [ -d `dirname $dir` ] ; then
+        if [ -d `dirname $dir`/man ] ; then
             export MANPATH=$MANPATH:`dirname $dir`/man
+        fi
+    fi
+done
+for dir in $prepaths ; do
+    if [ -d $dir ] ; then
+        export PATH=$dir:$PATH
+        if [ -d `dirname $dir`/man ] ; then
+            export MANPATH=`dirname $dir`/man:$MANPATH
         fi
     fi
 done
@@ -39,11 +48,6 @@ if test -d /etc/profile.d/; then
         test -x $profile && . $profile
     done
     unset profile
-fi
-if [ -d ~/local/bin ] ; then
-    export PATH=~/local/bin:~/local/sbin:$PATH
-    export MANPATH=~/local/man:$MANPATH
-    export MANPATH=~/local/share/man:$MANPATH
 fi
 #gem's path
 if [ -d ~/.gems/bin ] ; then
