@@ -19,7 +19,7 @@ esac
 #export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
-export MANPATH=/usr/man:/usr/share/man
+export MANPATH=~/local/share/man:/usr/man:/usr/share/man
 paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /pkgs/ghc/current/bin /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin
 /opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
