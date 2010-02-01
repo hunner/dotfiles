@@ -241,8 +241,8 @@ endif
 map <F9> :set nolist listchars<CR>
 
 " Show lines longer than 80 characters
-"au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
-"au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
+au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 
 set fillchars=fold:-
 
