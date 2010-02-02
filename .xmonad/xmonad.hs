@@ -45,8 +45,8 @@ mWorkspaces = map show [1 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-mNormalBorderColor  = "#c3c6c8"
-mFocusedBorderColor = "#007998"
+mNormalBorderColor  = "#999999"
+mFocusedBorderColor = "#dd0000"
 
 -- Custom keys
 --
@@ -55,7 +55,8 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
-          
+        , ("<Scroll_lock>", spawn "xlock -mode fzort" ) -- SCReen LocK
+
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
         , ("M-a"  , windows copyToAll)  -- Copy focused window to all workspaces
         , ("M-S-a", killAllOtherCopies) -- Uncopy focused window from all workspaces
@@ -113,7 +114,7 @@ mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
 -}
 
 mXPConfig :: XPConfig
-mXPConfig = defaultXPConfig { fgColor = "#007998", bgColor = "#222222", borderColor = "#007998" }
+mXPConfig = defaultXPConfig { fgColor = "#dd0000", bgColor = "black", borderColor = "#dd0000" }
 
 gsConfig = defaultGSConfig
    { gs_navigate = M.unions
