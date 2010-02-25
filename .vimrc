@@ -241,8 +241,8 @@ endif
 map <F9> :set nolist listchars<CR>
 
 " Show lines longer than 80 characters
-au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
-au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+"au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
+"au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 
 set fillchars=fold:-
 
@@ -782,6 +782,7 @@ map <S-F7> :SpellCheck<CR>
 map <C-F7> :let spell_language_list = "english,spanish"
 nnoremap <silent> <F8> :Tlist<CR>
 nnoremap <silent> <S-F8> :TlistSync<CR>
+nnoremap <esc> :noh<return><esc>
 map <F11> !!date<CR>
 map <F12> :TC<CR>
 nmap  :X        :x
@@ -789,6 +790,9 @@ nmap  :W        :w
 nmap  :Q        :q
 noremap <Leader>rg :color relaxedgreen<CR>
 noremap <Leader>ip :color inkpot<CR>
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
+syntax sync minlines=200
 
 " Javac
 set makeprg=javac\ %
