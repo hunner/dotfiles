@@ -9,6 +9,8 @@
 
 (require-all '(
                ido
+               uniquify
+               saveplace
                color-theme
                gentooish
                irblack
@@ -24,6 +26,10 @@
 ;    (color-theme-gentooish)
     (color-theme-dark-laptop))
 (color-theme-irblack)
+;(load-file "~/.emacs.d/color-theme-twilight.el")
+;(color-theme-twilight)
+;(load-file "~/.emacs.d/color-theme-inkpot.el")
+;(color-theme-inkpot)
 
 (bar-cursor-mode 1)
 (menu-bar-mode 0)
@@ -38,6 +44,8 @@
 (display-battery-mode t)
 (setq display-time-24hr-format t)
 (display-time-mode t)
+(line-number-mode 1)
+(column-number-mode 1)
 
 (tooltip-mode nil)
 (setq midnight-mode t)
@@ -46,6 +54,14 @@
 (setq mode-line-position nil)
 (mouse-avoidance-mode 'animate)
 (ido-mode t)
+
+;; Ido and uniquify options from http://curiousprogrammer.wordpress.com/2009/07/13/my-emacs-defaults/
+(setq ido-enable-flex-matching t)
+(setq ido-create-new-buffer 'always)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "|")
+(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-ignore-buffers-re "^\\*")
 
 (global-set-key "\C-m" 'reindent-then-newline-and-indent)  ;No tabs
 (global-set-key "\C-a" 'beginning-of-line-text)
@@ -62,13 +78,16 @@
 (global-set-key [C-tab] 'indent-according-to-mode)
 
 ;; Proxy for ssh tunnel + privoxy
-(setq url-proxy-services '(("no_proxy" . "localhost")
-                           ("http" . "localhost:8118")))
+;; (setq url-proxy-services '(("no_proxy" . "localhost")
+;;                            ("http" . "localhost:8118")))
 
-(setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
 (setq-default save-place t)                   ;; activate it for all buffers
-(require 'saveplace)                          ;; get the package
+(setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
 
+(setq backup-directory-alist
+      `((".*" . "~/.emacs.d/backups/")))
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs.d/backups/" t)))
 
 ;; Enable ergoemacs layout
 ;; (setenv "ERGOEMACS_KEYBOARD_LAYOUT" "dv") ; US Dvorak layout
@@ -275,6 +294,7 @@
  '(case-fold-search t)
  '(comint-scroll-to-bottom-on-input t)
  '(fancy-splash-image "")
+ '(frame-background-mode (quote dark))
  '(global-linum-mode t)
  '(ido-decorations (quote ("" "" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
  '(ido-everywhere t)
@@ -292,8 +312,7 @@
  '(scroll-margin 4)
  '(scroll-step 1)
  '(scroll-up-aggressively 0.0)
- '(show-paren-mode t nil (paren))
- )
+ '(show-paren-mode t nil (paren)))
 
 
 ;;; This was installed by package-install.el.
@@ -306,3 +325,9 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize)
   (require 'starter-kit-elpa))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
