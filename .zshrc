@@ -123,7 +123,8 @@ alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
 alias e="TERM=rxvt-256color; emacs -nw"
-alias ec="emacsclient"
+alias et="TERM=rxvt-256color; emacsclient -t"
+alias ec="emacsclient -c --eval '(set-background-color \"black\")'"
 alias ecx="emacsclient --eval '(make-frame-on-display \"$DISPLAY\")'"
 #alias s="TERM=xterm;ssh serenity.cat.pdx.edu"
 alias s="TERM=rxvt;ssh hunner@serenity.cat.pdx.edu"
@@ -175,11 +176,11 @@ if [ x$DISPLAY != x ] ; then
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
-resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ":antialias=true" }
-asdf() { xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY }
-auie() { xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY }
-aoeu() { setxkbmap us }
-bepo() { setxkbmap fr bepo "ctrl:swapcaps" }
+alias resize="printf '\33]50;%s%d\007' 'xft:Terminus:pixelsize=' $1 ':antialias=true'"
+alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
+alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
+alias aoeu='setxkbmap us'
+alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
 type7() {
     if [ `uname -s` = "SunOS" ] ; then
         xmodmap ~/keymaps/eo_dv_hunner_type7_sol.pke
