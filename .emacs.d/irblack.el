@@ -22,7 +22,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-irblack
-     (;; (background-color . "#000000")
+     (;; (background-color . "black")
       ;; (background-mode . dark)
       (border-color . "gray10")
       (cursor-color . "DarkOliveGreen2")
@@ -34,7 +34,7 @@
      (border-glyph ((t (nil))))
      (buffers-tab ((t (:background "#141414" :foreground "#cacaca"))))
      (font-lock-comment-face ((t (:foreground "dim gray"))))
-     (font-lock-constant-face ((t (:foreground "#99CC99"))))
+     (font-lock-constant-face ((t (:foreground "light green"))))
      (font-lock-doc-string-face ((t (:foreground "DarkOliveGreen2"))))
      (font-lock-function-name-face ((t (:foreground "burlywood"))))
      (font-lock-builtin-face ((t (:foreground "slate blue"))))
