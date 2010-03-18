@@ -824,13 +824,13 @@ if has("autocmd")
 endif
 
 "ii irc stuff
-map c1 :.w! >> ~/irc/irc.cat.pdx.edu/in<cr>dd
-map c2 :.w! >> ~/irc/irc.cat.pdx.edu/\#hack/in<cr>dd
-map c3 :.w! >> ~/irc/irc.cat.pdx.edu/\#meow/in<cr>dd
-map c4 :.w! >> ~/irc/irc.cat.pdx.edu/\#rtttoee/in<cr>dd
-map c5 :.w! >> ~/irc/irc.cat.pdx.edu/\#robots/in<cr>dd
-map c17 :.w! >> ~/irc/irc.cat.pdx.edu/\#cschat/in<cr>dd
-imap /me <C-V><C-A>ACTION
+" map c1 :.w! >> ~/irc/irc.cat.pdx.edu/in<cr>dd
+" map c2 :.w! >> ~/irc/irc.cat.pdx.edu/\#hack/in<cr>dd
+" map c3 :.w! >> ~/irc/irc.cat.pdx.edu/\#meow/in<cr>dd
+" map c4 :.w! >> ~/irc/irc.cat.pdx.edu/\#rtttoee/in<cr>dd
+" map c5 :.w! >> ~/irc/irc.cat.pdx.edu/\#robots/in<cr>dd
+" map c17 :.w! >> ~/irc/irc.cat.pdx.edu/\#cschat/in<cr>dd
+" imap /me <C-V><C-A>ACTION
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
