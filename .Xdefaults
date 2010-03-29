@@ -41,7 +41,7 @@ URxvt.searchable-scrollback: CM-S
 !UXTerm*foreground:gray
 !UXTerm*cursorColor:yellow
 !UXTerm*pointerColor:white
-!XTerm*vt100.metaSendsEscape:true
+XTerm*vt100.metaSendsEscape:true
 
 !Requiresxfonts-terminusandaXrestartforanychanges
 !UXTerm*font:terminus-16

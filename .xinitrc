@@ -1,6 +1,6 @@
 export PATH=/home/hunner/.gems/bin:/home/hunner/.cabal/bin:/home/hunner/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin:/opt/java/bin:/opt/java/jre/bin:/usr/share/java/apache-ant/bin:/opt/java/bin:/opt/java/jre/bin:/usr/bin/perlbin/site:/usr/bin/perlbin/vendor:/usr/bin/perlbin/core:/opt/qt/bin
-#xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY
-setxkbmap fr bepo "ctrl:swapcaps"
+xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY
+#setxkbmap fr bepo "ctrl:swapcaps"
 xsetroot -cursor_name left_ptr
 #xkbcomp ~/keymaps/halfdvorak.xkb $DISPLAY
 #xmodmap ~/keymaps/nu_x61.pke
