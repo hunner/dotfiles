@@ -77,7 +77,9 @@ export LC_COLLATE="C" #order files in ls
 export DIALOGOPTS='--visit-items'
 export MAIL=~/mail
 export MAILCHECK=0
-export AWT_TOOLKIT=MToolkit
+#export AWT_TOOLKIT=MToolkit
+#export AWT_TOOLKIT=XToolkit
+export _JAVA_AWT_WM_NONREPARENTING=1
 if [ -x `which less` ] ; then
     export PAGER==less
 else

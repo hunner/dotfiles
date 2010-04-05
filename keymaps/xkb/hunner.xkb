@@ -5,7 +5,7 @@ xkb_keymap {
     xkb_geometry  { include "thinkpad(us)" };
 
     xkb_symbols "hunner" {
-        include "pc+us(dvorak)+inet(evdev)"
+        include "pc+us(dvorak)+inet(evdev)+group(win_switch)"
 
         name[group1]="Dvorak";
         //name[group2]="Colemak";
@@ -94,7 +94,7 @@ xkb_keymap {
         modifier_map Lock { <LCTL> };
         modifier_map Control { <CAPS> };
 
-        include "group(alts_toggle)+level3(ralt_switch_for_alts_toggle)"
+        //include "group(alts_toggle)+level3(ralt_switch_for_alts_toggle)"
     };
 
 };

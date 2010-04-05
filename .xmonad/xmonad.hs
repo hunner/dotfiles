@@ -71,9 +71,10 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("<XF86AudioStop>"       , spawn "mpc stop"         ) -- stop mpd
         , ("<XF86AudioPrev>"       , spawn "mpc prev"         ) -- prev song
         , ("<XF86AudioNext>"       , spawn "mpc next"         ) -- next song
-        , ("<XF86AudioLowerVolume>", spawn "mpc volume -3"    ) -- volume down via custom script
-        , ("<XF86AudioRaiseVolume>", spawn "mpc volume +3"    ) -- volume up via custom script
-        , ("<XF86AudioMute>"       , spawn "amixer -q -- sset Headphone togglemute") -- toggle mute via custom script
+        , ("<XF86AudioLowerVolume>", spawn "mpc volume -3"    ) -- volume down
+        , ("<XF86AudioRaiseVolume>", spawn "mpc volume +3"    ) -- volume up
+        , ("<XF86AudioMute>"       , spawn "amixer -q -- sset Headphone togglemute") -- toggle mute
+        , ("M-<XF86AudioMute>"     , spawn "amixer -q -- sset Speaker togglemute")
 
         -- Dynamic workspace commands
         , ("M-S-<Backspace>"       , removeWorkspace)
