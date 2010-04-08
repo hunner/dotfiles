@@ -203,7 +203,7 @@
        10)
       (set-frame-parameter nil 'alpha '(10 10))
     (set-frame-parameter nil 'alpha '(85 85))))
-(global-set-key (kbd "C-c C-t") 'toggle-transparency)
+(global-set-key (kbd "C-c T") 'toggle-transparency)
 
 ;; (global-set-key (kbd "<XF86AudioPlay>")
 ;;                 (lambda () (interactive)
