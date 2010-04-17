@@ -52,6 +52,7 @@ mFocusedBorderColor = "#dd0000"
 --
 mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-t", sendMessage MirrorExpand  ) -- Shrink current window
+        , ("M-r"  , warpToCorner              ) -- Kill the rodent
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
@@ -98,6 +99,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         -- zip (map (("M-S-" ++) . show) [1..9]) (map (withNthWorkspace W.shift) [0..])
   where -- Make the mouse jump to the middle of the screen for gridselect
         warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
+        warpToCorner = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  1.0 1.0
         promptedWs = wsgrid >>= \x -> whenJust x $ \y -> windows $ W.greedyView y
         wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . W.workspaces . windowset))
         --wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset)) -- (map W.tag . W.workspaces . windowset))

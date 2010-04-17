@@ -178,7 +178,7 @@ if [ x$DISPLAY != x ] ; then
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
-alias resize="printf '\33]50;%s%d\007' 'xft:Terminus:pixelsize=' $1 ':antialias=true'"
+alias resize="printf '\33]50;%s%d\007' 'xft:Terminus:pixelsize=' $1" # ':antialias=true'"
 alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
