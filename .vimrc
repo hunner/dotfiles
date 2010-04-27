@@ -14,7 +14,7 @@ set fenc=utf-8
 
 if exists('&t_SI')
     let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
-    let &t_EI = "\<Esc>]12;grey80\x7"
+    let &t_EI = "\<Esc>]12;green\x7"
 endif
 
 "-----------------------------------------------------------------------
