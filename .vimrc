@@ -281,6 +281,10 @@ endif
 
 " content creation
 if has("autocmd")
+    augroup text
+        autocmd BufRead,BufNewFile *.txt
+                     \ set nonumber tw=80
+    augroup END
     augroup content
         autocmd!
 
