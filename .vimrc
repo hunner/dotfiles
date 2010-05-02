@@ -166,6 +166,22 @@ set laststatus=2
 set statusline=
 set statusline+=%2*%-3.3n%0*\                " buffer number
 set statusline+=%f\                          " file name
+if has("eval")
+    let g:scm_cache = {}
+    fun! ScmInfo()
+        let l:key = getcwd()
+        if ! has_key(g:scm_cache, l:key)
+            if (isdirectory(getcwd() . "/.git"))
+                let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
+                            \ "^.*/", "", "") . "] "
+            else
+                let g:scm_cache[l:key] = ""
+            endif
+        endif
+        return g:scm_cache[l:key]
+    endfun
+    set statusline+=%{ScmInfo()}             " scm info
+endif
 set statusline+=%h%1*%m%r%w%0*               " flags
 set statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
 set statusline+=%{&encoding},                " encoding
@@ -203,9 +219,10 @@ endif
 " Nice window title
 if has('title') && (has('gui_running') || &title)
     set titlestring=
-    set titlestring+=%f\                     " file name
-    set titlestring+=%h%m%r%w                " flags
-    set titlestring+=\ -\ %{v:progname}      " program name
+    set titlestring+=%f\                                              " file name
+    set titlestring+=%h%m%r%w                                         " flags
+    set titlestring+=\ -\ %{v:progname}                               " program name
+    set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
 " If possible, try to use a narrow number column.
@@ -223,6 +240,7 @@ endif
 
 " Better include path
 set path+=src/
+let &inc.=' ["<]'
 
 " Show tabs and trailing whitespace visually
 if (&termencoding == "utf-8") || has("gui_running")
@@ -270,7 +288,7 @@ if has("eval")
     " If we're in a wide window, enable line numbers.
     fun! <SID>WindowWidth()
         if winwidth(0) > 90
-            setlocal foldcolumn=1
+            setlocal foldcolumn=2
             setlocal number
         else
             setlocal nonumber
@@ -285,9 +303,13 @@ if has("autocmd")
         autocmd BufRead,BufNewFile *.txt
                      \ set nonumber tw=80
     augroup END
-    augroup content
-        autocmd!
-
+    augroup helphelp
+        " For help files, move them to the top window and make <Return>
+        " behave like <C-]> (jump to tag)
+        autocmd FileType help :call <SID>WindowToTop()
+        autocmd FileType help nmap <buffer> <Return> <C-]>
+    augroup END
+    augroup interplangs
         autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
                     \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
@@ -298,7 +320,8 @@ if has("autocmd")
 
         autocmd BufNewFile,BufRead *.php
                     \ set ai
-
+    augroup END
+    augroup html
         autocmd BufNewFile *.htm,*.html
                     \ 0put ='<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">' |
                     \ $put ='<html xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">' |
@@ -314,7 +337,8 @@ if has("autocmd")
                     \ $put ='</html>' |
                     \ $put ='<!-- vim: set sw=2 sts=2 et tw=80 : -->' |
                     \ set sw=2 sts=2 et tw=80 | norm G
-
+    augroup END
+    augroup autotools
         autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
                     \ 1put ='' | call MakeIncludeGuards() |
                     \ 5put ='#include \"config.h\"' |
@@ -399,7 +423,9 @@ endif
 " mappings
 "-----------------------------------------------------------------------
 
-nmap   <silent> <S-Right>  :bnext<CR>
+" Go to next buffer
+nmap <silent> <S-Right> :bnext<CR>
+nmap <C-w>. :bn<CR>
 
 " v_K is really really annoying
 vmap K k
@@ -414,6 +440,8 @@ endif
 nmap <Leader>cwc :cclose<CR>
 nmap <Leader>cwo :botright copen 5<CR><C-w>p
 nmap <Leader>cn  :cnext<CR>
+nmap -  :cnext<CR>
+nmap <Leader>cp  :cprevious<CR>
 
 " Annoying default mappings
 inoremap <S-Up>   <C-o>gk
@@ -422,7 +450,7 @@ noremap  <S-Up>   gk
 noremap  <S-Down> gj
 
 " Make <space> in normal mode go down a page rather than left a
-" character
+" character, and backspace the opposite
 noremap <space> <C-f>
 noremap <backspace> <C-b>
 
@@ -435,7 +463,7 @@ inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
 "imap <silent> <F3> <C-o>:silent nohlsearch<CR>
 "nmap <F4> :Kwbd<CR>
 "nmap <F5> <C-w>c
-"nmap <F7> :make check<CR>
+"nmap <F7> :make all-then-check<CR>
 "nmap <F8> :make<CR>
 "nmap <F10> :!svn update<CR>
 "nmap <F11> :!svn status \| grep -v '^?' \| sort -k2<CR>
@@ -474,6 +502,9 @@ noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 noremap <Leader>enc :<C-w>execute
             \ substitute(":'<,'>s/^.*/#&#/ \| :nohls", "#", input(">"), "g")<CR>
 
+" Edit something in the current directory
+noremap <Leader>ed :e <C-r>=expand("%:p:h")<CR>/<C-d>
+
 " Enable fancy % matching
 if has("eval")
     runtime! macros/matchit.vim
@@ -488,28 +519,98 @@ if has("digraphs")
 endif
 
 if has("eval")
-    " GNU format changelog entry
-    fun! MakeChangeLogEntry()
-        norm gg
-        /^\d
-        norm 2O
-        norm k
-        call setline(line("."), strftime("%Y-%m-%d") .
-                    \ " J. Alberto Suárez López <bass@gentoo.org>")
-        norm 2o
-        call setline(line("."), "\t* ")
-        norm $
+    " Work out include guard text
+    fun! IncludeGuardText()
+        let l:p = substitute(substitute(getcwd(), "/trunk", "", ""), '^.*/', "", "")
+        let l:t = substitute(expand("%"), "[./]", "_", "g")
+        return substitute(toupper(l:p . "_GUARD_" . l:t), "-", "_", "g")
     endfun
-    noremap <Leader>cl :call MakeChangeLogEntry()<CR>
 
-    " command aliases, can't call these until after cmdalias.vim is loaded
-    au VimEnter * if exists("loaded_cmdalias") |
-                \       call CmdAlias("mkdir",   "!mkdir") |
-                \       call CmdAlias("cvs",     "!cvs") |
-                \       call CmdAlias("svn",     "!svn") |
-                \       call CmdAlias("commit",  "!svn commit -m \"") |
-                \       call CmdAlias("upload",  "make upload") |
-                \ endif
+    " Make include guards
+    fun! MakeIncludeGuards()
+        norm gg
+        /^$/
+        norm 2O
+        call setline(line("."), "#ifndef " . IncludeGuardText())
+        norm o
+        call setline(line("."), "#define " . IncludeGuardText() . " 1")
+        norm G
+        norm o
+        call setline(line("."), "#endif")
+    endfun
+    noremap <Leader>ig :call MakeIncludeGuards()<CR>
+endif
+
+" fast buffer switching
+if v:version >= 700 && has("eval")
+    let g:switch_header_map = {
+                \ 'cc':    'hh',
+                \ 'hh':    'cc',
+                \ 'c':     'h',
+                \ 'h':     'c',
+                \ 'cpp':   'hpp',
+                \ 'hpp':   'cpp' }
+
+    fun! SwitchTo(f, split) abort
+        if ! filereadable(a:f)
+            echoerr "File '" . a:f . "' does not exist"
+        else
+            if a:split
+                new
+            endif
+            if 0 != bufexists(a:f)
+                exec ':buffer ' . bufnr(a:f)
+            else
+                exec ':edit ' . a:f
+            endif
+        endif
+    endfun
+
+    fun! SwitchHeader(split) abort
+        let filename = expand("%:p:r")
+        let suffix = expand("%:p:e")
+        if suffix == ''
+            echoerr "Cannot determine header file (no suffix)"
+            return
+        endif
+
+        let new_suffix = g:switch_header_map[suffix]
+        if new_suffix == ''
+            echoerr "Don't know how to find the header (suffix is " . suffix . ")"
+            return
+        end
+
+        call SwitchTo(filename . '.' . new_suffix, a:split)
+    endfun
+
+    fun! SwitchTest(split) abort
+        let filename = expand("%:p:r")
+        let suffix = expand("%:p:e")
+        if -1 != match(filename, '_TEST$')
+            let new_filename = substitute(filename, '_TEST$', '.' . suffix, '')
+        else
+            let new_filename = filename . '_TEST.' . suffix
+        end
+        call SwitchTo(new_filename, a:split)
+    endfun
+
+    fun! SwitchMakefile(split) abort
+        let dirname = expand("%:p:h")
+        if filereadable(dirname . "/Makefile.am.m4")
+            call SwitchTo(dirname . "/Makefile.am.m4", a:split)
+        elseif filereadable(dirname . "/Makefile.am")
+            call SwitchTo(dirname . "/Makefile.am", a:split)
+        else
+            call SwitchTo(dirname . "/Makefile", a:split)
+        endif
+    endfun
+
+    noremap <Leader>sh :call SwitchHeader(0)<CR>
+    noremap <Leader>st :call SwitchTest(0)<CR>
+    noremap <Leader>sk :call SwitchMakefile(0)<CR>
+    noremap <Leader>ssh :call SwitchHeader(1)<CR>
+    noremap <Leader>sst :call SwitchTest(1)<CR>
+    noremap <Leader>ssk :call SwitchMakefile(1)<CR>
 endif
 
 " super i_c-y / i_c-e
@@ -615,6 +716,7 @@ if has("eval") && has("autocmd")
         autocmd FileType cpp :call <SID>abbrev_cpp()
     augroup END
 endif
+" NB: Need more of these for more than cpp
 
 "-----------------------------------------------------------------------
 " special less.sh and man modes
@@ -658,12 +760,6 @@ if has("eval")
     " ruby options
     let ruby_operators=1
     let ruby_space_errors=1
-
-    " clojure options
-    let g:clj_want_gorilla = 1
-    let g:clj_highlight_builtins = 1
-    let g:clj_highlight_contrib = 1
-    let g:clj_paren_rainbow = 1
 
     " php specific options
     let php_sql_query=1
