@@ -349,6 +349,11 @@ if has("autocmd")
                     \ 5put ='#include \"config.h\"' |
                     \ set sw=4 sts=4 et tw=80 | norm G
 
+        autocmd BufNewFile *.c 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
+                    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
+                    \ substitute(expand("%:t"), ".c$", ".h", "") . '"') |
+                    \ set sw=4 sts=4 et tw=80 | norm G
+
         autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
                     \ 1put ='' | 2put ='' | call setline(3, '#include "' .
                     \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
@@ -358,25 +363,26 @@ if has("autocmd")
                     \ 0put ='dnl vim: set sw=8 sts=8 noet :' |
                     \ $put ='' |
                     \ call setline(line('$'), 'AC_INIT([' . substitute(expand('%:p:h'),
-                    \     '^.\{-}/\([^/]\+\)\(/trunk\)\?$', '\1', '') . '], [0.0])') |
+                    \     '^.\{-}/\([^/]\+\)\(/trunk\)\?$', '\1', '') . '], [0.1], [h.haugen@gmail.com])') |
                     \ $put ='AC_PREREQ(2.63)' |
                     \ $put ='AC_CONFIG_SRCDIR([])' |
                     \ $put ='AC_CONFIG_AUX_DIR(config)' |
-                    \ $put ='AM_INIT_AUTOMAKE(1.10)' |
+                    \ $put ='AM_INIT_AUTOMAKE([foreign -Wall -Werror 1.10])' |
                     \ $put ='' |
                     \ $put ='dnl check for required programs' |
-                    \ $put ='AC_PROG_CXX' |
+                    \ $put ='AC_PROG_CC dnl CXX' |
                     \ $put ='AC_PROG_INSTALL' |
                     \ $put ='AC_PROG_LN_S' |
                     \ $put ='AC_PROG_RANLIB' |
                     \ $put ='AC_PROG_MAKE_SET' |
                     \ $put ='' |
                     \ $put ='dnl output' |
-                    \ $put ='AM_CONFIG_HEADER(config.h)' |
-                    \ $put ='AC_OUTPUT(' |
+                    \ $put ='AC_CONFIG_HEADERS([config.h])' |
+                    \ $put ='AC_CONFIG_FILES(' |
                     \ $put ='	Makefile' |
                     \ $put ='	src/Makefile' |
-                    \ $put ='	)' |
+                    \ $put =')]' |
+                    \ $put ='AC_OUTPUT' |
                     \ set sw=8 sts=8 noet |
                     \ norm ggjjjjf]
 
@@ -416,10 +422,16 @@ if has("autocmd")
                     \     $put ='MAINTAINERCLEANFILES = Makefile.in configure config/* aclocal.m4 \' |
                     \     $put ='' |
                     \     call setline(line('$'), "\t\t\tconfig.h config.h.in") |
+                    \     $put ='SUBDIRS = src' |
                     \     $put ='AUTOMAKE_OPTIONS = foreign dist-bzip2' |
                     \     $put ='EXTRA_DIST = autogen.bash' |
+                    \     $put ='' |
+                    \     $put ='maintainer-clean-local:' |
+                    \     $put ='	-rmdir config' |
                     \ else |
                     \     $put ='MAINTAINERCLEANFILES = Makefile.in' |
+                    \     $put ='bin_PROGRAMS = ' . substitute(expand('%:p:h'),'^.\{-}/\([^/]\+\)\(/src\)\?$', '\1', '') |
+                    \     $put = substitute(expand('%:p:h'), '^.\{-}/\([^/]\+\)\(/src\)\?$','\1', '') . '_SOURCES = main.c' |
                     \ endif
 
     augroup END
