@@ -378,10 +378,10 @@ if has("autocmd")
                     \ $put ='' |
                     \ $put ='dnl output' |
                     \ $put ='AC_CONFIG_HEADERS([config.h])' |
-                    \ $put ='AC_CONFIG_FILES(' |
+                    \ $put ='AC_CONFIG_FILES([' |
                     \ $put ='	Makefile' |
                     \ $put ='	src/Makefile' |
-                    \ $put =')]' |
+                    \ $put ='])' |
                     \ $put ='AC_OUTPUT' |
                     \ set sw=8 sts=8 noet |
                     \ norm ggjjjjf]
