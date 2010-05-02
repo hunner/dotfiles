@@ -1,17 +1,19 @@
+scriptencoding utf-8
+
 "-----------------------------------------------------------------------
-"BaSS vimrc based con ciaran
+"Hunner's vimrc based on BaSS & ciaran
 "-----------------------------------------------------------------------
 
 "-----------------------------------------------------------------------
 " terminal setup
 "-----------------------------------------------------------------------
 
-" Extra terminal things
+" Want utf8 at all times
 set termencoding=utf-8
 set encoding=utf-8
-
 set fenc=utf-8
 
+" change cursor colour depending upon mode
 if exists('&t_SI')
     let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
     let &t_EI = "\<Esc>]12;green\x7"
@@ -40,8 +42,7 @@ set shortmess=a
 " Make backspace delete lots of things
 set backspace=indent,eol,start
 
-" Create backups
-"set backup
+" Don't create backups
 set nobackup
 
 " Show us the command we're typing
@@ -54,7 +55,7 @@ set showmatch
 set hlsearch
 set incsearch
 
-" Selective case insensitivity
+" Case insensitivity
 set ignorecase
 set infercase
 
@@ -81,8 +82,8 @@ set whichwrap+=<,>,[,]
 
 " Use the cool tab complete menu
 set wildmenu
-set wildignore+=*.o,*~
-set suffixes+=.in,.a
+set wildignore+=*.o,*~,.lo
+set suffixes+=.in,.a,.1
 
 " Allow edit buffers to be hidden
 set hidden
@@ -94,6 +95,9 @@ set winminheight=1
 if has("syntax")
     syntax on
 endif
+
+" enable virtual edit in vblock mode, and one past the end
+set virtualedit=block,onemore
 
 " Set our fonts
 if has("gui_kde")
@@ -128,7 +132,7 @@ set background=dark
 "    set guioptions-=R
 "end
 
-" By default, go for an indent of 4 tab stuff
+" By default, go for an indent of 4 and use spaces
 set expandtab
 set shiftwidth=4
 set tabstop=4
@@ -141,7 +145,8 @@ inoremap # X<BS>#
 " Enable folds
 if has("folding")
     set foldenable
-    set foldmethod=marker
+    set foldmethod=manual
+    set foldlevelstart=99
 endif
 
 " Syntax when printing
@@ -354,10 +359,10 @@ if has("autocmd")
                     \ $put ='' |
                     \ call setline(line('$'), 'AC_INIT([' . substitute(expand('%:p:h'),
                     \     '^.\{-}/\([^/]\+\)\(/trunk\)\?$', '\1', '') . '], [0.0])') |
-                    \ $put ='AC_PREREQ(2.5)' |
+                    \ $put ='AC_PREREQ(2.63)' |
                     \ $put ='AC_CONFIG_SRCDIR([])' |
                     \ $put ='AC_CONFIG_AUX_DIR(config)' |
-                    \ $put ='AM_INIT_AUTOMAKE(1.9)' |
+                    \ $put ='AM_INIT_AUTOMAKE(1.10)' |
                     \ $put ='' |
                     \ $put ='dnl check for required programs' |
                     \ $put ='AC_PROG_CXX' |
@@ -395,14 +400,15 @@ if has("autocmd")
                     \ $put ='}' |
                     \ $put ='' |
                     \ $put ='run mkdir -p config' |
-                    \ $put ='run $(get libtoolize 1.5 ) --copy --force --automake' |
+                    \ $put ='run $(get libtoolize 2.2 ) --copy --force --automake' |
                     \ $put ='rm -f config.cache' |
-                    \ $put ='run $(get aclocal 1.9 )' |
-                    \ $put ='run $(get autoheader 2.59 )' |
-                    \ $put ='run $(get autoconf 2.59 )' |
-                    \ $put ='run $(get automake 1.9 ) -a --copy' |
+                    \ $put ='run $(get aclocal 1.10 )' |
+                    \ $put ='run $(get autoheader 2.63 )' |
+                    \ $put ='run $(get autoconf 2.63 )' |
+                    \ $put ='run $(get automake 1.10 ) -a --copy' |
                     \ set sw=4 sts=4 et tw=80 |
                     \ norm gg=Ggg
+        autocmd BufWritePost autogen.bash !chmod 744 %
 
         autocmd BufNewFile Makefile.am
                     \ 0put ='CLEANFILES = *~' |
