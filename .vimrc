@@ -435,6 +435,70 @@ if has("autocmd")
                     \ endif
 
     augroup END
+    augroup making
+        try
+            " if we have a vim which supports QuickFixCmdPost (vim7),
+            " give us an error window after running make, grep etc, but
+            " only if results are available.
+            autocmd QuickFixCmdPost * botright cwindow 5
+
+            autocmd QuickFixCmdPre make
+                        \ let g:make_start_time=localtime()
+
+            let g:paludis_configure_command = "! ./configure --prefix=/usr --sysconfdir=/etc" .
+                        \ " --localstatedir=/var/lib --enable-qa " .
+                        \ " --enable-ruby --enable-python --enable-vim --enable-bash-completion" .
+                        \ " --enable-zsh-completion --with-repositories=all --with-clients=all --with-environments=all" .
+                        \ " --enable-visibility --enable-gnu-ldconfig --enable-htmltidy" .
+                        \ " --enable-ruby-doc --enable-python-doc --enable-xml"
+
+            " Similarly, try to automatically run ./configure and / or
+            " autogen if necessary.
+            autocmd QuickFixCmdPre make
+                        \ if ! filereadable('Makefile') |
+                        \     if ! filereadable("configure") |
+                        \         if filereadable("autogen.bash") |
+                        \             exec "! ./autogen.bash" |
+                        \         elseif filereadable("quagify.sh") |
+                        \             exec "! ./quagify.sh" |
+                        \         endif |
+                        \     endif |
+                        \     if filereadable("configure") |
+                        \         if (isdirectory(getcwd() . "/paludis/util")) |
+                        \             exec g:paludis_configure_command |
+                        \         elseif (match(getcwd(), "libwrapiter") >= 0) |
+                        \             exec "! ./configure --prefix=/usr --sysconfdir=/etc" |
+                        \         else |
+                        \             exec "! ./configure" |
+                        \         endif |
+                        \     endif |
+                        \ endif
+
+            autocmd QuickFixCmdPost make
+                        \ let g:make_total_time=localtime() - g:make_start_time |
+                        \ echo printf("Time taken: %dm%2.2ds", g:make_total_time / 60,
+                        \     g:make_total_time % 60)
+
+            autocmd QuickFixCmdPre *
+                        \ let g:old_titlestring=&titlestring |
+                        \ let &titlestring="[ " . expand("<amatch>") . " ] " . &titlestring |
+                        \ redraw
+
+            autocmd QuickFixCmdPost *
+                        \ let &titlestring=g:old_titlestring
+
+            if hostname() == "snowmobile"
+                autocmd QuickFixCmdPre make
+                            \ let g:active_line=getpid() . " vim:" . substitute(getcwd(), "^.*/", "", "") |
+                            \ exec "silent !echo '" . g:active_line . "' >> ~/.config/awesome/active"
+
+                autocmd QuickFixCmdPost make
+                            \ exec "silent !sed -i -e '/^" . getpid() . " /d' ~/.config/awesome/active"
+            endif
+
+        catch
+        endtry
+    augroup END
 endif
 
 "-----------------------------------------------------------------------
