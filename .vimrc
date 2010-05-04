@@ -536,6 +536,10 @@ noremap  <S-Down> gj
 noremap <space> <C-f>
 noremap <backspace> <C-b>
 
+" Scrolling with arrows controls the window
+noremap <Up>   <C-y>
+noremap <Down> <C-e>
+
 " Useful things from inside imode
 inoremap <C-z>w <C-o>:w<CR>
 inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
@@ -545,10 +549,14 @@ inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
 "imap <silent> <F3> <C-o>:silent nohlsearch<CR>
 "nmap <F4> :Kwbd<CR>
 "nmap <F5> <C-w>c
-"nmap <F7> :make all-then-check<CR>
-"nmap <F8> :make<CR>
-"nmap <F10> :!svn update<CR>
-"nmap <F11> :!svn status \| grep -v '^?' \| sort -k2<CR>
+"nmap <F6> :exec "make check TESTS_ENVIRONMENT=true LOG_COMPILER=true XFAIL_TESTS="<CR>
+"nmap <Leader><F6> :exec "make -C " . expand("%:p:h") . " check TESTS_ENVIRONMENT=true LOG_COMPILER=true XFAIL_TESTS="<CR>
+nmap <F7> :make all-then-check<CR>
+nmap <Leader><F7> :exec "make -C " . expand("%:p:h") . " check"<CR>
+nmap <F8> :make<CR>
+nmap <Leader><F8> :exec "make -C " . expand("%:p:h")<CR>
+"nmap <F9> :exec "make -C " . expand("%:p:h") . " check SUBDIRS= check_PROGRAMS=" . GetCurrentTest()
+"            \ . " TESTS=" . GetCurrentTest() <CR>
 
 " Insert a single char
 noremap <Leader>i i<Space><Esc>r
@@ -848,13 +856,13 @@ if has("eval")
     let php_htmlInStrings=1
 
     " Settings for taglist.vim
-    let Tlist_Use_Right_Window=1
-    let Tlist_Auto_Open=0
-    let Tlist_Enable_Fold_Column=0
-    let Tlist_Compact_Format=1
-    let Tlist_WinWidth=28
-    let Tlist_Exit_OnlyWindow=1
-    let Tlist_File_Fold_Auto_Close = 1
+    "let Tlist_Use_Right_Window=1
+    "let Tlist_Auto_Open=0
+    "let Tlist_Enable_Fold_Column=0
+    "let Tlist_Compact_Format=1
+    "let Tlist_WinWidth=28
+    "let Tlist_Exit_OnlyWindow=1
+    "let Tlist_File_Fold_Auto_Close = 1
     "nnoremap <silent> <F9> :Tlist<CR>
 
     " Settings minibufexpl.vim
@@ -928,7 +936,7 @@ endif
 " final commands
 "-----------------------------------------------------------------------
 " mio
-let Tlist_Ctags_Cmd="/usr/bin/exuberant-ctags"
+"let Tlist_Ctags_Cmd="/usr/bin/exuberant-ctags"
 " plegado ident para python
 au FileType python set foldmethod=indent
 " plegado syntax para sgml,htmls,xml y xsl
@@ -959,11 +967,11 @@ map <S-F4> :set nu!<CR>
 map <F5> ggVGg?
 map <F6> :set encoding=utf-8<CR> | :set fenc=utf-8<CR>
 map <S-F6> :set encoding=iso8859-15<CR> | :set fenc=iso8859-15<CR>
-map <F7> :SpellProposeAlternatives<CR>
-map <S-F7> :SpellCheck<CR>
-map <C-F7> :let spell_language_list = "english,spanish"
-nnoremap <silent> <F8> :Tlist<CR>
-nnoremap <silent> <S-F8> :TlistSync<CR>
+"map <F7> :SpellProposeAlternatives<CR>
+"map <S-F7> :SpellCheck<CR>
+"map <C-F7> :let spell_language_list = "english,spanish"
+"nnoremap <silent> <F8> :Tlist<CR>
+"nnoremap <silent> <S-F8> :TlistSync<CR>
 nnoremap <esc> :noh<return><esc>
 map <F11> !!date<CR>
 map <F12> :TC<CR>
@@ -977,9 +985,8 @@ inoremap <F12> <C-o>:syntax sync fromstart<CR>
 syntax sync minlines=200
 
 " Javac
-set makeprg=javac\ %
-set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-map <F8> :make<CR>
+"set makeprg=javac\ %
+"set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
 
 " CVS
 nmap <leader>cadd <Plug>CVSAdd
