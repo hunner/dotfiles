@@ -533,6 +533,12 @@ inoremap <S-Down> <C-o>gj
 noremap  <S-Up>   gk
 noremap  <S-Down> gj
 
+" Better Bépo movement
+noremap © h
+noremap þ j
+noremap ß k
+noremap ® l
+
 " Make <space> in normal mode go down a page rather than left a
 " character, and backspace the opposite
 noremap <space> <C-f>
