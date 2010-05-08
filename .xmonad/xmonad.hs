@@ -41,7 +41,7 @@ mModMask       = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 mWorkspaces :: [WorkspaceId]
-mWorkspaces = map show [1 .. 9 :: Int]
+mWorkspaces = map show [0 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -88,15 +88,19 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         --       if there is a workspace existing target name that is empty, delete it before moving
         --       else leave everything as it is (no move/rename)
         ]
+        ++ -- mod-[1..9] %! Switch to workspace N if it exists
+        zip (map (("M-" ++) . show)   [0..9]) (map (windows . W.greedyView) (workspaces mConfig))
+        ++ -- mod-shift-[1..9] %! Move window to workspace N if it exists
+        zip (map (("M-S-" ++) . show) [0..9]) (map (windows . W.shift)      (workspaces mConfig))
+        -- Don't auto-assign the key shortcuts to dynamic workspaces. I want them staying on [1..9] only
+        -- ++ -- mod-[1..9] %! Switch to Nth workspace that exists in alphabetical order
+        -- zip (map (("M-" ++) . show)   [0..9]) (map (withNthWorkspace W.greedyView) [0..])
+        -- ++ -- mod-[1..9] %! Move window to Nth workspace that exists in alphabetical order
+        -- zip (map (("M-S-" ++) . show) [0..9]) (map (withNthWorkspace W.shift) [0..])
         ++ -- mod-{o,e,u} %! Switch to physical/Xinerama screens 0, 1, or 2
         zip (map ("M-" ++)   ["o","e","u"]) (map (\x -> screenWorkspace x >>= flip whenJust (windows . W.view))  [0..])
         ++ -- mod-shift-{o,e,u} %! Move client to screen 0, 1, or 2
         zip (map ("M-S-" ++) ["o","e","u"]) (map (\x -> screenWorkspace x >>= flip whenJust (windows . W.shift)) [0..])
-        -- Don't auto-assign the key shortcuts to dynamic workspaces. I want them staying on [1..9] only
-        -- ++
-        -- zip (map (("M-" ++) . show)   [1..9]) (map (withNthWorkspace W.greedyView) [0..])
-        -- ++
-        -- zip (map (("M-S-" ++) . show) [1..9]) (map (withNthWorkspace W.shift) [0..])
   where -- Make the mouse jump to the middle of the screen for gridselect
         warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
         warpToCorner = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  1.0 1.0
