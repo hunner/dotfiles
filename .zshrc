@@ -1,5 +1,5 @@
 # Options
-setopt appendhistory hist_ignore_space hist_ignore_all_dups autocd extendedglob nomatch notify dvorak # correct
+setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
 zstyle :compinstall filename '~/.zshrc'
