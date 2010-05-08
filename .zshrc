@@ -1,5 +1,5 @@
 # Options
-setopt appendhistory autocd extendedglob nomatch notify dvorak # correct
+setopt appendhistory hist_ignore_all_dups autocd extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
 zstyle :compinstall filename '~/.zshrc'
@@ -62,8 +62,8 @@ fi
 export GEM_HOME="$HOME/.gems"
 export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
 zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=1000
+SAVEHIST=1000
 HISTFILE=~/.history
 PS1="%m%# "
 export LANG="en_US.UTF-8"
