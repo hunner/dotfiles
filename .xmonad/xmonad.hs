@@ -109,7 +109,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         --wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset)) -- (map W.tag . W.workspaces . windowset))
 
 mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
-             | (i, k) <- zip ([0..]) [0x22,0xab,0xbb,0x28,0x29,0x40,0x2b,0x2d,0x2f,0x2a]
+             | (i, k) <- zip ([0..]) [0x2a,0x22,0xab,0xbb,0x28,0x29,0x40,0x2b,0x2d,0x2f]
              , (f, m) <- [(withNthWorkspace W.greedyView, 0), (withNthWorkspace W.shift, shiftMask)]]
 {-
 [10:28]  dschoepe : gets (map W.tag . W.workspaces . windowset) should work
