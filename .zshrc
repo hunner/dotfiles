@@ -5,7 +5,7 @@ bindkey -e
 zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit -u
-bindkey '^L' push-line
+#bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
 umask 022
 
