@@ -5,13 +5,15 @@ xkb_keymap {
     xkb_geometry  { include "thinkpad(us)" };
 
     xkb_symbols "hunner" {
-        include "pc+us(dvorak)+inet(evdev)"
+        include "pc+us(dvorak)+inet(evdev)+group(win_switch)"
 
         name[group1]="Dvorak";
+        //name[group2]="Colemak";
+        //name[group3]="QGMLWB";
         // Alphanumeric section
 
         //             Unmodified       Shift           AltGr            Shift+AltGr
-        key  <ESC> { [ backslash,       bar ] };
+        key  <ESC> { [ grave,           asciitilde,     dead_grave,      dead_tilde       ] };
 
         // Number row, left side
         key <TLDE> { [ Escape ] };
@@ -29,7 +31,7 @@ xkb_keymap {
         key <AE10> { [ 8,               asterisk                                          ] };
         key <AE11> { [ bracketleft,     braceleft,      hyphen                            ] };
         key <AE12> { [ bracketright,    braceright,     dead_tilde                        ] };
-        key <BKSP> { [ grave,           asciitilde,     dead_grave,      dead_tilde       ] };
+        key <BKSP> { [ backslash,       bar ] };
 
         // Upper row, left side
         key  <TAB> { [ Tab,             ISO_Left_Tab ] };
@@ -38,7 +40,6 @@ xkb_keymap {
         key <AD03> { [ period,          greater,        dead_breve,      dead_abovedot    ] };
         key <AD04> { [ p,               P,              paragraph ] };
         key <AD05> { [ y,               Y,              yen,             heart            ] };
-        key <BKSL> { [ BackSpace,       bar,            brokenbar        ] };
 
         // Upper row, right side
         key <AD06> { [ f,               F                                                 ] };
@@ -48,7 +49,7 @@ xkb_keymap {
         key <AD10> { [ l,               L ] };
         key <AD11> { [ slash,           question,       dead_hook,       questiondown     ] };
         key <AD12> { [ equal,           plus,           multiply,        division         ] };
-        key <RTRN> { [ Return ] };
+        key <BKSL> { [ BackSpace,       bar,            brokenbar        ] };
 
         // Home row, left side
         key <CAPS> { [ Control_L ] };
@@ -65,6 +66,7 @@ xkb_keymap {
         key <AC09> { [ n,               N       ] };
         key <AC10> { [ s,               S,              scircumflex,     Scircumflex       ] };
         key <AC11> { [ minus,           underscore,     endash,          emdash ] };
+        key <RTRN> { [ Return ] };
 
         // Lower row, left side
         key <LFSH> { [ Shift_L ] };

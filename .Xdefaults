@@ -1,22 +1,29 @@
 Xft.antialias: true
 URxvt*scrollBar: false
-URxvt*background: rgba:0000/0000/0000/aaaa
+URxvt*background: rgba:0000/0000/0000/cccc
+!URxvt*background: rgba:1111/1111/1111/dddd
 URxvt*depth: 32
 URxvt*foreground: #dddddd
-#URxvt*transparent: true
+!URxvt*foreground: #c3c6c8
+!URxvt*transparent: true
 URxvt*transparent: false
-#URxvt*fading: 2%
-#URxvt*shading: 30
-#URxvt*fadeColor: grey
+!URxvt*fading: 2%
+!URxvt*shading: 30
+!URxvt*fadeColor: grey
 URxvt*buffered: true
 URxvt*cursorColor: green
+!URxvt*cursorColor: #007998
 !URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 URxvt*font: 6x13,xft:IPAGothic:antialias=true
 !URxvt*perl-ext-common: default
+!URxvt*color1:  #007998
+!URxvt*color9:  #228bba
 
 URxvt.perl-ext-common: default,matcher
 URxvt*urlLauncher: urxvt-to-uzbl.sh
 URxvt.colorUL: #cc0000
+URxvt.searchable-scrollback: CM-S
+!URxvt.colorUL: #007998
 
 !URxvt.borderLess:True
 !URxvt.reverseVideo:True
@@ -34,7 +41,7 @@ URxvt.colorUL: #cc0000
 !UXTerm*foreground:gray
 !UXTerm*cursorColor:yellow
 !UXTerm*pointerColor:white
-!XTerm*vt100.metaSendsEscape:true
+XTerm*vt100.metaSendsEscape:true
 
 !Requiresxfonts-terminusandaXrestartforanychanges
 !UXTerm*font:terminus-16
@@ -61,4 +68,13 @@ URxvt.colorUL: #cc0000
 Emacs*font: Bitstream Vera Sans Mono-8:antialias=True
 Emacs*menuBar: off
 Emacs*toolBar: off
-Emacs.verticalScrollBars: off
+Emacs*verticalScrollBars: off
+
+XClock*Foreground: #007998
+XClock*Background: #222222
+XClock*chime:      True
+XClock*update:     1
+!XCalc*Foreground:    #007998
+!XCalc*Background:    #222222
+XCalc*customization: -color
+XCalc*rpn:           True

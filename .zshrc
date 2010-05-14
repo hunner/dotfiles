@@ -1,11 +1,11 @@
 # Options
-setopt appendhistory autocd extendedglob nomatch notify dvorak # correct
+setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
 zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit -u
-bindkey '^L' push-line
+#bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
 umask 022
 
@@ -19,17 +19,26 @@ esac
 #export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
-export MANPATH=/usr/man:/usr/share/man
-paths=(~/.cabal/bin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
-/pkgs/ghc/current/bin /usr/sfw/sbin /usr/sfw/bin /opt/SUNWut/sbin
-/opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
+export MANPATH=~/local/share/man:/usr/man:/usr/share/man
+paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
+/pkgs/ghc/current/bin /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin
+/opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
 /usr/bin/X11 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
+prepaths=(~/.cabal/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
         export PATH=$PATH:$dir
-        if [ -d `dirname $dir` ] ; then
+        if [ -d `dirname $dir`/man ] ; then
             export MANPATH=$MANPATH:`dirname $dir`/man
+        fi
+    fi
+done
+for dir in $prepaths ; do
+    if [ -d $dir ] ; then
+        export PATH=$dir:$PATH
+        if [ -d `dirname $dir`/man ] ; then
+            export MANPATH=`dirname $dir`/man:$MANPATH
         fi
     fi
 done
@@ -39,11 +48,6 @@ if test -d /etc/profile.d/; then
         test -x $profile && . $profile
     done
     unset profile
-fi
-if [ -d ~/local/bin ] ; then
-    export PATH=~/local/bin:~/local/sbin:$PATH
-    export MANPATH=~/local/man:$MANPATH
-    export MANPATH=~/local/share/man:$MANPATH
 fi
 #gem's path
 if [ -d ~/.gems/bin ] ; then
@@ -58,8 +62,8 @@ fi
 export GEM_HOME="$HOME/.gems"
 export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
 zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=1000
+SAVEHIST=1000
 HISTFILE=~/.history
 PS1="%m%# "
 export LANG="en_US.UTF-8"
@@ -73,7 +77,9 @@ export LC_COLLATE="C" #order files in ls
 export DIALOGOPTS='--visit-items'
 export MAIL=~/mail
 export MAILCHECK=0
-export AWT_TOOLKIT=MToolkit
+#export AWT_TOOLKIT=MToolkit
+#export AWT_TOOLKIT=XToolkit
+export _JAVA_AWT_WM_NONREPARENTING=1
 if [ -x `which less` ] ; then
     export PAGER==less
 else
@@ -119,7 +125,8 @@ alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
 alias e="TERM=rxvt-256color; emacs -nw"
-alias ec="emacsclient"
+alias et="TERM=rxvt-256color; emacsclient -t"
+alias ec="emacsclient -c --eval '(set-background-color \"black\")'"
 alias ecx="emacsclient --eval '(make-frame-on-display \"$DISPLAY\")'"
 #alias s="TERM=xterm;ssh serenity.cat.pdx.edu"
 alias s="TERM=rxvt;ssh hunner@serenity.cat.pdx.edu"
@@ -150,7 +157,7 @@ alias rm=rm; unalias rm #hack
 alias gem="nice -n19 gem"
 alias uzbl="uzbl-browser"
 #startup aliases
-alias -s pdf="xpdf"
+alias -s pdf="zathura"
 alias -s txt="vi"
 alias -s flv="mplayer"
 alias -s avi="mplayer"
@@ -171,33 +178,11 @@ if [ x$DISPLAY != x ] ; then
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
-resize() { printf '\33]50;%s%d\007' "xft:Terminus:pixelsize=" $1 ":antialias=true" }
-asdf() {
-    if [ `uname -s` = "SunOS" ] ; then
-        if [ x`hostname` = x"chandra.cs.pdx.edu" ] ; then
-            xmodmap ~/keymaps/eo_dv_hunner_type7.pke
-        else
-            xmodmap ~/keymaps/eo_dv_hunner_type7.pke
-        fi
-    else
-        if [ x`hostname` = x"ni" ] ; then
-            xmodmap ~/keymaps/nu_x61.pke
-        else
-            xmodmap ~/keymaps/nu_std.pke
-        fi
-    fi
-}
-aoeu() {
-    if [ `uname -s` = "SunOS" ] ; then
-        xmodmap ~/keymaps/original-type7-sol.pke
-    else
-        if [ x`hostname` = x"ni" ] ; then
-            xmodmap ~/keymaps/qwerty_x61.pke
-        else
-            xmodmap ~/keymaps/kvar.pke
-        fi
-    fi
-}
+alias resize="printf '\33]50;%s%d\007' 'xft:Terminus:pixelsize=' $1" # ':antialias=true'"
+alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
+alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
+alias aoeu='setxkbmap us'
+alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
 type7() {
     if [ `uname -s` = "SunOS" ] ; then
         xmodmap ~/keymaps/eo_dv_hunner_type7_sol.pke

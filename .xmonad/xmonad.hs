@@ -6,13 +6,13 @@
 
 import XMonad hiding (Tall)
 import System.Exit
+import XMonad.Layout.Circle
+import XMonad.Layout.HintedTile
+import XMonad.Layout.MagicFocus
+import XMonad.Layout.Magnifier
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
-import XMonad.Layout.Circle
-import XMonad.Layout.MagicFocus
-import XMonad.Layout.Magnifier
-import XMonad.Layout.HintedTile
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
@@ -20,9 +20,10 @@ import XMonad.Actions.NoBorders
 import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
-import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Util.EZConfig
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.SetWMName
 import Data.Monoid
 import Data.List
@@ -32,7 +33,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
-mTerminal      = "urxvt"
+mTerminal      = "urxvtc"
 mBorderWidth   = 1
 mModMask       = mod4Mask
 
@@ -40,7 +41,7 @@ mModMask       = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 mWorkspaces :: [WorkspaceId]
-mWorkspaces = map show [1 .. 9 :: Int]
+mWorkspaces = map show [0 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -51,10 +52,12 @@ mFocusedBorderColor = "#dd0000"
 --
 mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-t", sendMessage MirrorExpand  ) -- Shrink current window
+        , ("M-r"  , warpToCorner              ) -- Kill the rodent
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
-          
+        , ("<Scroll_lock>", spawn "xlock -mode fzort" ) -- SCReen LocK
+
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
         , ("M-a"  , windows copyToAll)  -- Copy focused window to all workspaces
         , ("M-S-a", killAllOtherCopies) -- Uncopy focused window from all workspaces
@@ -65,13 +68,14 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-g", warpToCentre >> goToSelected gsConfig )
 
         -- Multimedia
-        , ("<XF86AudioPlay>"       , spawn "mpc toggle"       ) -- play/pause mpd
-        , ("<XF86AudioStop>"       , spawn "mpc stop"         ) -- stop mpd
-        , ("<XF86AudioPrev>"       , spawn "mpc prev"         ) -- prev song
-        , ("<XF86AudioNext>"       , spawn "mpc next"         ) -- next song
-        , ("<XF86AudioLowerVolume>", spawn "mpc volume -3"    ) -- volume down via custom script
-        , ("<XF86AudioRaiseVolume>", spawn "mpc volume +3"    ) -- volume up via custom script
-        , ("<XF86AudioMute>"       , spawn "amixer -q -- sset Headphone togglemute") -- toggle mute via custom script
+        , ("<XF86AudioPlay>"       , spawn "cmus-remote --pause" ) -- play/pause mpd
+        , ("<XF86AudioStop>"       , spawn "cmus-remote --stop"  ) -- stop mpd
+        , ("<XF86AudioPrev>"       , spawn "cmus-remote --prev"  ) -- prev song
+        , ("<XF86AudioNext>"       , spawn "cmus-remote --next"  ) -- next song
+        , ("<XF86AudioLowerVolume>", spawn "amixer -q set PCM 1-") -- volume down
+        , ("<XF86AudioRaiseVolume>", spawn "amixer -q set PCM 1+") -- volume up
+        , ("<XF86AudioMute>"       , spawn "amixer -q set Headphone toggle") -- toggle mute
+        , ("M-<XF86AudioMute>"     , spawn "amixer -q set Speaker toggle")
 
         -- Dynamic workspace commands
         , ("M-S-<Backspace>"       , removeWorkspace)
@@ -84,21 +88,29 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         --       if there is a workspace existing target name that is empty, delete it before moving
         --       else leave everything as it is (no move/rename)
         ]
+        ++ -- mod-[1..9] %! Switch to workspace N if it exists
+        zip (map (("M-" ++) . show)   [0..9]) (map (windows . W.greedyView) (workspaces mConfig))
+        ++ -- mod-shift-[1..9] %! Move window to workspace N if it exists
+        zip (map (("M-S-" ++) . show) [0..9]) (map (windows . W.shift)      (workspaces mConfig))
+        -- Don't auto-assign the key shortcuts to dynamic workspaces. I want them staying on [1..9] only
+        -- ++ -- mod-[1..9] %! Switch to Nth workspace that exists in alphabetical order
+        -- zip (map (("M-" ++) . show)   [0..9]) (map (withNthWorkspace W.greedyView) [0..])
+        -- ++ -- mod-[1..9] %! Move window to Nth workspace that exists in alphabetical order
+        -- zip (map (("M-S-" ++) . show) [0..9]) (map (withNthWorkspace W.shift) [0..])
         ++ -- mod-{o,e,u} %! Switch to physical/Xinerama screens 0, 1, or 2
         zip (map ("M-" ++)   ["o","e","u"]) (map (\x -> screenWorkspace x >>= flip whenJust (windows . W.view))  [0..])
         ++ -- mod-shift-{o,e,u} %! Move client to screen 0, 1, or 2
         zip (map ("M-S-" ++) ["o","e","u"]) (map (\x -> screenWorkspace x >>= flip whenJust (windows . W.shift)) [0..])
-        -- Don't auto-assign the key shortcuts to dynamic workspaces. I want them staying on [1..9] only
-        -- ++
-        -- zip (map (("M-" ++) . show)   [1..9]) (map (withNthWorkspace W.greedyView) [0..])
-        -- ++
-        -- zip (map (("M-S-" ++) . show) [1..9]) (map (withNthWorkspace W.shift) [0..])
   where -- Make the mouse jump to the middle of the screen for gridselect
         warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
+        warpToCorner = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  1.0 1.0
         promptedWs = wsgrid >>= \x -> whenJust x $ \y -> windows $ W.greedyView y
         wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . W.workspaces . windowset))
         --wsgrid = gridselect gsConfig =<< gets (map (\x -> (x,x)) . (map W.tag . uncurry (++) . partition (isJust . W.stack) . W.workspaces . windowset)) -- (map W.tag . W.workspaces . windowset))
 
+mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
+             | (i, k) <- zip ([0..]) [0x2a,0x22,0xab,0xbb,0x28,0x29,0x40,0x2b,0x2d,0x2f]
+             , (f, m) <- [(withNthWorkspace W.greedyView, 0), (withNthWorkspace W.shift, shiftMask)]]
 {-
 [10:28]  dschoepe : gets (map W.tag . W.workspaces . windowset) should work
 [10:31]    aavogt : somewhat useful variation on that is:
@@ -159,12 +171,16 @@ mManageHook = composeAll
     , title =? "VLC media player"   --> doFloat
     , className =? "Gimp"           --> doFloat
     , className =? "Anki"           --> doFloat
+    , className =? "XCalc"          --> doFloat
+    , className =? "XClock"         --> doFloat
     , className =? "Skype"          --> doFloat
     , className =? "googleearth"    --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "mangclient"     --> doFloat
     , className =? "CellWriter"     --> doFloat
     , className =? "Gvba"           --> doFloat
+    , className =? "Thunar"         --> doFloat
+    , className =? "feh"            --> doFloat
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
@@ -195,17 +211,19 @@ pickyFocusEventHook _ = return $ All True
 
 -- Run xmonad!
 --
-main = do
-  xmonad $ defaultConfig
-    { terminal           = mTerminal
-    , focusFollowsMouse  = mFocusFollowsMouse
-    , borderWidth        = mBorderWidth
-    , modMask            = mModMask
-    , workspaces         = mWorkspaces
-    , normalBorderColor  = mNormalBorderColor
-    , focusedBorderColor = mFocusedBorderColor
-    , layoutHook         = mLayout
-    , manageHook         = mManageHook
-    , handleEventHook    = pickyFocusEventHook
-    , startupHook        = ewmhDesktopsStartup >> setWMName "LG3D"
-    } `additionalKeysP` mKeys
+main = xmonad $ mConfig
+mConfig = defaultConfig
+  { terminal           = mTerminal
+  , focusFollowsMouse  = mFocusFollowsMouse
+  , borderWidth        = mBorderWidth
+  , modMask            = mModMask
+  , workspaces         = mWorkspaces
+  , normalBorderColor  = mNormalBorderColor
+  , focusedBorderColor = mFocusedBorderColor
+  , layoutHook         = mLayout
+  , manageHook         = mManageHook
+  , handleEventHook    = pickyFocusEventHook
+  , startupHook        = do
+      ewmhDesktopsStartup >> setWMName "LG3D"
+      return () >> checkKeymap mConfig mKeys
+  } `additionalKeysP` mKeys `additionalKeys` mKeysExt

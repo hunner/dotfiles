@@ -1,26 +1,22 @@
 scriptencoding utf-8
 
 "-----------------------------------------------------------------------
-"BaSS vimrc based con ciaran
+"Hunner's vimrc based on BaSS & ciaran
 "-----------------------------------------------------------------------
 
 "-----------------------------------------------------------------------
 " terminal setup
 "-----------------------------------------------------------------------
 
-" Extra terminal things
+" Want utf8 at all times
 set termencoding=utf-8
 set encoding=utf-8
-
-" Turn off the menubar so we don't get key accelerators with Meta.
-" Don't include the toolbar
-set guioptions=aegiLt
-"colorscheme ir_black
 set fenc=utf-8
 
+" change cursor colour depending upon mode
 if exists('&t_SI')
     let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
-    let &t_EI = "\<Esc>]12;grey80\x7"
+    let &t_EI = "\<Esc>]12;green\x7"
 endif
 
 "-----------------------------------------------------------------------
@@ -46,8 +42,7 @@ set shortmess=a
 " Make backspace delete lots of things
 set backspace=indent,eol,start
 
-" Create backups
-"set backup
+" Don't create backups
 set nobackup
 
 " Show us the command we're typing
@@ -60,7 +55,7 @@ set showmatch
 set hlsearch
 set incsearch
 
-" Selective case insensitivity
+" Case insensitivity
 set ignorecase
 set infercase
 
@@ -87,8 +82,8 @@ set whichwrap+=<,>,[,]
 
 " Use the cool tab complete menu
 set wildmenu
-set wildignore+=*.o,*~
-set suffixes+=.in,.a
+set wildignore+=*.o,*~,.lo
+set suffixes+=.in,.a,.1
 
 " Allow edit buffers to be hidden
 set hidden
@@ -100,6 +95,9 @@ set winminheight=1
 if has("syntax")
     syntax on
 endif
+
+" enable virtual edit in vblock mode, and one past the end
+set virtualedit=block,onemore
 
 " Set our fonts
 if has("gui_kde")
@@ -116,6 +114,9 @@ if ! has("gui_running")
     colors inkpot
 else
     colors ir_black
+    " Turn off the menubar so we don't get key accelerators with Meta.
+    " Don't include the toolbar
+    set guioptions=aegit
 endif
 " set background=light gives a different style, feel free to choose between them.
 set background=dark
@@ -131,7 +132,7 @@ set background=dark
 "    set guioptions-=R
 "end
 
-" By default, go for an indent of 4 tab stuff
+" By default, go for an indent of 4 and use spaces
 set expandtab
 set shiftwidth=4
 set tabstop=4
@@ -145,6 +146,7 @@ inoremap # X<BS>#
 if has("folding")
     set foldenable
     set foldmethod=marker
+    "set foldlevelstart=99
 endif
 
 " Syntax when printing
@@ -169,6 +171,22 @@ set laststatus=2
 set statusline=
 set statusline+=%2*%-3.3n%0*\                " buffer number
 set statusline+=%f\                          " file name
+if has("eval")
+    let g:scm_cache = {}
+    fun! ScmInfo()
+        let l:key = getcwd()
+        if ! has_key(g:scm_cache, l:key)
+            if (isdirectory(getcwd() . "/.git"))
+                let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
+                            \ "^.*/", "", "") . "] "
+            else
+                let g:scm_cache[l:key] = ""
+            endif
+        endif
+        return g:scm_cache[l:key]
+    endfun
+    set statusline+=%{ScmInfo()}             " scm info
+endif
 set statusline+=%h%1*%m%r%w%0*               " flags
 set statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
 set statusline+=%{&encoding},                " encoding
@@ -206,9 +224,10 @@ endif
 " Nice window title
 if has('title') && (has('gui_running') || &title)
     set titlestring=
-    set titlestring+=%f\                     " file name
-    set titlestring+=%h%m%r%w                " flags
-    set titlestring+=\ -\ %{v:progname}      " program name
+    set titlestring+=%f\                                              " file name
+    set titlestring+=%h%m%r%w                                         " flags
+    set titlestring+=\ -\ %{v:progname}                               " program name
+    set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
 " If possible, try to use a narrow number column.
@@ -226,6 +245,7 @@ endif
 
 " Better include path
 set path+=src/
+let &inc.=' ["<]'
 
 " Show tabs and trailing whitespace visually
 if (&termencoding == "utf-8") || has("gui_running")
@@ -241,7 +261,7 @@ else
         set list listchars=tab:>-,trail:.,extends:>
     endif
 endif
-map <F9> :set nolist listchars<CR>
+map <silent> <F9> :set nolist listchars<CR>:set noet<CR>:set sw=8<CR>:set ts=8<CR>
 
 " Show lines longer than 80 characters
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
@@ -273,7 +293,7 @@ if has("eval")
     " If we're in a wide window, enable line numbers.
     fun! <SID>WindowWidth()
         if winwidth(0) > 90
-            setlocal foldcolumn=1
+            setlocal foldcolumn=2
             setlocal number
         else
             setlocal nonumber
@@ -284,9 +304,17 @@ endif
 
 " content creation
 if has("autocmd")
-    augroup content
-        autocmd!
-
+    augroup text
+        autocmd BufRead,BufNewFile *.txt
+                     \ set nonumber tw=80
+    augroup END
+    augroup helphelp
+        " For help files, move them to the top window and make <Return>
+        " behave like <C-]> (jump to tag)
+        autocmd FileType help :call <SID>WindowToTop()
+        autocmd FileType help nmap <buffer> <Return> <C-]>
+    augroup END
+    augroup interplangs
         autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
                     \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
@@ -297,7 +325,8 @@ if has("autocmd")
 
         autocmd BufNewFile,BufRead *.php
                     \ set ai
-
+    augroup END
+    augroup html
         autocmd BufNewFile *.htm,*.html
                     \ 0put ='<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">' |
                     \ $put ='<html xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">' |
@@ -313,10 +342,16 @@ if has("autocmd")
                     \ $put ='</html>' |
                     \ $put ='<!-- vim: set sw=2 sts=2 et tw=80 : -->' |
                     \ set sw=2 sts=2 et tw=80 | norm G
-
+    augroup END
+    augroup autotools
         autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
                     \ 1put ='' | call MakeIncludeGuards() |
                     \ 5put ='#include \"config.h\"' |
+                    \ set sw=4 sts=4 et tw=80 | norm G
+
+        autocmd BufNewFile *.c 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
+                    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
+                    \ substitute(expand("%:t"), ".c$", ".h", "") . '"') |
                     \ set sw=4 sts=4 et tw=80 | norm G
 
         autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
@@ -328,25 +363,26 @@ if has("autocmd")
                     \ 0put ='dnl vim: set sw=8 sts=8 noet :' |
                     \ $put ='' |
                     \ call setline(line('$'), 'AC_INIT([' . substitute(expand('%:p:h'),
-                    \     '^.\{-}/\([^/]\+\)\(/trunk\)\?$', '\1', '') . '], [0.0])') |
-                    \ $put ='AC_PREREQ(2.5)' |
+                    \     '^.\{-}/\([^/]\+\)\(/trunk\)\?$', '\1', '') . '], [0.1], [h.haugen@gmail.com])') |
+                    \ $put ='AC_PREREQ(2.63)' |
                     \ $put ='AC_CONFIG_SRCDIR([])' |
                     \ $put ='AC_CONFIG_AUX_DIR(config)' |
-                    \ $put ='AM_INIT_AUTOMAKE(1.9)' |
+                    \ $put ='AM_INIT_AUTOMAKE([foreign -Wall -Werror 1.10])' |
                     \ $put ='' |
                     \ $put ='dnl check for required programs' |
-                    \ $put ='AC_PROG_CXX' |
+                    \ $put ='AC_PROG_CC dnl CXX' |
                     \ $put ='AC_PROG_INSTALL' |
                     \ $put ='AC_PROG_LN_S' |
                     \ $put ='AC_PROG_RANLIB' |
                     \ $put ='AC_PROG_MAKE_SET' |
                     \ $put ='' |
                     \ $put ='dnl output' |
-                    \ $put ='AM_CONFIG_HEADER(config.h)' |
-                    \ $put ='AC_OUTPUT(' |
+                    \ $put ='AC_CONFIG_HEADERS([config.h])' |
+                    \ $put ='AC_CONFIG_FILES([' |
                     \ $put ='	Makefile' |
                     \ $put ='	src/Makefile' |
-                    \ $put ='	)' |
+                    \ $put ='])' |
+                    \ $put ='AC_OUTPUT' |
                     \ set sw=8 sts=8 noet |
                     \ norm ggjjjjf]
 
@@ -370,14 +406,15 @@ if has("autocmd")
                     \ $put ='}' |
                     \ $put ='' |
                     \ $put ='run mkdir -p config' |
-                    \ $put ='run $(get libtoolize 1.5 ) --copy --force --automake' |
+                    \ $put ='run $(get libtoolize 2.2 ) --copy --force --automake' |
                     \ $put ='rm -f config.cache' |
-                    \ $put ='run $(get aclocal 1.9 )' |
-                    \ $put ='run $(get autoheader 2.59 )' |
-                    \ $put ='run $(get autoconf 2.59 )' |
-                    \ $put ='run $(get automake 1.9 ) -a --copy' |
+                    \ $put ='run $(get aclocal 1.10 )' |
+                    \ $put ='run $(get autoheader 2.63 )' |
+                    \ $put ='run $(get autoconf 2.63 )' |
+                    \ $put ='run $(get automake 1.10 ) -a --copy' |
                     \ set sw=4 sts=4 et tw=80 |
                     \ norm gg=Ggg
+        autocmd BufWritePost autogen.bash !chmod 744 %
 
         autocmd BufNewFile Makefile.am
                     \ 0put ='CLEANFILES = *~' |
@@ -385,12 +422,82 @@ if has("autocmd")
                     \     $put ='MAINTAINERCLEANFILES = Makefile.in configure config/* aclocal.m4 \' |
                     \     $put ='' |
                     \     call setline(line('$'), "\t\t\tconfig.h config.h.in") |
+                    \     $put ='SUBDIRS = src' |
                     \     $put ='AUTOMAKE_OPTIONS = foreign dist-bzip2' |
                     \     $put ='EXTRA_DIST = autogen.bash' |
+                    \     $put ='' |
+                    \     $put ='maintainer-clean-local:' |
+                    \     $put ='	-rmdir config' |
                     \ else |
                     \     $put ='MAINTAINERCLEANFILES = Makefile.in' |
+                    \     $put ='bin_PROGRAMS = ' . substitute(expand('%:p:h'),'^.\{-}/\([^/]\+\)\(/src\)\?$', '\1', '') |
+                    \     $put = substitute(expand('%:p:h'), '^.\{-}/\([^/]\+\)\(/src\)\?$','\1', '') . '_SOURCES = main.c' |
                     \ endif
 
+    augroup END
+    augroup making
+        try
+            " if we have a vim which supports QuickFixCmdPost (vim7),
+            " give us an error window after running make, grep etc, but
+            " only if results are available.
+            autocmd QuickFixCmdPost * botright cwindow 5
+
+            autocmd QuickFixCmdPre make
+                        \ let g:make_start_time=localtime()
+
+            let g:paludis_configure_command = "! ./configure --prefix=/usr --sysconfdir=/etc" .
+                        \ " --localstatedir=/var/lib --enable-qa " .
+                        \ " --enable-ruby --enable-python --enable-vim --enable-bash-completion" .
+                        \ " --enable-zsh-completion --with-repositories=all --with-clients=all --with-environments=all" .
+                        \ " --enable-visibility --enable-gnu-ldconfig --enable-htmltidy" .
+                        \ " --enable-ruby-doc --enable-python-doc --enable-xml"
+
+            " Similarly, try to automatically run ./configure and / or
+            " autogen if necessary.
+            autocmd QuickFixCmdPre make
+                        \ if ! filereadable('Makefile') |
+                        \     if ! filereadable("configure") |
+                        \         if filereadable("autogen.bash") |
+                        \             exec "! ./autogen.bash" |
+                        \         elseif filereadable("quagify.sh") |
+                        \             exec "! ./quagify.sh" |
+                        \         endif |
+                        \     endif |
+                        \     if filereadable("configure") |
+                        \         if (isdirectory(getcwd() . "/paludis/util")) |
+                        \             exec g:paludis_configure_command |
+                        \         elseif (match(getcwd(), "libwrapiter") >= 0) |
+                        \             exec "! ./configure --prefix=/usr --sysconfdir=/etc" |
+                        \         else |
+                        \             exec "! ./configure" |
+                        \         endif |
+                        \     endif |
+                        \ endif
+
+            autocmd QuickFixCmdPost make
+                        \ let g:make_total_time=localtime() - g:make_start_time |
+                        \ echo printf("Time taken: %dm%2.2ds", g:make_total_time / 60,
+                        \     g:make_total_time % 60)
+
+            autocmd QuickFixCmdPre *
+                        \ let g:old_titlestring=&titlestring |
+                        \ let &titlestring="[ " . expand("<amatch>") . " ] " . &titlestring |
+                        \ redraw
+
+            autocmd QuickFixCmdPost *
+                        \ let &titlestring=g:old_titlestring
+
+            if hostname() == "snowmobile"
+                autocmd QuickFixCmdPre make
+                            \ let g:active_line=getpid() . " vim:" . substitute(getcwd(), "^.*/", "", "") |
+                            \ exec "silent !echo '" . g:active_line . "' >> ~/.config/awesome/active"
+
+                autocmd QuickFixCmdPost make
+                            \ exec "silent !sed -i -e '/^" . getpid() . " /d' ~/.config/awesome/active"
+            endif
+
+        catch
+        endtry
     augroup END
 endif
 
@@ -398,7 +505,11 @@ endif
 " mappings
 "-----------------------------------------------------------------------
 
-nmap   <silent> <S-Right>  :bnext<CR>
+" Go to buffers
+nmap <silent> <S-Left>  :bprev<CR>
+nmap <silent> <S-Right> :bnext<CR>
+nmap <C-w>, :bp<CR>
+nmap <C-w>. :bn<CR>
 
 " v_K is really really annoying
 vmap K k
@@ -413,6 +524,8 @@ endif
 nmap <Leader>cwc :cclose<CR>
 nmap <Leader>cwo :botright copen 5<CR><C-w>p
 nmap <Leader>cn  :cnext<CR>
+nmap -  :cnext<CR>
+nmap <Leader>cp  :cprevious<CR>
 
 " Annoying default mappings
 inoremap <S-Up>   <C-o>gk
@@ -420,10 +533,20 @@ inoremap <S-Down> <C-o>gj
 noremap  <S-Up>   gk
 noremap  <S-Down> gj
 
+" Better Bépo movement
+noremap © h
+noremap þ j
+noremap ß k
+noremap ® l
+
 " Make <space> in normal mode go down a page rather than left a
-" character
+" character, and backspace the opposite
 noremap <space> <C-f>
 noremap <backspace> <C-b>
+
+" Scrolling with arrows controls the window
+noremap <Up>   <C-y>
+noremap <Down> <C-e>
 
 " Useful things from inside imode
 inoremap <C-z>w <C-o>:w<CR>
@@ -434,10 +557,14 @@ inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
 "imap <silent> <F3> <C-o>:silent nohlsearch<CR>
 "nmap <F4> :Kwbd<CR>
 "nmap <F5> <C-w>c
-"nmap <F7> :make check<CR>
-"nmap <F8> :make<CR>
-"nmap <F10> :!svn update<CR>
-"nmap <F11> :!svn status \| grep -v '^?' \| sort -k2<CR>
+"nmap <F6> :exec "make check TESTS_ENVIRONMENT=true LOG_COMPILER=true XFAIL_TESTS="<CR>
+"nmap <Leader><F6> :exec "make -C " . expand("%:p:h") . " check TESTS_ENVIRONMENT=true LOG_COMPILER=true XFAIL_TESTS="<CR>
+nmap <F7> :make all-then-check<CR>
+nmap <Leader><F7> :exec "make -C " . expand("%:p:h") . " check"<CR>
+nmap <F8> :make<CR>
+nmap <Leader><F8> :exec "make -C " . expand("%:p:h")<CR>
+"nmap <F9> :exec "make -C " . expand("%:p:h") . " check SUBDIRS= check_PROGRAMS=" . GetCurrentTest()
+"            \ . " TESTS=" . GetCurrentTest() <CR>
 
 " Insert a single char
 noremap <Leader>i i<Space><Esc>r
@@ -473,6 +600,9 @@ noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 noremap <Leader>enc :<C-w>execute
             \ substitute(":'<,'>s/^.*/#&#/ \| :nohls", "#", input(">"), "g")<CR>
 
+" Edit something in the current directory
+noremap <Leader>ed :e <C-r>=expand("%:p:h")<CR>/<C-d>
+
 " Enable fancy % matching
 if has("eval")
     runtime! macros/matchit.vim
@@ -487,28 +617,98 @@ if has("digraphs")
 endif
 
 if has("eval")
-    " GNU format changelog entry
-    fun! MakeChangeLogEntry()
-        norm gg
-        /^\d
-        norm 2O
-        norm k
-        call setline(line("."), strftime("%Y-%m-%d") .
-                    \ " J. Alberto Suárez López <bass@gentoo.org>")
-        norm 2o
-        call setline(line("."), "\t* ")
-        norm $
+    " Work out include guard text
+    fun! IncludeGuardText()
+        let l:p = substitute(substitute(getcwd(), "/trunk", "", ""), '^.*/', "", "")
+        let l:t = substitute(expand("%"), "[./]", "_", "g")
+        return substitute(toupper(l:p . "_GUARD_" . l:t), "-", "_", "g")
     endfun
-    noremap <Leader>cl :call MakeChangeLogEntry()<CR>
 
-    " command aliases, can't call these until after cmdalias.vim is loaded
-    au VimEnter * if exists("loaded_cmdalias") |
-                \       call CmdAlias("mkdir",   "!mkdir") |
-                \       call CmdAlias("cvs",     "!cvs") |
-                \       call CmdAlias("svn",     "!svn") |
-                \       call CmdAlias("commit",  "!svn commit -m \"") |
-                \       call CmdAlias("upload",  "make upload") |
-                \ endif
+    " Make include guards
+    fun! MakeIncludeGuards()
+        norm gg
+        /^$/
+        norm 2O
+        call setline(line("."), "#ifndef " . IncludeGuardText())
+        norm o
+        call setline(line("."), "#define " . IncludeGuardText() . " 1")
+        norm G
+        norm o
+        call setline(line("."), "#endif")
+    endfun
+    noremap <Leader>ig :call MakeIncludeGuards()<CR>
+endif
+
+" fast buffer switching
+if v:version >= 700 && has("eval")
+    let g:switch_header_map = {
+                \ 'cc':    'hh',
+                \ 'hh':    'cc',
+                \ 'c':     'h',
+                \ 'h':     'c',
+                \ 'cpp':   'hpp',
+                \ 'hpp':   'cpp' }
+
+    fun! SwitchTo(f, split) abort
+        if ! filereadable(a:f)
+            echoerr "File '" . a:f . "' does not exist"
+        else
+            if a:split
+                new
+            endif
+            if 0 != bufexists(a:f)
+                exec ':buffer ' . bufnr(a:f)
+            else
+                exec ':edit ' . a:f
+            endif
+        endif
+    endfun
+
+    fun! SwitchHeader(split) abort
+        let filename = expand("%:p:r")
+        let suffix = expand("%:p:e")
+        if suffix == ''
+            echoerr "Cannot determine header file (no suffix)"
+            return
+        endif
+
+        let new_suffix = g:switch_header_map[suffix]
+        if new_suffix == ''
+            echoerr "Don't know how to find the header (suffix is " . suffix . ")"
+            return
+        end
+
+        call SwitchTo(filename . '.' . new_suffix, a:split)
+    endfun
+
+    fun! SwitchTest(split) abort
+        let filename = expand("%:p:r")
+        let suffix = expand("%:p:e")
+        if -1 != match(filename, '_TEST$')
+            let new_filename = substitute(filename, '_TEST$', '.' . suffix, '')
+        else
+            let new_filename = filename . '_TEST.' . suffix
+        end
+        call SwitchTo(new_filename, a:split)
+    endfun
+
+    fun! SwitchMakefile(split) abort
+        let dirname = expand("%:p:h")
+        if filereadable(dirname . "/Makefile.am.m4")
+            call SwitchTo(dirname . "/Makefile.am.m4", a:split)
+        elseif filereadable(dirname . "/Makefile.am")
+            call SwitchTo(dirname . "/Makefile.am", a:split)
+        else
+            call SwitchTo(dirname . "/Makefile", a:split)
+        endif
+    endfun
+
+    noremap <Leader>sh :call SwitchHeader(0)<CR>
+    noremap <Leader>st :call SwitchTest(0)<CR>
+    noremap <Leader>sk :call SwitchMakefile(0)<CR>
+    noremap <Leader>ssh :call SwitchHeader(1)<CR>
+    noremap <Leader>sst :call SwitchTest(1)<CR>
+    noremap <Leader>ssk :call SwitchMakefile(1)<CR>
 endif
 
 " super i_c-y / i_c-e
@@ -614,6 +814,7 @@ if has("eval") && has("autocmd")
         autocmd FileType cpp :call <SID>abbrev_cpp()
     augroup END
 endif
+" NB: Need more of these for more than cpp
 
 "-----------------------------------------------------------------------
 " special less.sh and man modes
@@ -658,12 +859,6 @@ if has("eval")
     let ruby_operators=1
     let ruby_space_errors=1
 
-    " clojure options
-    let g:clj_want_gorilla = 1
-    let g:clj_highlight_builtins = 1
-    let g:clj_highlight_contrib = 1
-    let g:clj_paren_rainbow = 1
-
     " php specific options
     let php_sql_query=1
     let php_htmlInStrings=1
@@ -675,7 +870,8 @@ if has("eval")
     let Tlist_Compact_Format=1
     let Tlist_WinWidth=28
     let Tlist_Exit_OnlyWindow=1
-    let Tlist_File_Fold_Auto_Close = 1
+    let Tlist_File_Fold_Auto_Close=1
+    let Tlist_Inc_Winwidth=0
     "nnoremap <silent> <F9> :Tlist<CR>
 
     " Settings minibufexpl.vim
@@ -749,7 +945,7 @@ endif
 " final commands
 "-----------------------------------------------------------------------
 " mio
-let Tlist_Ctags_Cmd="/usr/bin/exuberant-ctags"
+"let Tlist_Ctags_Cmd="/usr/bin/exuberant-ctags"
 " plegado ident para python
 au FileType python set foldmethod=indent
 " plegado syntax para sgml,htmls,xml y xsl
@@ -780,11 +976,12 @@ map <S-F4> :set nu!<CR>
 map <F5> ggVGg?
 map <F6> :set encoding=utf-8<CR> | :set fenc=utf-8<CR>
 map <S-F6> :set encoding=iso8859-15<CR> | :set fenc=iso8859-15<CR>
-map <F7> :SpellProposeAlternatives<CR>
-map <S-F7> :SpellCheck<CR>
-map <C-F7> :let spell_language_list = "english,spanish"
-nnoremap <silent> <F8> :Tlist<CR>
-nnoremap <silent> <S-F8> :TlistSync<CR>
+"map <F7> :SpellProposeAlternatives<CR>
+"map <S-F7> :SpellCheck<CR>
+"map <C-F7> :let spell_language_list = "english,spanish"
+"nnoremap <silent> <F8> :Tlist<CR>
+"nnoremap <silent> <S-F8> :TlistSync<CR>
+nnoremap <esc> :noh<return><esc>
 map <F11> !!date<CR>
 map <F12> :TC<CR>
 nmap  :X        :x
@@ -792,11 +989,13 @@ nmap  :W        :w
 nmap  :Q        :q
 noremap <Leader>rg :color relaxedgreen<CR>
 noremap <Leader>ip :color inkpot<CR>
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
+syntax sync minlines=200
 
 " Javac
-set makeprg=javac\ %
-set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-map <F8> :make<CR>
+"set makeprg=javac\ %
+"set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
 
 " CVS
 nmap <leader>cadd <Plug>CVSAdd
@@ -821,6 +1020,15 @@ let g:EnhCommentifyPretty = 'Yes'
 if has("autocmd")
     au VimEnter * nohls
 endif
+
+"ii irc stuff
+" map c1 :.w! >> ~/irc/irc.cat.pdx.edu/in<cr>dd
+" map c2 :.w! >> ~/irc/irc.cat.pdx.edu/\#hack/in<cr>dd
+" map c3 :.w! >> ~/irc/irc.cat.pdx.edu/\#meow/in<cr>dd
+" map c4 :.w! >> ~/irc/irc.cat.pdx.edu/\#rtttoee/in<cr>dd
+" map c5 :.w! >> ~/irc/irc.cat.pdx.edu/\#robots/in<cr>dd
+" map c17 :.w! >> ~/irc/irc.cat.pdx.edu/\#cschat/in<cr>dd
+" imap /me <C-V><C-A>ACTION
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
