@@ -223,18 +223,21 @@ ex () {
     fi
     if [ -f $1 ] ; then
         case $1 in
-            *.tar.bz2)   $TAR xvjf $1    ;;
-            *.tar.gz)    $TAR xvzf $1    ;;
-            *.bz2)       bunzip2 $1     ;;
-            *.rar)       unrar x $1     ;;
-            *.gz)        gunzip $1      ;;
-            *.tar)       $TAR xvf $1     ;;
-            *.tbz2)      $TAR xvjf $1    ;;
-            *.tgz)       $TAR xvzf $1    ;;
-            *.tbz)       $TAR xvjf $1    ;;
-            *.zip)       unzip $1       ;;
-            *.Z)         uncompress $1  ;;
-            *.7z)        7z x $1        ;;
+            *.tar.bz2)   $TAR xvjf $1  ;;
+            *.tar.gz)    $TAR xvzf $1  ;;
+            *.tar.xz)    $TAR xvJf $1  ;;
+            *.bz2)       bunzip2 $1    ;;
+            *.rar)       unrar x $1    ;;
+            *.gz)        gunzip $1     ;;
+            *.xz)        unxz $1       ;;
+            *.tar)       $TAR xvf $1   ;;
+            *.tbz2)      $TAR xvjf $1  ;;
+            *.tbz)       $TAR xvjf $1  ;;
+            *.tgz)       $TAR xvzf $1  ;;
+            *.txz)       $TAR xvJf $1  ;;
+            *.zip)       unzip $1      ;;
+            *.Z)         uncompress $1 ;;
+            *.7z)        7z x $1       ;;
             *)           echo "don't know how to extract '$1'..." ;;
         esac
     else
