@@ -97,7 +97,7 @@ if has("syntax")
 endif
 
 " enable virtual edit in vblock mode, and one past the end
-set virtualedit=block,onemore
+set virtualedit=block
 
 " Set our fonts
 if has("gui_kde")
