@@ -20,7 +20,8 @@ URxvt*font: 6x13,xft:IPAGothic:antialias=true
 !URxvt*color9:  #228bba
 
 URxvt.perl-ext-common: default,matcher
-URxvt*urlLauncher: urxvt-to-uzbl.sh
+!URxvt*urlLauncher: urxvt-to-uzbl.sh
+URxvt*urlLauncher: chromium
 URxvt.colorUL: #cc0000
 URxvt.searchable-scrollback: CM-S
 !URxvt.colorUL: #007998
