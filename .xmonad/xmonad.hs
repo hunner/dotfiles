@@ -17,6 +17,7 @@ import XMonad.Actions.CopyWindow
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.NoBorders
+import XMonad.Actions.SpawnOn
 import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
@@ -55,6 +56,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-r"  , warpToCorner              ) -- Kill the rodent
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
+        --, ("M-s"  , shellPromptHere sp mXPConfig ) -- Shell prompt
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
         , ("<Scroll_lock>", spawn "xlock -mode fzort" ) -- SCReen LocK
 
@@ -209,9 +211,8 @@ pickyFocusEventHook e@(CrossingEvent {ev_window = w, ev_event_type = t})
     where shouldFollow = (/="Cellwriter") `fmap` className
 pickyFocusEventHook _ = return $ All True
 
--- Run xmonad!
+-- Define my configuration
 --
-main = xmonad $ mConfig
 mConfig = defaultConfig
   { terminal           = mTerminal
   , focusFollowsMouse  = mFocusFollowsMouse
@@ -221,9 +222,16 @@ mConfig = defaultConfig
   , normalBorderColor  = mNormalBorderColor
   , focusedBorderColor = mFocusedBorderColor
   , layoutHook         = mLayout
+  --, manageHook         = manageSpawn sp <+> mManageHook
   , manageHook         = mManageHook
   , handleEventHook    = pickyFocusEventHook
   , startupHook        = do
       ewmhDesktopsStartup >> setWMName "LG3D"
       return () >> checkKeymap mConfig mKeys
   } `additionalKeysP` mKeys `additionalKeys` mKeysExt
+
+-- Run xmonad!
+--
+main = do
+    sp <- mkSpawner
+    xmonad mConfig
