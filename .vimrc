@@ -261,7 +261,8 @@ else
         set list listchars=tab:>-,trail:.,extends:>
     endif
 endif
-map <silent> <F9> :set nolist listchars<CR>:set noet<CR>:set sw=8<CR>:set ts=8<CR>
+map <silent> <F9> :set noet<CR>:set sw=8<CR>:set ts=8<CR>
+map <silent> <S-F9> :set nolist listchars<CR>:set noet<CR>:set sw=8<CR>:set ts=8<CR>
 
 " Show lines longer than 80 characters
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
