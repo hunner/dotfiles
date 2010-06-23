@@ -262,7 +262,7 @@ else
     endif
 endif
 map <silent> <F9> :set noet<CR>:set sw=8<CR>:set ts=8<CR>
-map <silent> <S-F9> :set nolist listchars<CR>:set noet<CR>:set sw=8<CR>:set ts=8<CR>
+map <silent> <S-F9> :set nolist listchars<CR>
 
 " Show lines longer than 80 characters
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
@@ -959,6 +959,16 @@ let mapleader = "="
 " Terminal companability
 map <F15> <S-F3>
 nmap <Esc>[14~ <S-F4>
+nmap <Esc>[23~ <S-F1>
+nmap <Esc>[24~ <S-F2>
+nmap <Esc>[25~ <S-F3>
+nmap <Esc>[26~ <S-F4>
+nmap <Esc>[28~ <S-F5>
+nmap <Esc>[29~ <S-F6>
+nmap <Esc>[31~ <S-F7>
+nmap <Esc>[32~ <S-F8>
+nmap <Esc>[33~ <S-F9>
+nmap <Esc>[34~ <S-F10>
 
 map <F17> <S-F5>
 map <F18> <S-F6>
