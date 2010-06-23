@@ -39,7 +39,7 @@
 (setq indent-tabs-mode nil)
 (setq make-backup-files nil)
 (set-language-environment "UTF-8")
-(set-input-method "japanese-ascii")
+(set-input-method "japanese-ascii") ; C-x C-m C-\
 (winner-mode t)
 (display-battery-mode t)
 (setq display-time-24hr-format t)
