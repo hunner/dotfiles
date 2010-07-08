@@ -327,6 +327,10 @@ if has("autocmd")
         autocmd BufNewFile,BufRead *.php
                     \ set ai
     augroup END
+    augroup tex
+        autocmd BufNewFile *.tex
+                    \ 0put ='% vim:set ft=tex spell:'
+    augroup END
     augroup html
         autocmd BufNewFile *.htm,*.html
                     \ 0put ='<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">' |
