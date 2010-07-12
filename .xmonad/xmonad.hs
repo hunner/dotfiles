@@ -17,6 +17,7 @@ import XMonad.Actions.CopyWindow
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.NoBorders
+import XMonad.Actions.SpawnOn
 import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
@@ -25,6 +26,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.SetWMName
+import Monad
 import Data.Monoid
 import Data.List
 import Data.Maybe
@@ -55,6 +57,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-r"  , warpToCorner              ) -- Kill the rodent
         , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
+        --, ("M-s"  , shellPromptHere sp mXPConfig ) -- Shell prompt
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
         , ("<Scroll_lock>", spawn "xlock -mode fzort" ) -- SCReen LocK
 
@@ -141,16 +144,51 @@ gsConfig = defaultGSConfig
         -- jump back to the center with the spacebar, regardless of the current position.
         reset = M.singleton (0,xK_space) (const (0,0))
 
+
+
+------------------------------------------------------------------------
+-- Fullscreen hack from http://code.google.com/p/xmonad/issues/detail?id=339
+
+-- Helper functions to fullscreen the window
+fullFloat, tileWin :: Window -> X ()
+fullFloat w = windows $ W.float w r
+    where r = W.RationalRect 0 0 1 1
+tileWin w = windows $ W.sink w
+
+evHook :: Event -> X All
+evHook (ClientMessageEvent _ _ _ dpy win typ dat) = do
+  state <- getAtom "_NET_WM_STATE"
+  fullsc <- getAtom "_NET_WM_STATE_FULLSCREEN"
+  isFull <- runQuery isFullscreen win
+  -- Constants for the _NET_WM_STATE protocol
+  let remove = 0
+      add = 1
+      toggle = 2
+      -- The ATOM property type for changeProperty
+      ptype = 4 
+      action = head dat
+  when (typ == state && (fromIntegral fullsc) `elem` tail dat) $ do
+    when (action == add || (action == toggle && not isFull)) $ do
+         io $ changeProperty32 dpy win state ptype propModeReplace [fromIntegral fullsc]
+         fullFloat win
+    when (head dat == remove || (action == toggle && isFull)) $ do
+         io $ changeProperty32 dpy win state ptype propModeReplace []
+         tileWin win
+  -- It shouldn't be necessary for xmonad to do anything more with this event
+  return $ All False
+evHook _ = return $ All True
+
 ------------------------------------------------------------------------
 -- Layouts:
 
-mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
+--mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
+mLayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat ||| Circle ||| magnifier Circle
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
-     --tiled   = ResizableTall nmaster delta ratio []
-     hintedTile = HintedTile nmaster delta ratio TopLeft
-     tiled      = hintedTile Tall
+     tiled   = ResizableTall nmaster delta ratio []
+     --hintedTile = HintedTile nmaster delta ratio TopLeft
+     --tiled      = hintedTile Tall
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -209,9 +247,8 @@ pickyFocusEventHook e@(CrossingEvent {ev_window = w, ev_event_type = t})
     where shouldFollow = (/="Cellwriter") `fmap` className
 pickyFocusEventHook _ = return $ All True
 
--- Run xmonad!
+-- Define my configuration
 --
-main = xmonad $ mConfig
 mConfig = defaultConfig
   { terminal           = mTerminal
   , focusFollowsMouse  = mFocusFollowsMouse
@@ -221,9 +258,16 @@ mConfig = defaultConfig
   , normalBorderColor  = mNormalBorderColor
   , focusedBorderColor = mFocusedBorderColor
   , layoutHook         = mLayout
+  --, manageHook         = manageSpawn sp <+> mManageHook
   , manageHook         = mManageHook
-  , handleEventHook    = pickyFocusEventHook
+  , handleEventHook    = pickyFocusEventHook >> evHook
   , startupHook        = do
       ewmhDesktopsStartup >> setWMName "LG3D"
       return () >> checkKeymap mConfig mKeys
   } `additionalKeysP` mKeys `additionalKeys` mKeysExt
+
+-- Run xmonad!
+--
+main = do
+    sp <- mkSpawner
+    xmonad mConfig

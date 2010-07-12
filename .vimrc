@@ -9,7 +9,7 @@ scriptencoding utf-8
 "-----------------------------------------------------------------------
 
 " Want utf8 at all times
-set termencoding=utf-8
+"set termencoding=utf-8
 set encoding=utf-8
 set fenc=utf-8
 
@@ -261,7 +261,8 @@ else
         set list listchars=tab:>-,trail:.,extends:>
     endif
 endif
-map <silent> <F9> :set nolist listchars<CR>:set noet<CR>:set sw=8<CR>:set ts=8<CR>
+map <silent> <F9> :set noet<CR>:set sw=8<CR>:set ts=8<CR>
+map <silent> <S-F9> :set nolist listchars<CR>
 
 " Show lines longer than 80 characters
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
@@ -325,6 +326,10 @@ if has("autocmd")
 
         autocmd BufNewFile,BufRead *.php
                     \ set ai
+    augroup END
+    augroup tex
+        autocmd BufNewFile *.tex
+                    \ 0put ='% vim:set ft=tex spell:'
     augroup END
     augroup html
         autocmd BufNewFile *.htm,*.html
@@ -958,6 +963,16 @@ let mapleader = "="
 " Terminal companability
 map <F15> <S-F3>
 nmap <Esc>[14~ <S-F4>
+nmap <Esc>[23~ <S-F1>
+nmap <Esc>[24~ <S-F2>
+nmap <Esc>[25~ <S-F3>
+nmap <Esc>[26~ <S-F4>
+nmap <Esc>[28~ <S-F5>
+nmap <Esc>[29~ <S-F6>
+nmap <Esc>[31~ <S-F7>
+nmap <Esc>[32~ <S-F8>
+nmap <Esc>[33~ <S-F9>
+nmap <Esc>[34~ <S-F10>
 
 map <F17> <S-F5>
 map <F18> <S-F6>
@@ -992,6 +1007,9 @@ noremap <Leader>ip :color inkpot<CR>
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 syntax sync minlines=200
+
+" NERD tree. Yay!
+nmap <silent> <C-D> :NERDTreeToggle<CR>
 
 " Javac
 "set makeprg=javac\ %
