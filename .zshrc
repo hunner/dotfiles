@@ -23,7 +23,7 @@ export MANPATH=~/local/share/man:/usr/man:/usr/share/man
 paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /pkgs/ghc/current/bin /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin
 /opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
-/usr/bin/X11 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
+/usr/bin/X11 /usr/local/bin/X11 /usr/openwin/lib/X11/xkb /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
 prepaths=(~/.cabal/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
@@ -66,7 +66,11 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
 PS1="%m%# "
-export LANG="en_US.UTF-8"
+if [ `uname -s` = "SunOS" ] ; then
+    export LANG="C"
+else
+    export LANG="en_US.UTF-8"
+fi
 #export LC_CTYPE="en_US.UTF-8"
 export LC_COLLATE="C" #order files in ls
 #export LC_TIME="en_US.UTF-8"
