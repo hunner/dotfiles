@@ -1024,8 +1024,9 @@ nmap <leader>cup <Plug>CVSUpdate
 nmap <leader>cdiff <Plug>CVSDiff
 
 " Spell
-let spell_executable = "aspell"
-let spell_language_list = "spanish,english"
+"let spell_executable = "aspell"
+"let spell_language_list = "spanish,english"
+set spelllang=en_us,eo
 
 " Comentiffy
 let g:EnhCommentifyMultiPartBlocks = 'yes'
