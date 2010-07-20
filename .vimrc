@@ -519,6 +519,9 @@ nmap <C-w>. :bn<CR>
 " v_K is really really annoying
 vmap K k
 
+" Puppet pkg sort
+nmap <Leader>sp vi[:sort<CR>
+
 " Delete a buffer but keep layout
 if has("eval")
     command! Kwbd enew|bw #
