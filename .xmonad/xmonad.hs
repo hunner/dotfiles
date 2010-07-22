@@ -36,7 +36,7 @@ import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
 mTerminal      = "urxvtc"
-mBorderWidth   = 1
+mBorderWidth   = 0
 mModMask       = mod4Mask
 
 -- A tagging example:
@@ -182,7 +182,7 @@ evHook _ = return $ All True
 -- Layouts:
 
 --mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
-mLayout = smartBorders Full ||| tiled ||| Mirror tiled ||| simplestFloat ||| Circle ||| magnifier Circle
+mLayout = Mirror tiled ||| tiled ||| smartBorders Full ||| simplestFloat ||| Circle ||| magnifier Circle
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
