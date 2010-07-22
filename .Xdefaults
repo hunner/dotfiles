@@ -1,35 +1,27 @@
-Xft.antialias: true
+Xft*antialias: true
 URxvt*scrollBar: false
-!URxvt*background: rgba:0000/0000/0000/cccc
 URxvt*background: rgba:0000/0000/0000/dddd
-!URxvt*background: rgba:1111/1111/1111/dddd
 URxvt*depth: 32
 URxvt*foreground: #dddddd
-!URxvt*foreground: #c3c6c8
-!URxvt*transparent: true
 URxvt*transparent: false
 !URxvt*fading: 2%
 !URxvt*shading: 30
 !URxvt*fadeColor: grey
 URxvt*buffered: true
 URxvt*cursorColor: green
-!URxvt*cursorColor: #007998
-!URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 URxvt*font: xft:DroidSansMonoDotted:pixelsize=12,xft:IPAGothic:antialias=true
+!URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 !URxvt*font: 6x13,xft:IPAGothic:antialias=true
-!URxvt*perl-ext-common: default
-!URxvt*color1:  #007998
-!URxvt*color9:  #228bba
 
-URxvt.perl-ext-common: default,matcher
+URxvt*perl-ext-common: default,matcher
 !URxvt*urlLauncher: urxvt-to-uzbl.sh
-URxvt*urlLauncher: chromium
-URxvt.matcher.button: 1
-URxvt.colorUL: #cc0000
-URxvt.searchable-scrollback: CM-S
+URxvt*urlLauncher: chromium-dev
+URxvt*matcher.button: 1
+URxvt*colorUL: #cc0000
+URxvt*searchable-scrollback: CM-S
 !URxvt.colorUL: #007998
 
-!URxvt.borderLess:True
+URxvt.borderLess:False
 !URxvt.reverseVideo:True
 !URxvt.scrollBar:False
 !URxvt.linespace:5
