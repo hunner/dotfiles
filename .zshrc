@@ -166,6 +166,7 @@ alias -s txt="vi"
 alias -s flv="mplayer"
 alias -s avi="mplayer"
 alias -s mkv="mplayer"
+alias -s mpg="mplayer"
 
 # Functions
 args() { echo $#; }
