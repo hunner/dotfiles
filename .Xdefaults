@@ -4,6 +4,7 @@ URxvt*background: rgba:0000/0000/0000/dddd
 URxvt*depth: 32
 URxvt*foreground: #dddddd
 URxvt*transparent: false
+URxvt*urgentOnBell: True
 !URxvt*fading: 2%
 !URxvt*shading: 30
 !URxvt*fadeColor: grey
