@@ -9,7 +9,7 @@ scriptencoding utf-8
 "-----------------------------------------------------------------------
 
 " Want utf8 at all times
-"set termencoding=utf-8
+set termencoding=utf-8
 set encoding=utf-8
 set fenc=utf-8
 
