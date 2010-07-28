@@ -1,7 +1,8 @@
 Xft*antialias: true
+Xft*dpi: 96
 URxvt*scrollBar: false
 URxvt*background: rgba:0000/0000/0000/dddd
-URxvt*depth: 32
+URxvt.depth: 32
 URxvt*foreground: #dddddd
 URxvt*transparent: false
 URxvt*urgentOnBell: True
@@ -9,7 +10,7 @@ URxvt*urgentOnBell: True
 !URxvt*shading: 30
 !URxvt*fadeColor: grey
 URxvt*buffered: true
-URxvt*cursorColor: green
+URxvt*cursorColor: #99ff00
 URxvt*font: xft:DroidSansMonoDotted:pixelsize=12,xft:IPAGothic:antialias=true
 !URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 !URxvt*font: 6x13,xft:IPAGothic:antialias=true
@@ -18,9 +19,10 @@ URxvt*perl-ext-common: default,matcher
 !URxvt*urlLauncher: urxvt-to-uzbl.sh
 URxvt*urlLauncher: chromium-dev
 URxvt*matcher.button: 1
-URxvt*colorUL: #cc0000
-URxvt*searchable-scrollback: CM-S
-!URxvt.colorUL: #007998
+!URxvt*colorUL: green
+URxvt*searchable-scrollback: F10
+URxvt.underlineColor: #99ff00
+URxvt.urgentOnBell: True
 
 URxvt.borderLess:False
 !URxvt.reverseVideo:True
