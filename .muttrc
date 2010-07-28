@@ -34,7 +34,7 @@ set net_inc=5
 # uber-mutt stuff
 set sidebar_width=22
 set sidebar_visible=no
-set sidebar_delim='.'
+set sidebar_delim='|'
 set sidebar_sort=yes
 color sidebar_new color148 default
 bind index \CP sidebar-prev
@@ -77,7 +77,7 @@ color quoted3 brightmagenta default
 #color body cyan default "((ftp|http|https)://|news:)[^ >)\"\t]+"
 color body magenta default "[-a-z_0-9.+]+@[-a-z_0-9.]+\.[a-z]{2,3}"
 color error color88 default
-color indicator color148 black
+color indicator black color148
 color signature brightblack default
 color status color148 black
 color tilde blue default
