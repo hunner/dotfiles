@@ -5,7 +5,7 @@ set imap_user="hunner"
 
 #set smtp_url="smtp://hunter.haugen@smtp.gmail.com:587/"
 set smtp_url="smtp://mailhost.cecs.pdx.edu:587/"
-set ssl_min_dh_prime_bits=512
+#set ssl_min_dh_prime_bits=512
 #set smtp_pass="password"
 set from="hunner@cat.pdx.edu"
 set realname="Hunter Haugen"
@@ -30,6 +30,22 @@ set sort_aux=last-date-received
 set imap_check_subscribed
 # Display download progress every 5K
 set net_inc=5
+
+# uber-mutt stuff
+set sidebar_width=22
+set sidebar_visible=no
+set sidebar_delim='.'
+set sidebar_sort=yes
+color sidebar_new magenta default
+bind index \CP sidebar-prev
+bind index \CN sidebar-next
+bind index \CO sidebar-open
+bind pager \CP sidebar-prev
+bind pager \CN sidebar-next
+bind pager \CO sidebar-open
+macro index b '<enter-command>toggle sidebar_visible<enter>'
+macro pager b '<enter-command>toggle sidebar_visible<enter>'
+bind index B bounce-message
 
 # Ignore gmail stuff, just in case
 ignore "Authentication-Results:"
