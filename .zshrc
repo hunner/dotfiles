@@ -138,6 +138,7 @@ alias odin="TERM=xterm;ssh hunner@odin.pdx.edu"
 alias clancy="ssh hunnur@clancy.dreamhost.com"
 alias kvar="ssh hunner@131.252.134.134"
 alias kvin="ssh hunner@131.252.135.22"
+alias mutt="TERM=xterm-256color mutt"
 alias x="exit"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD

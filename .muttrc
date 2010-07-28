@@ -36,15 +36,15 @@ set sidebar_width=22
 set sidebar_visible=no
 set sidebar_delim='.'
 set sidebar_sort=yes
-color sidebar_new magenta default
+color sidebar_new color148 default
 bind index \CP sidebar-prev
 bind index \CN sidebar-next
 bind index \CO sidebar-open
 bind pager \CP sidebar-prev
 bind pager \CN sidebar-next
 bind pager \CO sidebar-open
-macro index b '<enter-command>toggle sidebar_visible<enter>'
-macro pager b '<enter-command>toggle sidebar_visible<enter>'
+macro index b '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 bind index B bounce-message
 
 # Ignore gmail stuff, just in case
@@ -60,7 +60,7 @@ ignore *
 unignore  Date To From: Cc Subject X-Tts
 hdr_order Date To From: Cc Subject X-Tts
 color normal default default
-color header red default '^(Cc|Date|To|From|Subject|X-Tts):'
+color header color148 default '^(Cc|Date|To|From|Subject|X-Tts):'
 color hdrdefault cyan default
 
 color index white default ~N
@@ -76,10 +76,10 @@ color quoted3 brightmagenta default
 
 #color body cyan default "((ftp|http|https)://|news:)[^ >)\"\t]+"
 color body magenta default "[-a-z_0-9.+]+@[-a-z_0-9.]+\.[a-z]{2,3}"
-color error green default
-color indicator black red
+color error color88 default
+color indicator color148 black
 color signature brightblack default
-color status black red
+color status color148 black
 color tilde blue default
 
 # Key bindings
