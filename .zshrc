@@ -10,6 +10,9 @@ bindkey "^I" expand-or-complete-prefix
 umask 022
 
 # Fix $TERM
+if [ -f /etc/termcap ] ; then
+    export TERMCAP=/etc/termcap
+fi
 case "$TERM" in
     rxvt-unicode) export TERM=rxvt;;
     rxvt-256color) export TERM=rxvt;;
