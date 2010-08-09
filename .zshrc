@@ -65,6 +65,7 @@ zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.e
 HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
+export GPGKEY="48C7AF0C"
 PS1="%m%# "
 export LANG="en_US.UTF-8"
 #export LC_CTYPE="en_US.UTF-8"
@@ -150,7 +151,7 @@ alias sl="screen -ls"
 alias sr="screen -r"
 alias sx="screen -x"
 alias srd="screen -rd"
-alias t="SSH_AUTH_SOCK=$HOME/.tmux-ssh-agent TERM=xterm-256color tmux -v at"
+alias t="SSH_AUTH_SOCK=$HOME/.tmux-ssh-agent TERM=xterm-256color tmux at"
 alias tl="tmux ls"
 alias bc="bc -q"
 alias fm="fmstatus.sh&;shell-fm"
