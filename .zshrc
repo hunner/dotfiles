@@ -10,6 +10,9 @@ bindkey "^I" expand-or-complete-prefix
 umask 022
 
 # Fix $TERM
+if [ -f /etc/termcap ] ; then
+    export TERMCAP=/etc/termcap
+fi
 case "$TERM" in
     rxvt-unicode) export TERM=rxvt;;
     rxvt-256color) export TERM=rxvt;;
@@ -65,6 +68,7 @@ zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.e
 HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
+export GPGKEY="48C7AF0C"
 PS1="%m%# "
 if [ `uname -s` = "SunOS" ] ; then
     export LANG="C"
@@ -138,10 +142,13 @@ alias f="TERM=rxvt;ssh hunner@firefly.cat.pdx.edu"
 alias z="TERM=rxvt;ssh hunner@zabava.cat.pdx.edu"
 alias o="TERM=rxvt;ssh hunner@osiris.cat.pdx.edu"
 alias m="TERM=rxvt;ssh hunner@mint.cic.pdx.edu"
+alias chandra="TERM=rxvt;ssh hunner@chandra.cs.pdx.edu"
+export CS=cs.pdx.edu
 alias odin="TERM=xterm;ssh hunner@odin.pdx.edu"
 alias clancy="ssh hunnur@clancy.dreamhost.com"
 alias kvar="ssh hunner@131.252.134.134"
 alias kvin="ssh hunner@131.252.135.22"
+alias mutt="TERM=xterm-256color mutt"
 alias x="exit"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
@@ -153,7 +160,7 @@ alias sl="screen -ls"
 alias sr="screen -r"
 alias sx="screen -x"
 alias srd="screen -rd"
-alias t="SSH_AUTH_SOCK=$HOME/.tmux-ssh-agent TERM=xterm-256color tmux at||tmux"
+alias t="SSH_AUTH_SOCK=$HOME/.tmux-ssh-agent TERM=xterm-256color tmux at"
 alias tl="tmux ls"
 alias bc="bc -q"
 alias fm="fmstatus.sh&;shell-fm"
@@ -170,6 +177,7 @@ alias -s txt="vi"
 alias -s flv="mplayer"
 alias -s avi="mplayer"
 alias -s mkv="mplayer"
+alias -s mpg="mplayer"
 
 # Functions
 args() { echo $#; }
@@ -191,6 +199,18 @@ alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
+if [ -f $HOME/.termcap ] ; then
+    TERMCAP=$(< $HOME/.termcap)
+    export TERMCAP
+fi
+make_termcap() {
+    cat > $HOME/.termcap << EOF
+rxvt-256color|rxvt-256color terminal (X Window System):\
+    :Co#256:\
+    :tc=rxvt-unicode:\
+    :tc=rxvt:
+EOF
+}
 type7() {
     if [ `uname -s` = "SunOS" ] ; then
         xmodmap ~/keymaps/eo_dv_hunner_type7_sol.pke

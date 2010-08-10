@@ -9,7 +9,7 @@ scriptencoding utf-8
 "-----------------------------------------------------------------------
 
 " Want utf8 at all times
-"set termencoding=utf-8
+set termencoding=utf-8
 set encoding=utf-8
 set fenc=utf-8
 
@@ -519,6 +519,9 @@ nmap <C-w>. :bn<CR>
 " v_K is really really annoying
 vmap K k
 
+" Puppet pkg sort
+nmap <Leader>sp vi[:sort<CR>
+
 " Delete a buffer but keep layout
 if has("eval")
     command! Kwbd enew|bw #
@@ -642,6 +645,22 @@ if has("eval")
         call setline(line("."), "#endif")
     endfun
     noremap <Leader>ig :call MakeIncludeGuards()<CR>
+endif
+
+" javascript folding
+if has("eval")
+    function! JavaScriptFold()
+        setl foldmethod=syntax
+        setl foldlevelstart=1
+        syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+
+        function! FoldText()
+            return substitute(getline(v:foldstart), '{.*', '{...}', '')
+        endfunction
+        setl foldtext=FoldText()
+    endfunction
+    au FileType javascript call JavaScriptFold()
+    au FileType javascript setl fen
 endif
 
 " fast buffer switching
@@ -1024,8 +1043,9 @@ nmap <leader>cup <Plug>CVSUpdate
 nmap <leader>cdiff <Plug>CVSDiff
 
 " Spell
-let spell_executable = "aspell"
-let spell_language_list = "spanish,english"
+"let spell_executable = "aspell"
+"let spell_language_list = "spanish,english"
+set spelllang=en_us,eo
 
 " Comentiffy
 let g:EnhCommentifyMultiPartBlocks = 'yes'
