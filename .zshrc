@@ -138,6 +138,8 @@ alias f="TERM=rxvt;ssh hunner@firefly.cat.pdx.edu"
 alias z="TERM=rxvt;ssh hunner@zabava.cat.pdx.edu"
 alias o="TERM=rxvt;ssh hunner@osiris.cat.pdx.edu"
 alias m="TERM=rxvt;ssh hunner@mint.cic.pdx.edu"
+alias chandra="TERM=rxvt;ssh hunner@chandra.cs.pdx.edu"
+export CS=cs.pdx.edu
 alias odin="TERM=xterm;ssh hunner@odin.pdx.edu"
 alias clancy="ssh hunnur@clancy.dreamhost.com"
 alias kvar="ssh hunner@131.252.134.134"
