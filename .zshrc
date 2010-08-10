@@ -195,6 +195,18 @@ alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
+if [ -f $HOME/.termcap ] ; then
+    TERMCAP=$(< $HOME/.termcap)
+    export TERMCAP
+fi
+make_termcap() {
+    cat > $HOME/.termcap << EOF
+rxvt-256color|rxvt-256color terminal (X Window System):\
+    :Co#256:\
+    :tc=rxvt-unicode:\
+    :tc=rxvt:
+EOF
+}
 type7() {
     if [ `uname -s` = "SunOS" ] ; then
         xmodmap ~/keymaps/eo_dv_hunner_type7_sol.pke
