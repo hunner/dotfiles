@@ -71,10 +71,10 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-g", warpToCentre >> goToSelected gsConfig )
 
         -- Multimedia
-        , ("<XF86AudioPlay>"       , spawn "cmus-remote --pause" ) -- play/pause mpd
-        , ("<XF86AudioStop>"       , spawn "cmus-remote --stop"  ) -- stop mpd
-        , ("<XF86AudioPrev>"       , spawn "cmus-remote --prev"  ) -- prev song
-        , ("<XF86AudioNext>"       , spawn "cmus-remote --next"  ) -- next song
+        , ("<XF86AudioPlay>"       , spawn "mpc toggle"       ) -- play/pause mpd
+        , ("<XF86AudioStop>"       , spawn "mpc stop"         ) -- stop mpd
+        , ("<XF86AudioPrev>"       , spawn "mpc prev"         ) -- prev song
+        , ("<XF86AudioNext>"       , spawn "mpc next"         ) -- next song
         , ("<XF86AudioLowerVolume>", spawn "amixer -q set PCM 1-") -- volume down
         , ("<XF86AudioRaiseVolume>", spawn "amixer -q set PCM 1+") -- volume up
         , ("<XF86AudioMute>"       , spawn "amixer -q set Headphone toggle") -- toggle mute
