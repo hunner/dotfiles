@@ -977,7 +977,7 @@ au Filetype html,xml,xsl,sgml ",docbook
 " explorador vertical
 let g:explVertical=1
 " define leader como =
-let mapleader = "="
+"let mapleader = "="
 
 " Terminal companability
 map <F15> <S-F3>
