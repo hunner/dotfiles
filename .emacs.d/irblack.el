@@ -22,8 +22,8 @@
   (interactive)
   (color-theme-install
    '(color-theme-irblack
-     (;; (background-color . "black")
-      ;; (background-mode . dark)
+     ((background-color . "black")
+      (background-mode . dark)
       (border-color . "gray10")
       (cursor-color . "DarkOliveGreen2")
       (foreground-color . "#F6F3E8")
@@ -67,6 +67,8 @@
      (show-paren-mismatch ((t (:background "#FF1100"))))
      (underline ((nil (:underline nil))))
 
+     ;; whitespace
+     (trailing-whitespace ((t (:background "gray22"))))
      ;; mumamo
      ;(mumamo-background-chunk-major ((t (:background "#000000"))))
      ;(mumamo-background-chunk-submode ((t (:background "#222222"))))

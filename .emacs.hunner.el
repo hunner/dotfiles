@@ -32,6 +32,7 @@
 
 (bar-cursor-mode 1)
 (menu-bar-mode 0)
+(scroll-bar-mode -1)
 (tool-bar-mode 0)
 (setq linum-format "%3d ")
 (setq-default indent-tabs-mode nil)
@@ -96,6 +97,7 @@
 ;; Highlight bad whitespace
 (global-whitespace-mode t)
 (setq whitespace-style (quote (tabs tab-mark)))
+(setq-default show-trailing-whitespace t)
 
 ;; Make % work like vi
 (global-set-key "%" 'match-paren)
@@ -107,12 +109,12 @@
         (t (self-insert-command (or arg 1)))))
 
 ;; Prevent Emacs from stupidly auto-changing my working directory
-(defun find-file-save-default-directory ()
-    (interactive)
-    (setq saved-default-directory default-directory)
-    (ido-find-file)
-    (setq default-directory saved-default-directory))
-(global-set-key "\C-x\C-f" 'find-file-save-default-directory)
+;; (defun find-file-save-default-directory ()
+;;     (interactive)
+;;     (setq saved-default-directory default-directory)
+;;     (ido-find-file)
+;;     (setq default-directory saved-default-directory))
+;; (global-set-key "\C-x\C-f" 'find-file-save-default-directory)
 
 ;; Give killing lines advice
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -194,7 +196,20 @@
             ("M-O" other-window)
             ("M-`" switch-to-next-frame)
             ("M-~" switch-to-previous-frame)
+            ("M-RET" ns-toggle-fullscreen)
             ))
+
+;;toggle full-screen
+(defun toggle-fullscreen ()
+(interactive)
+(set-frame-parameter
+ nil
+ 'fullscreen
+ (if (frame-parameter nil 'fullscreen)
+     nil
+   'fullboth)))
+
+(global-set-key [(meta return)] 'toggle-fullscreen)
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
