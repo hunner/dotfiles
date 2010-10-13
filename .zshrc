@@ -23,11 +23,11 @@ esac
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man
-paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
-/pkgs/ghc/current/bin /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin
-/opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
-/usr/bin/X11 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
-/opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
+paths=(/opt/local/sbin /opt/local/bin /cat/bin /cat/games/bin /opt/csw/sbin
+/opt/csw/bin /pkgs/ghc/current/bin /pkgs/chromium/bin /usr/sfw/sbin
+/usr/sfw/bin /opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin
+/usr/openwin/bin /usr/bin/X11 /usr/local/bin/X11 /usr/openwin/bin/xview
+/opt/java/bin /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
 prepaths=(~/.cabal/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
