@@ -110,6 +110,9 @@ else
     export VISUAL=vi
     export EDITOR=vi
 fi
+if [ -n "$SSH_AUTH_SOCK" ] ; then
+    ln -fs $SSH_AUTH_SOCK $HOME/.ssh-agent
+fi
 #xset fp+ /usr/APL2/fonts/X11
 #xset fp  rehash
 #if [ -d $HOME/.gems/gems ] ; then
@@ -157,7 +160,7 @@ alias sl="screen -ls"
 alias sr="screen -r"
 alias sx="screen -x"
 alias srd="screen -rd"
-alias t="SSH_AUTH_SOCK=$HOME/.tmux-ssh-agent TERM=xterm-256color tmux at"
+alias t="SSH_AUTH_SOCK=$HOME/.ssh-agent TERM=xterm-256color tmux at"
 alias tl="tmux ls"
 alias bc="bc -q"
 alias fm="fmstatus.sh&;shell-fm"
