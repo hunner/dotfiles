@@ -62,8 +62,8 @@ fi
 
 # Setting vars
 #TERM=rxvt
-export GEM_HOME="$HOME/.gems"
-export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
+#export GEM_HOME="$HOME/.gems"
+#export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
 zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
 HISTSIZE=1000
 SAVEHIST=1000
