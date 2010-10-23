@@ -1,6 +1,6 @@
-(require 'cl)
+;; (require 'cl)
 
-(mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
+(mapc (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d"
           ))
 
@@ -8,10 +8,13 @@
     (mapcar #'require packages))
 
 (require-all '(
+               saveplace
                color-theme
                irblack
                parenface
                bar-cursor
+               tls
+               erc
                ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -29,6 +32,12 @@
 ;(color-theme-twilight)
 ;(load-file "~/.emacs.d/color-theme-inkpot.el")
 ;(color-theme-inkpot)
+
+;; OS X settings
+;; (setq mac-option-key-is-meta nil)
+;; (setq mac-command-key-is-meta t)
+;; (setq mac-command-modifier 'meta)
+;; (setq mac-option-modifier nil)
 
 (bar-cursor-mode 1)
 (menu-bar-mode 0)
@@ -166,6 +175,7 @@
           commands))
 (set-keys '(
             ("C-c t" totd)
+            ("C-c n" global-linum-mode)
             ("C-c s p" (lambda () (interactive)
                          (if (shellfm-running-p)
                              (shellfm-pause)
@@ -183,7 +193,8 @@
             ("C-S-<down>"  shrink-window)
             ("C-S-<up>"    enlarge-window)
             ("M-s" save-buffer)
-            ("M-n" global-linum-mode)
+            ("M-p" ctrl-y-in-vi)
+            ("M-n" ctrl-e-in-vi)
             ("M-N" make-frame)
             ("M-W" delete-frame)
             ("M-w" ido-kill-buffer)
@@ -200,16 +211,16 @@
             ))
 
 ;;toggle full-screen
-(defun toggle-fullscreen ()
-(interactive)
-(set-frame-parameter
- nil
- 'fullscreen
- (if (frame-parameter nil 'fullscreen)
-     nil
-   'fullboth)))
+;; (defun toggle-fullscreen ()
+;; (interactive)
+;; (set-frame-parameter
+;;  nil
+;;  'fullscreen
+;;  (if (frame-parameter nil 'fullscreen)
+;;      nil
+;;    'fullboth)))
 
-(global-set-key [(meta return)] 'toggle-fullscreen)
+;; (global-set-key [(meta return)] 'toggle-fullscreen)
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
@@ -219,10 +230,19 @@
   (interactive)
   (if (/=
        (cadr (find 'alpha (frame-parameters nil) :key #'car))
-       10)
-      (set-frame-parameter nil 'alpha '(10 10))
+       40)
+      (set-frame-parameter nil 'alpha '(40 40))
     (set-frame-parameter nil 'alpha '(85 85))))
 (global-set-key (kbd "C-c T") 'toggle-transparency)
+
+;; Vim-like scrolling
+(defun ctrl-e-in-vi (n)
+  (interactive "p")
+  (scroll-up n))
+
+(defun ctrl-y-in-vi (n)
+  (interactive "p")
+  (scroll-down n))
 
 ;; (global-set-key (kbd "<XF86AudioPlay>")
 ;;                 (lambda () (interactive)
@@ -232,8 +252,15 @@
 
 ;; ERC stuff
 ;; (setq erc-encoding-coding-alist (quote (("#lisp" . utf-8)
-;;                                         ("#nihongo" . iso-2022-jp) ("#truelambda" . iso-latin-1)
-;;                                         ("#bitlbee" . iso-latin-1))))
+;;                                         ("#nihongo" . iso-2022-jp)
+;;                                         ("#" . iso-latin-1)
+;;                                         ("#" . iso-latin-1))))
+(autoload 'erc "erc")
+(add-hook 'erc-mode-hook
+          '(lambda ()
+             (setq scroll-margin 0)
+             (setq erc-scrolltobottom-mode 1)))
+(load "~/.emacs.d/erc-bip") ;; Passwords here
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
