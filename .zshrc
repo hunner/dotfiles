@@ -69,9 +69,10 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
-#C[0]="$reset_color"
-#C[1]="$fg[red]"
-C=(foo bar)
+if [ -x `which git` ] ; then
+    GIT_STATUS="git status|grep 'Changed but not updated:' > /dev/null"
+    GIT_STAGED="git status|grep 'Changes to be committed:' > /dev/null"
+fi
 #PS1="%m%# "
 return_red="%(?..$fg[red])"
 git_unstaged_green="%($GIT..$fg[green])"
@@ -92,10 +93,6 @@ export MAILCHECK=0
 #export AWT_TOOLKIT=MToolkit
 #export AWT_TOOLKIT=XToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
-if [ -x `which git` ] ; then
-    GIT_STATUS="git status"
-    GIT_STAGED="git status"
-fi
 if [ -x `which less` ] ; then
     export PAGER==less
 else
