@@ -21,9 +21,9 @@
 ;; GLOBAL
 (color-theme-initialize)
 
-(if window-system
-    (set-background-color "black")
-    ())
+;; (if window-system
+;;     (set-background-color "black")
+;;     ())
 (color-theme-irblack)
 ;(if window-system
 ;    (color-theme-gentooish)
@@ -188,6 +188,7 @@
             ("C-c s a" shellfm-add-to-playlist)
             ("C-c s q" shellfm 0)
             ("C-c s i" shellfm-track-info)
+            ("C-c e"   ido-erc-buffer)
             ("C-S-<left>"  shrink-window-horizontally)
             ("C-S-<right>" enlarge-window-horizontally)
             ("C-S-<down>"  shrink-window)
@@ -261,6 +262,20 @@
              (setq scroll-margin 0)
              (setq erc-scrolltobottom-mode 1)))
 (load "~/.emacs.d/erc-bip") ;; Passwords here
+(defun ido-erc-buffer()
+  (interactive)
+  (switch-to-buffer
+   (ido-completing-read "Channel:" 
+                        (save-excursion
+                          (delq
+                           nil
+                           (mapcar (lambda (buf)
+                                     (when (buffer-live-p buf)
+                                       (with-current-buffer buf
+                                         (and (eq major-mode 'erc-mode)
+                                              (buffer-name buf)))))
+                                   (buffer-list)))))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
@@ -328,6 +343,13 @@
  '(scroll-step 1)
  '(scroll-up-aggressively 0.0)
  '(show-paren-mode t nil (paren)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(mumamo-border-face-in ((t nil)))
+ '(mumamo-border-face-out ((t nil))))
 
 
 ;;; This was installed by package-install.el.
@@ -340,10 +362,3 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize)
   (require 'starter-kit-elpa))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(mumamo-border-face-in ((t nil)))
- '(mumamo-border-face-out ((t nil))))

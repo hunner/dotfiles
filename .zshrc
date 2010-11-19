@@ -3,7 +3,7 @@ setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch
 unsetopt beep
 bindkey -e
 zstyle :compinstall filename '~/.zshrc'
-autoload -Uz compinit
+autoload -Uz compinit colors && colors
 compinit -u
 #bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
@@ -69,7 +69,15 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
-PS1="%m%# "
+#C[0]="$reset_color"
+#C[1]="$fg[red]"
+C=(foo bar)
+#PS1="%m%# "
+return_red="%(?..$fg[red])"
+git_unstaged_green="%($GIT..$fg[green])"
+git_staged_yellow="%(?..$fg[yellow])"
+PS1="%m$git_changed_green$git_staged_yellow$return_red%#%{$reset_color%} "
+#PS1=${FACE[$[($?)?1:0]]}
 export LANG="en_US.UTF-8"
 #export LC_CTYPE="en_US.UTF-8"
 export LC_COLLATE="C" #order files in ls
@@ -84,6 +92,10 @@ export MAILCHECK=0
 #export AWT_TOOLKIT=MToolkit
 #export AWT_TOOLKIT=XToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
+if [ -x `which git` ] ; then
+    GIT_STATUS="git status"
+    GIT_STAGED="git status"
+fi
 if [ -x `which less` ] ; then
     export PAGER==less
 else
