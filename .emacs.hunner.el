@@ -8,7 +8,6 @@
     (mapcar #'require packages))
 
 (require-all '(
-               saveplace
                color-theme
                irblack
                parenface
@@ -90,8 +89,9 @@
 ;; (setq url-proxy-services '(("no_proxy" . "localhost")
 ;;                            ("http" . "localhost:8118")))
 
-(setq-default save-place t)                   ;; activate it for all buffers
 (setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
+(setq-default save-place t)                   ;; activate it for all buffers
+(require 'saveplace)                          ;; Need to require after setq
 
 (setq backup-directory-alist
       `((".*" . "~/.emacs.d/backups/")))
@@ -226,6 +226,7 @@
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
 (add-to-list 'default-frame-alist '(alpha 85 85))
+(set-frame-font "Droid Sans Mono Dotted-12")
 (eval-when-compile (require 'cl))
 (defun toggle-transparency ()
   (interactive)
