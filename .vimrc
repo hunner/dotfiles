@@ -513,8 +513,10 @@ endif
 " Go to buffers
 nmap <silent> <S-Left>  :bprev<CR>
 nmap <silent> <S-Right> :bnext<CR>
-nmap <C-w>, :bp<CR>
-nmap <C-w>. :bn<CR>
+nmap <C-w>, :bprev<CR>
+nmap <C-w>. :bnext<CR>
+nmap gT :bprev<CR>
+nmap gt :bnext<CR>
 
 " v_K is really really annoying
 vmap K k
