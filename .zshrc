@@ -1,9 +1,16 @@
+typeset -ga preexec_functions
+typeset -ga precmd_functions
+typeset -ga chpwd_functions
+fpath=($fpath $HOME/.zsh/func)
+typeset -u fpath
+
 # Options
 setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
+
 zstyle :compinstall filename '~/.zshrc'
-autoload -Uz compinit colors && colors
+autoload -Uz compinit colors zgitinit && colors && zgitinit
 compinit -u
 #bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
@@ -69,16 +76,22 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
-if [ -x `which git` ] ; then
-    GIT_STATUS="git status|grep 'Changed but not updated:' > /dev/null"
-    GIT_STAGED="git status|grep 'Changes to be committed:' > /dev/null"
-fi
+
+# Prompt
 #PS1="%m%# "
-return_red="%(?..$fg[red])"
-git_unstaged_green="%($GIT..$fg[green])"
-git_staged_yellow="%(?..$fg[yellow])"
-PS1="%m$git_changed_green$git_staged_yellow$return_red%#%{$reset_color%} "
-#PS1=${FACE[$[($?)?1:0]]}
+prompt_precmd() {
+    if ! zgit_isindexclean ; then
+        #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f](%F{cyan}$(zgit_branch)%f)>"
+        gitcolor=$fg[blue]
+    elif ! zgit_isworktreeclean ; then
+        #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f]>"
+        gitcolor=$fg[green]
+    fi
+    color="%(?.$gitcolor.$fg[red])"
+    PROMPT="%m$color%#%{$reset_color%} "
+}
+precmd_functions+=prompt_precmd
+
 export LANG="en_US.UTF-8"
 #export LC_CTYPE="en_US.UTF-8"
 export LC_COLLATE="C" #order files in ls
