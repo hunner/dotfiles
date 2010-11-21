@@ -80,6 +80,7 @@ export GPGKEY="48C7AF0C"
 # Prompt
 #PS1="%m%# "
 prompt_precmd() {
+    gitcolor=""
     if ! zgit_isindexclean ; then
         #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f](%F{cyan}$(zgit_branch)%f)>"
         gitcolor=$fg[blue]
