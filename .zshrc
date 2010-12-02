@@ -2,7 +2,7 @@ typeset -ga preexec_functions
 typeset -ga precmd_functions
 typeset -ga chpwd_functions
 fpath=($fpath $HOME/.zsh/func)
-typeset -u fpath
+#typeset -u fpath
 
 # Options
 setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
