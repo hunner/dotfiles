@@ -194,7 +194,6 @@ alias d="dtach -a /tmp/dtach"
 alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
-alias gem="nice -n19 gem"
 alias uzbl="uzbl-browser"
 #startup aliases
 alias -s pdf="zathura"
