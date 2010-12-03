@@ -10,6 +10,7 @@ augroup filetypedetect
     "au! BufNewFile,BufRead *.rhtml    setfiletype rhtml
     au! BufNewFile,BufRead *.rhtml    setfiletype eruby
     au! BufNewFile,BufRead *.s        setfiletype asmx86
+    au! BufNewFile,BufRead *.rl       setfiletype ragel
     au! BufRead,BufNewFile *.ijs,*.ijt,*.ijp,*.ijx        setfiletype j
 
 augroup END
