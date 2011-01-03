@@ -64,6 +64,9 @@ fi
 if [ -d ~/.gems/bin ] ; then
     export PATH="$HOME/.gems/bin:$PATH"
 fi
+for dir in `find ~/.gem/ruby/*/bin|grep /bin$` ; do
+    export PATH=$PATH:$dir
+done
 #for dir in `find /opt/*/bin|grep /bin$` `find /opt/csw/*/bin|grep /bin$` ; do
 #    export PATH=$PATH:$dir
 #done
@@ -94,7 +97,8 @@ prompt_precmd() {
     color="%(?.$gitcolor.$fg[red])"
     PROMPT="%m$color%#%{$reset_color%} "
 }
-precmd_functions+=prompt_precmd
+#precmd_functions+=prompt_precmd
+PROMPT="%m%# "
 
 export LANG="en_US.UTF-8"
 #export LC_CTYPE="en_US.UTF-8"
