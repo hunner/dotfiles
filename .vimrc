@@ -305,6 +305,10 @@ endif
 
 " content creation
 if has("autocmd")
+    augroup puppet
+        autocmd BufRead,BufNewFile *.pp
+                    \ set tabstop=2 shiftwidth=2 softtabstop=2
+    augroup END
     augroup text
         autocmd BufRead,BufNewFile *.txt
                      \ set nonumber tw=80
