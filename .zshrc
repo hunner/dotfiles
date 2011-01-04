@@ -64,9 +64,9 @@ fi
 if [ -d ~/.gems/bin ] ; then
     export PATH="$HOME/.gems/bin:$PATH"
 fi
-for dir in `find ~/.gem/ruby/*/bin|grep /bin$` ; do
-    export PATH=$PATH:$dir
-done
+if [ -d ~/.gem/ruby/1.8/bin ] ; then
+    export PATH="$PATH:$HOME/.gem/ruby/1.8/bin"
+fi
 #for dir in `find /opt/*/bin|grep /bin$` `find /opt/csw/*/bin|grep /bin$` ; do
 #    export PATH=$PATH:$dir
 #done
