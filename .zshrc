@@ -199,6 +199,7 @@ alias d="dtach -a /tmp/dtach"
 alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
+alias g="git"
 alias gl="git lg"
 alias gp="git push"
 alias gu="git pull"
