@@ -4,4 +4,4 @@
 [color]
 	ui = true
 [alias]
-	lg = "log --pretty=format:'%C(yellow)%h%C(reset) %C(blue)%an%C(reset) %s %C(cyan)%cr%C(reset) %C(green)%d%C(reset)' --graph"
+	lg = "log --pretty=format:'%C(yellow)%h%C(reset) %C(blue)%an%C(reset) %C(cyan)%cr%C(reset) %s %C(green)%d%C(reset)' --graph"
