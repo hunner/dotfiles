@@ -114,7 +114,7 @@ export MAILCHECK=0
 #export AWT_TOOLKIT=MToolkit
 #export AWT_TOOLKIT=XToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
-if [ -x `which less` ] ; then
+if [ -x `whence less` ] ; then
     export PAGER==less
 else
     export PAGER==more
@@ -127,12 +127,22 @@ else
         export PERL5LIB=$PERL5LIB:~/local/lib/perl5:~/local/lib/perl5/site_perl
 fi
 
-if [ -n "`which vim`" ] ; then
+if whence vim > /dev/null ; then
     export VISUAL=vim
     export EDITOR=vim
     if [ -n "$DISPLAY" ] ; then
         alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
-        alias vi=vim
+        #alias vi=gvim
+    fi
+    if whence mvim > /dev/null ; then
+        export VISUAL="mvim -f"
+        export EDITOR="mvim -f"
+        alias vi=mvim
+        alias vr="mvim --remote"
+        alias vir=vr
+        vs() { mvim --servername $1 --remote $argv[2,$] }
+        alias vis=vs
+        alias vl="mvim --serverlist"
     else
         alias vi=vim
     fi
@@ -140,6 +150,7 @@ else
     export VISUAL=vi
     export EDITOR=vi
 fi
+alias v=vi
 if [ -n "$SSH_AUTH_SOCK" ] ; then
     ln -fs $SSH_AUTH_SOCK $HOME/.ssh-agent
 fi
@@ -292,7 +303,7 @@ zpush() {
 }
 
 ex () {
-    if which gtar > /dev/null ; then
+    if whence gtar > /dev/null ; then
         TAR=gtar
     else
         TAR=tar
