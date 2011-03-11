@@ -226,8 +226,23 @@ if has('title') && (has('gui_running') || &title)
     set titlestring=
     set titlestring+=%f\                                              " file name
     set titlestring+=%h%m%r%w                                         " flags
-    set titlestring+=\ -\ %{v:progname}                               " program name
+    "set titlestring+=\ -\ %{v:progname}                               " program name
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
+endif
+
+" Backups and undos across edits
+if v:version >= 702
+    set backupdir=~/.vim/backups
+endif
+" NB: :help usr_32.txt or undo-branches
+if v:version >= 703
+    set undodir=~/.vim/backups
+    set undofile
+endif
+
+" For :X encryption
+if v:version >= 703
+    set cryptmethod=blowfish
 endif
 
 " If possible, try to use a narrow number column.
@@ -262,7 +277,7 @@ else
     endif
 endif
 map <silent> <F9> :set noet<CR>:set sw=8<CR>:set ts=8<CR>
-map <silent> <S-F9> :set nolist listchars<CR>
+map <silent> <S-F9> :set list! listchars<CR>
 
 " Show lines longer than 80 characters
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
@@ -316,7 +331,7 @@ if has("autocmd")
     augroup helphelp
         " For help files, move them to the top window and make <Return>
         " behave like <C-]> (jump to tag)
-        autocmd FileType help :call <SID>WindowToTop()
+        "autocmd FileType help :call <SID>WindowToTop()
         autocmd FileType help nmap <buffer> <Return> <C-]>
     augroup END
     augroup interplangs
@@ -562,6 +577,9 @@ noremap <backspace> <C-b>
 noremap <Up>   <C-y>
 noremap <Down> <C-e>
 
+" Scroll only one line with ^U an ^D
+set scroll=1
+
 " Useful things from inside imode
 inoremap <C-z>w <C-o>:w<CR>
 inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
@@ -589,8 +607,9 @@ nmap <Leader>n \i<CR>
 " Pull the following line to the cursor position
 noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 
-" In normal mode, jj escapes
+" In normal mode, jj or jl escapes
 inoremap jj <Esc>
+inoremap jl <Esc>
 
 " Kill line
 noremap <C-k> "_dd
@@ -983,7 +1002,7 @@ au Filetype html,xml,xsl,sgml ",docbook
 " explorador vertical
 let g:explVertical=1
 " define leader como =
-"let mapleader = "="
+let mapleader = "="
 
 " Terminal companability
 map <F15> <S-F3>
@@ -1027,14 +1046,16 @@ map <F12> :TC<CR>
 nmap  :X        :x
 nmap  :W        :w
 nmap  :Q        :q
+nmap  :B        :b
 noremap <Leader>rg :color relaxedgreen<CR>
 noremap <Leader>ip :color inkpot<CR>
+map <Leader>t :FufFile<CR>
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 syntax sync minlines=200
 
 " NERD tree. Yay!
-nmap <silent> <C-D> :NERDTreeToggle<CR>
+nmap <silent> <C-G> :NERDTreeToggle<CR>
 
 " Javac
 "set makeprg=javac\ %
