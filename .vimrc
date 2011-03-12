@@ -199,27 +199,27 @@ set statusline+=%2*0x%-8B\                   " current char
 set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
 " special statusbar for special windows
-if has("autocmd")
-    au FileType qf
-                \ if &buftype == "quickfix" |
-                \     setlocal statusline=%2*%-3.3n%0* |
-                \     setlocal statusline+=\ \[Compiler\ Messages\] |
-                \     setlocal statusline+=%=%2*\ %<%P |
-                \ endif
-
-    fun! <SID>FixMiniBufExplorerTitle()
-        if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline=%2*%-3.3n%0*
-            setlocal statusline+=\[Buffers\]
-            setlocal statusline+=%=%2*\ %<%P
-        endif
-    endfun
-
-    au BufWinEnter *
-                \ let oldwinnr=winnr() |
-                \ windo call <SID>FixMiniBufExplorerTitle() |
-                \ exec oldwinnr . " wincmd w"
-endif
+"if has("autocmd")
+"    au FileType qf
+"                \ if &buftype == "quickfix" |
+"                \     setlocal statusline=%2*%-3.3n%0* |
+"                \     setlocal statusline+=\ \[Compiler\ Messages\] |
+"                \     setlocal statusline+=%=%2*\ %<%P |
+"                \ endif
+"
+"    fun! <SID>FixMiniBufExplorerTitle()
+"        if "-MiniBufExplorer-" == bufname("%")
+"            setlocal statusline=%2*%-3.3n%0*
+"            setlocal statusline+=\[Buffers\]
+"            setlocal statusline+=%=%2*\ %<%P
+"        endif
+"    endfun
+"
+"    au BufWinEnter *
+"                \ let oldwinnr=winnr() |
+"                \ windo call <SID>FixMiniBufExplorerTitle() |
+"                \ exec oldwinnr . " wincmd w"
+"endif
 
 " Nice window title
 if has('title') && (has('gui_running') || &title)
@@ -259,7 +259,7 @@ if has("file_in_path")
 endif
 
 " Better include path
-set path+=src/
+set path+=src/,include/
 let &inc.=' ["<]'
 
 " Show tabs and trailing whitespace visually
@@ -294,10 +294,10 @@ set dictionary=/usr/share/dict/words
 "-----------------------------------------------------------------------
 " miniBufExpl
 "-----------------------------------------------------------------------
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1 
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs = 1
+"let g:miniBufExplModSelTarget = 1 
 
 
 "-----------------------------------------------------------------------
@@ -534,8 +534,16 @@ nmap <silent> <S-Left>  :bprev<CR>
 nmap <silent> <S-Right> :bnext<CR>
 nmap <C-w>, :bprev<CR>
 nmap <C-w>. :bnext<CR>
-nmap gT :bprev<CR>
-nmap gt :bnext<CR>
+
+" Movement between windows
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+
+" Move through buffers instead of tabs
+"nmap gT :bprev<CR>
+"nmap gt :bnext<CR>
 
 " v_K is really really annoying
 vmap K k
@@ -577,9 +585,6 @@ noremap <backspace> <C-b>
 noremap <Up>   <C-y>
 noremap <Down> <C-e>
 
-" Scroll only one line with ^U an ^D
-set scroll=1
-
 " Useful things from inside imode
 inoremap <C-z>w <C-o>:w<CR>
 inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
@@ -611,8 +616,8 @@ noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 inoremap jj <Esc>
 inoremap jl <Esc>
 
-" Kill line
-noremap <C-k> "_dd
+" Kill line like emacs
+"noremap <C-k> "_dd
 
 " Select everything
 noremap <Leader>gg ggVG
@@ -627,7 +632,7 @@ noremap <Leader>gp gqap
 noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 
 " Delete blank lines
-noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
+"noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 
 " Enclose each selected line with markers
 noremap <Leader>enc :<C-w>execute
@@ -924,9 +929,9 @@ if has("eval")
     "nnoremap <silent> <F9> :Tlist<CR>
 
     " Settings minibufexpl.vim
-    let g:miniBufExplModSelTarget = 1
-    let g:miniBufExplWinFixHeight = 1
-    let g:miniBufExplWinMaxSize = 1
+    "let g:miniBufExplModSelTarget = 1
+    "let g:miniBufExplWinFixHeight = 1
+    "let g:miniBufExplWinMaxSize = 1
     " let g:miniBufExplForceSyntaxEnable = 1
 
     " Settings for showmarks.vim
@@ -1002,7 +1007,7 @@ au Filetype html,xml,xsl,sgml ",docbook
 " explorador vertical
 let g:explVertical=1
 " define leader como =
-let mapleader = "="
+"let mapleader = "="
 
 " Terminal companability
 map <F15> <S-F3>
@@ -1040,7 +1045,7 @@ map <S-F6> :set encoding=iso8859-15<CR> | :set fenc=iso8859-15<CR>
 "map <C-F7> :let spell_language_list = "english,spanish"
 "nnoremap <silent> <F8> :Tlist<CR>
 "nnoremap <silent> <S-F8> :TlistSync<CR>
-nnoremap <esc> :noh<return><esc>
+nnoremap <Esc> :noh<CR><Esc>
 map <F11> !!date<CR>
 map <F12> :TC<CR>
 nmap  :X        :x
@@ -1049,7 +1054,9 @@ nmap  :Q        :q
 nmap  :B        :b
 noremap <Leader>rg :color relaxedgreen<CR>
 noremap <Leader>ip :color inkpot<CR>
+noremap <Leader>ir :color ir_black<CR>
 map <Leader>t :FufFile<CR>
+map <Leader>d :FufDir<CR>
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 syntax sync minlines=200
@@ -1060,14 +1067,6 @@ nmap <silent> <C-G> :NERDTreeToggle<CR>
 " Javac
 "set makeprg=javac\ %
 "set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-
-" CVS
-nmap <leader>cadd <Plug>CVSAdd
-nmap <leader>cci <Plug>CVSCommit
-nmap <leader>clog <Plug>CVSLog
-map <leader>cre <Plug>CVSRevert
-nmap <leader>cup <Plug>CVSUpdate
-nmap <leader>cdiff <Plug>CVSDiff
 
 " Spell
 "let spell_executable = "aspell"
