@@ -144,9 +144,17 @@ inoremap # X<BS>#
 
 " Enable folds
 if has("folding")
+  fun! ToggleFoldmethod()
+    if &foldmethod == "marker"
+      set foldmethod=syntax
+    else
+      set foldmethod=marker
+    endif
+  endfun
+  command! Tfdm call ToggleFoldmethod()
   set foldenable
   set foldmethod=marker
-  "set foldlevelstart=99
+  set foldlevelstart=99
 endif
 
 " Syntax when printing
@@ -290,17 +298,17 @@ set fillchars=fold:-
 "-----------------------------------------------------------------------
 au! CursorHold *.[ch] nested call PreviewWord()
 func PreviewWord()
-  if &previewwindow                   " don't do this in the preview window
+  if &previewwindow                  " don't do this in the preview window
     return
   endif
-  let w = expand("<cword>")           " get the word under cursor
-  if w =~ '\a'                        " if the word contains a letter
+  let w = expand("<cword>")          " get the word under cursor
+  if w =~ '\a'                       " if the word contains a letter
 
     " Delete any existing highlight before showing another tag
-    silent! wincmd P                " jump to preview window
-    if &previewwindow               " if we really get there...
-      match none                  " delete existing highlight
-      wincmd p                    " back to old window
+    silent! wincmd P                 " jump to preview window
+    if &previewwindow                " if we really get there...
+      match none                     " delete existing highlight
+      wincmd p                       " back to old window
     endif
 
     " Try displaying a matching tag for the word under the cursor
@@ -310,21 +318,23 @@ func PreviewWord()
       return
     endtry
 
-    silent! wincmd P                " jump to preview window
-    if &previewwindow               " if we really get there...
+    silent! wincmd P                 " jump to preview window
+    if &previewwindow                " if we really get there...
+      exe "wincmd J"
       if has("folding")
-        silent! .foldopen       " don't want a closed fold
+        silent! .foldopen            " don't want a closed fold
       endif
-      call search("$", "b")       " to end of previous line
+      call search("$", "b")          " to end of previous line
       let w = substitute(w, '\\', '\\\\', "")
       call search('\<\V' . w . '\>') " position cursor on match
       " Add a match highlight to the word at this position
-      hi previewWord term=bold ctermbg=green guibg=green
+      hi previewWord term=bold cterm=underline gui=underline
       exe 'match previewWord "\%' . line(".") . 'l\%' . col(".") . 'c\k*"'
-      wincmd p                    " back to old window
+      wincmd p                       " back to old window
     endif
   endif
 endfun
+
 "-----------------------------------------------------------------------
 " completion
 "-----------------------------------------------------------------------
@@ -348,13 +358,14 @@ if has("eval")
   " If we're in a wide window, enable line numbers.
   fun! <SID>WindowWidth()
     if winwidth(0) > 90
-      setlocal foldcolumn=2
+      setlocal foldcolumn=1
       setlocal number
     else
       setlocal nonumber
       setlocal foldcolumn=0
     endif
   endfun
+  autocmd VimEnter * :call <SID>WindowWidth()
 endif
 
 " content creation
@@ -635,8 +646,9 @@ inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
 "nmap <F5> <C-w>c
 "nmap <F6> :exec "make check TESTS_ENVIRONMENT=true LOG_COMPILER=true XFAIL_TESTS="<CR>
 "nmap <Leader><F6> :exec "make -C " . expand("%:p:h") . " check TESTS_ENVIRONMENT=true LOG_COMPILER=true XFAIL_TESTS="<CR>
-nmap <F7> :make all-then-check<CR>
-nmap <Leader><F7> :exec "make -C " . expand("%:p:h") . " check"<CR>
+"nmap <F7> :make all-then-check<CR>
+map <F7> :Tfdm<CR>
+"nmap <Leader><F7> :exec "make -C " . expand("%:p:h") . " check"<CR>
 nmap <F8> :make<CR>
 nmap <Leader><F8> :exec "make -C " . expand("%:p:h")<CR>
 "nmap <F9> :exec "make -C " . expand("%:p:h") . " check SUBDIRS= check_PROGRAMS=" . GetCurrentTest()
