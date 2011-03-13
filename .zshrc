@@ -127,35 +127,36 @@ else
         export PERL5LIB=$PERL5LIB:~/local/lib/perl5:~/local/lib/perl5/site_perl
 fi
 
+## Set up vim aliases
 if whence vim > /dev/null ; then
-    export VISUAL=vim
-    export EDITOR=vim
-    if [ -n "$DISPLAY" ] ; then
-        alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
-        #alias vi=gvim
-    fi
+    VIM=vim
     if whence mvim > /dev/null ; then
-        export VISUAL="mvim -f"
-        export EDITOR="mvim -f"
-        alias vi=mvim
-        alias vr="mvim --remote"
-        alias vir=vr
-        vs() { mvim --servername $1 --remote $argv[2,$] }
-        alias vis=vs
-        alias vl="mvim --serverlist"
-    else
-        alias vi=vim
+        VIM=mvim
     fi
 else
-    export VISUAL=vi
-    export EDITOR=vi
+    VIM=vi
 fi
-alias v=vi
+export VISUAL="$VIM -f"
+export EDITOR="$VIM -f"
+alias v=$VIM
+alias vi=$VIM
+alias vr="$VIM --remote-tab"
+alias vl="$VIM --serverlist"
+vs() { $VIM --servername $1 --remote-tab $argv[2,$] }
+alias vir=vr
+alias vis=vs
+alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
+
+## For forwarding ssh auth I think
 if [ -n "$SSH_AUTH_SOCK" ] ; then
     ln -fs $SSH_AUTH_SOCK $HOME/.ssh-agent
 fi
+
+## Add extra fonts
 #xset fp+ /usr/APL2/fonts/X11
 #xset fp  rehash
+
+## Set up ruby gems for $RUBYLIB
 #if [ -d $HOME/.gems/gems ] ; then
 #    for rlib in $HOME/.gems/gems/*/lib ; do
 #        export RUBYLIB=$RUBYLIB:$rlib
