@@ -17,7 +17,12 @@ set fenc=utf-8
 if exists('&t_SI')
   let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
   let &t_EI = "\<Esc>]12;green\x7"
+elseif has("gui")
+  set guicursor=n-v-c:block-Cursor/lCursor,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
 endif
+
+" Clear autocommands for re-sourceing
+autocmd!
 
 "-----------------------------------------------------------------------
 " settings
@@ -100,13 +105,13 @@ endif
 set virtualedit=block
 
 " Set our fonts
-if has("gui_kde")
-  set guifont=Terminus/12/-1/5/50/0/0/0/0/0
-elseif has("gui_gtk")
-  set guifont=Terminus\ 12
-elseif has("gui_running")
-  set guifont=-xos4-terminus-medium-r-normal--12-140-72-72-c-80-iso8859-1
-endif
+"if has("gui_kde")
+"  set guifont=Terminus/12/-1/5/50/0/0/0/0/0
+"elseif has("gui_gtk")
+"  set guifont=Terminus\ 12
+"elseif has("gui_running")
+"  set guifont=-xos4-terminus-medium-r-normal--12-140-72-72-c-80-iso8859-1
+"endif
 
 " Try to load a nice colourscheme
 if ! has("gui_running")
@@ -153,7 +158,7 @@ if has("folding")
   endfun
   command! Tfdm call ToggleFoldmethod()
   set foldenable
-  set foldmethod=marker
+  set foldmethod=syntax
   set foldlevelstart=99
 endif
 
@@ -296,14 +301,24 @@ set fillchars=fold:-
 "-----------------------------------------------------------------------
 " Preview window for :help CursorHold-example after updatetime
 "-----------------------------------------------------------------------
-au! CursorHold *.[ch] nested call PreviewWord()
-func PreviewWord()
+
+au CursorHold *.[ch] nested call PreviewWord()
+au CursorMoved *.[ch] nested call UnPreviewWord()
+fun! UnPreviewWord()
+  if &previewwindow
+    return
+  endif
+  pclose
+endfun
+fun! PreviewWord()
   if &previewwindow                  " don't do this in the preview window
+    return
+  endif
+  if &lines < 40                     " not for small terminals
     return
   endif
   let w = expand("<cword>")          " get the word under cursor
   if w =~ '\a'                       " if the word contains a letter
-
     " Delete any existing highlight before showing another tag
     silent! wincmd P                 " jump to preview window
     if &previewwindow                " if we really get there...
@@ -320,7 +335,7 @@ func PreviewWord()
 
     silent! wincmd P                 " jump to preview window
     if &previewwindow                " if we really get there...
-      exe "wincmd J"
+"     exe "wincmd J"                 " make the window appear below
       if has("folding")
         silent! .foldopen            " don't want a closed fold
       endif
@@ -330,6 +345,7 @@ func PreviewWord()
       " Add a match highlight to the word at this position
       hi previewWord term=bold cterm=underline gui=underline
       exe 'match previewWord "\%' . line(".") . 'l\%' . col(".") . 'c\k*"'
+"     exe "normal " . &previewheight / 2 . "j"
       wincmd p                       " back to old window
     endif
   endif
@@ -357,16 +373,20 @@ set dictionary=/usr/share/dict/words
 if has("eval")
   " If we're in a wide window, enable line numbers.
   fun! <SID>WindowWidth()
-    if winwidth(0) > 90
+    if winwidth(0) >= 76 " 72 + 4
       setlocal foldcolumn=1
-      setlocal number
+      setlocal relativenumber
     else
-      setlocal nonumber
+      setlocal norelativenumber
       setlocal foldcolumn=0
     endif
   endfun
-  autocmd VimEnter * :call <SID>WindowWidth()
+  autocmd VimEnter,WinEnter * :call <SID>WindowWidth()
 endif
+
+" Show the column and line of the cursor
+au VimEnter,BufEnter,WinEnter * set cursorcolumn " cursorline
+au WinLeave * set nocursorcolumn " nocursorline
 
 " content creation
 if has("autocmd")
@@ -514,7 +534,7 @@ if has("autocmd")
       " if we have a vim which supports QuickFixCmdPost (vim7),
       " give us an error window after running make, grep etc, but
       " only if results are available.
-      autocmd QuickFixCmdPost * botright cwindow 5
+      autocmd QuickFixCmdPost * botright cwindow 6
 
       autocmd QuickFixCmdPre make
             \ let g:make_start_time=localtime()
@@ -608,11 +628,11 @@ if has("eval")
 endif
 
 " quickfix things
-nmap <Leader>cwc :cclose<CR>
-nmap <Leader>cwo :botright copen 5<CR><C-w>p
-nmap <Leader>cn  :cnext<CR>
+"nmap <Leader>cwc :cclose<CR>
+"nmap <Leader>cwo :botright copen 5<CR><C-w>p
+"nmap <Leader>cn  :cnext<CR>
 nmap -  :cnext<CR>
-nmap <Leader>cp  :cprevious<CR>
+"nmap <Leader>cp  :cprevious<CR>
 
 " Annoying default mappings
 inoremap <S-Up>   <C-o>gk
@@ -681,7 +701,7 @@ noremap <Leader>gq gggqG
 noremap <Leader>gp gqap
 
 " Clear lines
-noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
+"noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 
 " Delete blank lines
 noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
