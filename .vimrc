@@ -1,4 +1,3 @@
-scriptencoding utf-8
 
 "-----------------------------------------------------------------------
 "Hunner's vimrc based on BaSS & ciaran
@@ -7,6 +6,10 @@ scriptencoding utf-8
 "-----------------------------------------------------------------------
 " terminal setup
 "-----------------------------------------------------------------------
+" {{{1
+
+" This may contain utf-8 script
+scriptencoding utf-8
 
 " Want utf8 at all times
 set termencoding=utf-8
@@ -24,87 +27,87 @@ endif
 " Clear autocommands for re-sourceing
 autocmd!
 
+
+" }}}1
+
 "-----------------------------------------------------------------------
 " settings
 "-----------------------------------------------------------------------
+" {{{1
 
-" Don't be compatible with vi
+" Don't be compatible with vi {{{2
 set nocompatible
 
-" Enable a nice big viminfo file
+" Enable a nice big viminfo file {{{2
 set viminfo='1000,f1,:1000,/1000
 set history=500
 
-" Return to last line
+" Return to last line on reopening file {{{2
 if has("autocmd")
   autocmd BufReadPost *
         \ if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
-" Abbreviate output of commands
+" Abbreviate output of commands {{{2
 set shortmess=a
 
-" Make backspace delete lots of things
+" Make backspace delete lots of things {{{2
 set backspace=indent,eol,start
 
-" Don't create backups
-set nobackup
+" Don't create backups {{{2
+"set nobackup
 
-" Show us the command we're typing
+" Show us the command we're typing {{{2
 set showcmd
 
-" Highlight matching parens
+" Highlight matching parens {{{2
 set showmatch
 
-" Search options: incremental search, highlight search
+" Search options: incremental search, highlight search {{{2
 set hlsearch
 set incsearch
 
-" Case insensitivity
+" Case insensitivity for searching {{{2
 set ignorecase
 set infercase
 
-" Show full tags when doing search completion
+" Show full tags when doing search completion {{{2
 set showfulltag
 
-" Speed up macros
+" Speed up macros with lazyredraw {{{2
 set lazyredraw
 
-" No annoying error noises
+" No annoying error noises {{{2
 set noerrorbells
 set visualbell t_vb=
 if has("autocmd")
   autocmd GUIEnter * set visualbell t_vb=
 endif
 
-" Try to show at least three lines and two columns of context when
-" scrolling
+" Scroll buffers of 3x2 {{{2
 set scrolloff=3
 set sidescrolloff=2
 
-" Wrap on these
+" Wrap on < > [ ] too {{{2
 set whichwrap+=<,>,[,]
 
-" Use the cool tab complete menu
+" Use the cool tab complete wildmenu {{{2
 set wildmenu
 set wildignore+=*.o,*~,.lo
 set suffixes+=.in,.a,.1
 
-" Allow edit buffers to be hidden
+" Allow edit buffers to be hidden {{{2
 set hidden
 
-" 1 height windows
-set winminheight=1
-
-" Enable syntax highlighting
+" Enable syntax highlighting {{{2
 if has("syntax")
   syntax on
 endif
 
-" enable virtual edit in vblock mode, and one past the end
+" enable virtual edit in vblock mode, and one past the end {{{2
 set virtualedit=block
 
-" Set our fonts
+" Set our fonts {{{2
 "if has("gui_kde")
 "  set guifont=Terminus/12/-1/5/50/0/0/0/0/0
 "elseif has("gui_gtk")
@@ -113,7 +116,7 @@ set virtualedit=block
 "  set guifont=-xos4-terminus-medium-r-normal--12-140-72-72-c-80-iso8859-1
 "endif
 
-" Try to load a nice colourscheme
+" Try to load a nice colourscheme {{{2
 if ! has("gui_running")
   set t_Co=256
   colors inkpot
@@ -127,7 +130,7 @@ endif
 set background=dark
 "colors peaksea
 
-" No icky toolbar, menu or scrollbars in the GUI
+" No icky toolbar, menu or scrollbars in the GUI {{{2
 "if has('gui')
 "    set guioptions-=m
 "    set guioptions-=T
@@ -137,17 +140,17 @@ set background=dark
 "    set guioptions-=R
 "end
 
-" By default, go for an indent of 4 and use spaces
+" By default, go for an indent of 4 and use spaces {{{2
 set expandtab
 set shiftwidth=4
 set tabstop=4
 
-" Do clever indent things. Don't make a # force column zero.
+" Do clever indent things. Don't make a # force column zero. {{{2
 set autoindent
 set smartindent
 inoremap # X<BS>#
 
-" Enable folds
+" Enable folds {{{2
 if has("folding")
   fun! ToggleFoldmethod()
     if &foldmethod == "marker"
@@ -159,27 +162,28 @@ if has("folding")
   command! Tfdm call ToggleFoldmethod()
   set foldenable
   set foldmethod=syntax
-  set foldlevelstart=99
+  set foldlevelstart=99 " Start with all folds open
+  "set foldclose=all " Close folds when leaving them
 endif
 
-" Syntax when printing
+" Syntax when printing {{{2
 set popt+=syntax:y
 
-" Enable filetype settings
+" Enable filetype settings {{{2
 if has("eval")
   filetype on
   filetype plugin on
   filetype indent on
 endif
 
-" Enable modelines only on secure vim versions
+" Enable modelines only on secure vim versions {{{2
 if (v:version >= 604)
   set modeline
 else
   set nomodeline
 endif
 
-" Nice statusbar
+" Nice statusbar {{{2
 set laststatus=2
 set statusline=
 set statusline+=%2*%-3.3n%0*\                " buffer number
@@ -234,7 +238,7 @@ set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 "                \ exec oldwinnr . " wincmd w"
 "endif
 
-" Nice window title
+" Nice window title {{{2
 if has('title') && (has('gui_running') || &title)
   set titlestring=
   set titlestring+=%f\                                              " file name
@@ -243,7 +247,7 @@ if has('title') && (has('gui_running') || &title)
   set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
-" Backups and undos across edits
+" Backups and undos across edits {{{2
 if v:version >= 702
   set backupdir=~/.vim/backups
 endif
@@ -253,12 +257,12 @@ if v:version >= 703
   set undofile
 endif
 
-" For :X encryption
+" Use blowfish for :X encryption {{{2
 if v:version >= 703
   set cryptmethod=blowfish
 endif
 
-" If possible, try to use a narrow number column.
+" If possible, try to use a narrow number column. {{{2
 if v:version >= 700
   try
     setlocal numberwidth=3
@@ -266,16 +270,16 @@ if v:version >= 700
   endtry
 endif
 
-" Include $HOME in cdpath
+" Include $HOME in cdpath {{{2
 if has("file_in_path")
   let &cdpath=','.expand("$HOME").','.expand("$HOME").'/work'
 endif
 
-" Better include path
+" Better include path {{{2
 set path+=src/,include/
 let &inc.=' ["<]'
 
-" Show tabs and trailing whitespace visually
+" Show tabs and trailing whitespace visually {{{2
 if (&termencoding == "utf-8") || has("gui_running")
   if v:version >= 700
     set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
@@ -292,84 +296,45 @@ endif
 map <silent> <F9> :set noet<CR>:set sw=8<CR>:set ts=8<CR>
 map <silent> <S-F9> :set list! listchars<CR>
 
-" Show lines longer than 80 characters
+" Show lines longer than 80 characters {{{2
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
 "au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 
-set fillchars=fold:-
+" Fill folds with ' ' {{{2
+set fillchars=fold:\ 
 
-"-----------------------------------------------------------------------
-" Preview window for :help CursorHold-example after updatetime
-"-----------------------------------------------------------------------
 
-au CursorHold *.[ch] nested call PreviewWord()
-au CursorMoved *.[ch] nested call UnPreviewWord()
-fun! UnPreviewWord()
-  if &previewwindow
-    return
-  endif
-  pclose
-endfun
-fun! PreviewWord()
-  if &previewwindow                  " don't do this in the preview window
-    return
-  endif
-  if &lines < 40                     " not for small terminals
-    return
-  endif
-  let w = expand("<cword>")          " get the word under cursor
-  if w =~ '\a'                       " if the word contains a letter
-    " Delete any existing highlight before showing another tag
-    silent! wincmd P                 " jump to preview window
-    if &previewwindow                " if we really get there...
-      match none                     " delete existing highlight
-      wincmd p                       " back to old window
-    endif
-
-    " Try displaying a matching tag for the word under the cursor
-    try
-      exe "ptag " . w
-    catch
-      return
-    endtry
-
-    silent! wincmd P                 " jump to preview window
-    if &previewwindow                " if we really get there...
-"     exe "wincmd J"                 " make the window appear below
-      if has("folding")
-        silent! .foldopen            " don't want a closed fold
-      endif
-      call search("$", "b")          " to end of previous line
-      let w = substitute(w, '\\', '\\\\', "")
-      call search('\<\V' . w . '\>') " position cursor on match
-      " Add a match highlight to the word at this position
-      hi previewWord term=bold cterm=underline gui=underline
-      exe 'match previewWord "\%' . line(".") . 'l\%' . col(".") . 'c\k*"'
-"     exe "normal " . &previewheight / 2 . "j"
-      wincmd p                       " back to old window
-    endif
-  endif
-endfun
+" }}}1
 
 "-----------------------------------------------------------------------
 " completion
 "-----------------------------------------------------------------------
+" {{{1
+
 set dictionary=/usr/share/dict/words
 
+
+" }}}1
 
 "-----------------------------------------------------------------------
 " miniBufExpl
 "-----------------------------------------------------------------------
+" {{{1
+
 "let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplMapWindowNavArrows = 1
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplModSelTarget = 1 
 
 
+" }}}1
+
 "-----------------------------------------------------------------------
 " autocmds
 "-----------------------------------------------------------------------
+" {{{1
 
+" Show number and fold columns in windows {{{2
 if has("eval")
   " If we're in a wide window, enable line numbers.
   fun! <SID>WindowWidth()
@@ -381,30 +346,30 @@ if has("eval")
       setlocal foldcolumn=0
     endif
   endfun
-  autocmd VimEnter,WinEnter * :call <SID>WindowWidth()
+  autocmd VimEnter,WinEnter,TabEnter,BufWinEnter,BufNew * :call <SID>WindowWidth()
 endif
 
-" Show the column and line of the cursor
+" Show the column and/or line of the cursor {{{2
 au VimEnter,BufEnter,WinEnter * set cursorcolumn " cursorline
 au WinLeave * set nocursorcolumn " nocursorline
 
-" content creation
+" content creation {{{2
 if has("autocmd")
-  augroup puppet
+  augroup puppet " {{{3
     autocmd BufRead,BufNewFile *.pp
           \ set tabstop=2 shiftwidth=2 softtabstop=2
   augroup END
-  augroup text
+  augroup text " {{{3
     autocmd BufRead,BufNewFile *.txt
           \ set nonumber tw=80
   augroup END
-  augroup helphelp
+  augroup helphelp " {{{3
     " For help files, move them to the top window and make <Return>
     " behave like <C-]> (jump to tag)
     "autocmd FileType help :call <SID>WindowToTop()
     autocmd FileType help nmap <buffer> <Return> <C-]>
   augroup END
-  augroup interplangs
+  augroup interplangs " {{{3
     autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
           \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
           \ norm G
@@ -416,11 +381,11 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.php
           \ set ai
   augroup END
-  augroup tex
+  augroup tex " {{{3
     autocmd BufNewFile *.tex
           \ 0put ='% vim:set ft=tex spell:'
   augroup END
-  augroup html
+  augroup html " {{{3
     autocmd BufNewFile *.htm,*.html
           \ 0put ='<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">' |
           \ $put ='<html xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">' |
@@ -437,7 +402,7 @@ if has("autocmd")
           \ $put ='<!-- vim: set sw=2 sts=2 et tw=80 : -->' |
           \ set sw=2 sts=2 et tw=80 | norm G
   augroup END
-  augroup autotools
+  augroup autotools " {{{3
     autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
           \ 1put ='' | call MakeIncludeGuards() |
           \ 5put ='#include \"config.h\"' |
@@ -529,7 +494,7 @@ if has("autocmd")
           \ endif
 
   augroup END
-  augroup making
+  augroup making " {{{3
     try
       " if we have a vim which supports QuickFixCmdPost (vim7),
       " give us an error window after running make, grep etc, but
@@ -595,71 +560,125 @@ if has("autocmd")
   augroup END
 endif
 
+
+" Preview window for :help CursorHold-example after updatetime {{{2
+au CursorHold *.[ch] nested call PreviewWord()
+au CursorMoved *.[ch] nested call UnPreviewWord()
+fun! UnPreviewWord()
+  if &previewwindow
+    return
+  endif
+  pclose
+endfun
+fun! PreviewWord()
+  if &previewwindow                  " don't do this in the preview window
+    return
+  endif
+  if &lines < 40                     " not for small terminals
+    return
+  endif
+  let w = expand("<cword>")          " get the word under cursor
+  if w =~ '\a'                       " if the word contains a letter
+    " Delete any existing highlight before showing another tag
+    silent! wincmd P                 " jump to preview window
+    if &previewwindow                " if we really get there...
+      match none                     " delete existing highlight
+      wincmd p                       " back to old window
+    endif
+
+    " Try displaying a matching tag for the word under the cursor
+    try
+      exe "ptag " . w
+    catch
+      return
+    endtry
+
+    silent! wincmd P                 " jump to preview window
+    if &previewwindow                " if we really get there...
+"     exe "wincmd J"                 " make the window appear below
+      if has("folding")
+        silent! .foldopen            " don't want a closed fold
+      endif
+      call search("$", "b")          " to end of previous line
+      let w = substitute(w, '\\', '\\\\', "")
+      call search('\<\V' . w . '\>') " position cursor on match
+      " Add a match highlight to the word at this position
+      hi previewWord term=bold cterm=underline gui=underline
+      exe 'match previewWord "\%' . line(".") . 'l\%' . col(".") . 'c\k*"'
+"     exe "normal " . &previewheight / 2 . "j"
+      wincmd p                       " back to old window
+    endif
+  endif
+endfun
+
+
+" }}}1
+
 "-----------------------------------------------------------------------
 " mappings
 "-----------------------------------------------------------------------
+" {{{1
 
-" Go to buffers
+" Go to buffers with S-left/right and ^w ,. {{{2
 nmap <silent> <S-Left>  :bprev<CR>
 nmap <silent> <S-Right> :bnext<CR>
 nmap <C-w>, :bprev<CR>
 nmap <C-w>. :bnext<CR>
 
-" Movement between windows
+" Movement between windows with ^hjkl {{{2
 nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
-" Move through buffers instead of tabs
+" Move through buffers instead of tabs with gt/gT {{{2
 "nmap gT :bprev<CR>
 "nmap gt :bnext<CR>
 
-" v_K is really really annoying
+" v_K is really really annoying; disable {{{2
 vmap K k
 
-" Puppet pkg sort
+" Puppet pkg sort with <L>sp {{{2
 nmap <Leader>sp vi[:sort<CR>
 
-" Delete a buffer but keep layout
+" Delete a buffer but keep layout with ^w! {{{2
 if has("eval")
   command! Kwbd enew|bw #
   nmap     <C-w>!   :Kwbd<CR>
 endif
 
-" quickfix things
+" quickfix things like '-' {{{2
 "nmap <Leader>cwc :cclose<CR>
 "nmap <Leader>cwo :botright copen 5<CR><C-w>p
 "nmap <Leader>cn  :cnext<CR>
 nmap -  :cnext<CR>
 "nmap <Leader>cp  :cprevious<CR>
 
-" Annoying default mappings
+" Make S-up/down do gk/gj {{{2
 inoremap <S-Up>   <C-o>gk
 inoremap <S-Down> <C-o>gj
 noremap  <S-Up>   gk
 noremap  <S-Down> gj
 
-" Better Bépo movement
+" Better Bépo movement {{{2
 noremap © h
 noremap þ j
 noremap ß k
 noremap ® l
 
-" Make <space> in normal mode go down a page rather than left a
-" character, and backspace the opposite
+" Make <space>/<backspace> page up/down {{{2
 noremap <space> <C-f>
 noremap <backspace> <C-b>
 
-" Scrolling with arrows controls the window
+" Scrolling with arrows controls the window {{{2
 noremap <Up>   <C-y>
 noremap <Down> <C-e>
 
-" Useful things from inside imode
+" Useful things from inside imode {{{2
 inoremap <C-z>w <C-o>:w<CR>
 inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
 
-" Commonly used commands
+" Commonly used commands {{{2
 "nmap <silent> <F3> :silent nohlsearch<CR>
 "imap <silent> <F3> <C-o>:silent nohlsearch<CR>
 "nmap <F4> :Kwbd<CR>
@@ -674,58 +693,59 @@ nmap <Leader><F8> :exec "make -C " . expand("%:p:h")<CR>
 "nmap <F9> :exec "make -C " . expand("%:p:h") . " check SUBDIRS= check_PROGRAMS=" . GetCurrentTest()
 "            \ . " TESTS=" . GetCurrentTest() <CR>
 
-" Insert a single char
+" Insert a single char {{{2
 noremap <Leader>i i<Space><Esc>r
 
-" Split the line into a (n)ew line or an (o)pen line
+" Split the line into a (n)ew line or an (o)pen line {{{2
 nmap <Leader>n \i<CR>
 nmap <Leader>o \i<CR>k$
 
-" Pull the following line to the cursor position
+" Pull the following line to the cursor position {{{2
 noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 
-" In normal mode, jj or jl escapes
+" In normal mode, jj or jl escapes {{{2
 inoremap jj <Esc>
 inoremap jl <Esc>
 
-" Kill line like emacs
+" Kill line like emacs {{{2
 "noremap <C-k> "_dd
 
-" Select everything
+" Select everything {{{2
 noremap <Leader>gg ggVG
 
-" Reformat everything
+" Reformat everything {{{2
 noremap <Leader>gq gggqG
 
-" Reformat paragraph
+" Reformat paragraph {{{2
 noremap <Leader>gp gqap
 
-" Clear lines
+" Clear lines {{{2
 "noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 
-" Delete blank lines
+" Delete blank lines {{{2
 noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 
-" Enclose each selected line with markers
+" Enclose each selected line with markers {{{2
 noremap <Leader>enc :<C-w>execute
       \ substitute(":'<,'>s/^.*/#&#/ \| :nohls", "#", input(">"), "g")<CR>
 
-" Edit something in the current directory
+" Edit something in the current directory {{{2
 noremap <Leader>ed :e <C-r>=expand("%:p:h")<CR>/<C-d>
 
-" Enable fancy % matching
+" Enable fancy % matching {{{2
 if has("eval")
   runtime! macros/matchit.vim
 endif
 
-" q: sucks
-nmap q: :q
+" q: sucks {{{2
+"nmap q: :q
 
-" set up some more useful digraphs
+" set up some more useful digraphs {{{2
 if has("digraphs")
   digraph ., 8230    " ellipsis (…)
 endif
 
+" What does this do? {{{2
 if has("eval")
   " Work out include guard text
   fun! IncludeGuardText()
@@ -749,7 +769,7 @@ if has("eval")
   noremap <Leader>ig :call MakeIncludeGuards()<CR>
 endif
 
-" javascript folding
+" javascript folding {{{2
 if has("eval")
   function! JavaScriptFold()
     setl foldmethod=syntax
@@ -765,7 +785,7 @@ if has("eval")
   au FileType javascript setl fen
 endif
 
-" fast buffer switching
+" fast buffer switching {{{2
 if v:version >= 700 && has("eval")
   let g:switch_header_map = {
         \ 'cc':    'hh',
@@ -837,7 +857,7 @@ if v:version >= 700 && has("eval")
   noremap <Leader>ssk :call SwitchMakefile(1)<CR>
 endif
 
-" super i_c-y / i_c-e
+" super i_c-y / i_c-e {{{2
 if v:version >= 700 && has("eval")
   fun! SuperYank(offset)
     let l:cursor_pos = col(".")
@@ -890,7 +910,7 @@ if v:version >= 700 && has("eval")
   inoremap <C-g>e <C-\><C-o>:call SuperYank(1)<CR>
 endif
 
-" tab completion
+" tab completion {{{2
 if has("eval")
   function! CleverTab()
     if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
@@ -903,9 +923,12 @@ if has("eval")
   inoremap <S-Tab> <C-P>
 endif
 
+" }}}1
+
 "-----------------------------------------------------------------------
 " abbreviations
 "-----------------------------------------------------------------------
+" {{{1
 
 if has("eval") && has("autocmd")
   fun! <SID>abbrev_cpp()
@@ -942,9 +965,12 @@ if has("eval") && has("autocmd")
 endif
 " NB: Need more of these for more than cpp
 
+" }}}1
+
 "-----------------------------------------------------------------------
 " special less.sh and man modes
 "-----------------------------------------------------------------------
+" {{{1
 
 if has("eval") && has("autocmd")
   fun! <SID>check_pager_mode()
@@ -960,9 +986,12 @@ if has("eval") && has("autocmd")
   autocmd VimEnter * :call <SID>check_pager_mode()
 endif
 
+" }}}1
+
 "-----------------------------------------------------------------------
 " plugin / script / app settings
 "-----------------------------------------------------------------------
+" {{{1
 
 if has("eval")
   " Perl specific options
@@ -1067,9 +1096,13 @@ if has("eval")
   endif
 endif
 
+" }}}1
+
 "-----------------------------------------------------------------------
 " final commands
 "-----------------------------------------------------------------------
+" {{{1
+
 " mio
 "let Tlist_Ctags_Cmd="/usr/bin/exuberant-ctags"
 " plegado ident para python
@@ -1160,7 +1193,12 @@ if has("autocmd")
     au VimEnter * nohls
 endif
 
+" }}}1
+
+"-----------------------------------------------------------------------
 "ii irc stuff
+"-----------------------------------------------------------------------
+" {{{1
 " map c1 :.w! >> ~/irc/irc.cat.pdx.edu/in<cr>dd
 " map c2 :.w! >> ~/irc/irc.cat.pdx.edu/\#hack/in<cr>dd
 " map c3 :.w! >> ~/irc/irc.cat.pdx.edu/\#meow/in<cr>dd
@@ -1169,5 +1207,7 @@ endif
 " map c17 :.w! >> ~/irc/irc.cat.pdx.edu/\#cschat/in<cr>dd
 " imap /me <C-V><C-A>ACTION
 
+" }}}1
+
 "-----------------------------------------------------------------------
-" vim: set shiftwidth=2 softtabstop=2 expandtab tw=72                  :
+" vim: set sw=2 sts=2 et tw=72 fdm=marker                              :
