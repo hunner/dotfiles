@@ -143,6 +143,7 @@ alias vi=$VIM
 alias vr="$VIM --remote-tab"
 alias vl="$VIM --serverlist"
 vs() { $VIM --servername $1 --remote-tab $argv[2,$] }
+alias vd=${VIM}diff
 alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
