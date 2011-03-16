@@ -94,6 +94,12 @@ hi WarningMsg       guifg=white       guibg=#FF6C60     gui=BOLD      ctermfg=wh
 " Message displayed in lower left, such as --INSERT--
 hi ModeMsg          guifg=black       guibg=#C6C5FE     gui=BOLD      ctermfg=black       ctermbg=cyan        cterm=BOLD
 
+" Diff colors
+hi DiffAdd          guifg=NONE        guibg=#26512D     gui=NONE      ctermfg=NONE        ctermbg=darkgray    cterm=NONE
+hi DiffChange       guifg=NONE        guibg=#262D51     gui=NONE      ctermfg=NONE        ctermbg=darkgray    cterm=NONE
+hi DiffText         guifg=NONE        guibg=#384048     gui=NONE      ctermfg=NONE        ctermbg=darkgray    cterm=NONE
+hi DiffDelete       guifg=NONE        guibg=#512D26     gui=NONE      ctermfg=NONE        ctermbg=darkgray    cterm=NONE
+
 if version >= 700 " Vim 7.x specific colors
   hi Cursor         guifg=NONE        guibg=NONE        gui=reverse   ctermfg=NONE        ctermbg=NONE        cterm=BOLD
   hi CursorLine     guifg=NONE        guibg=#121212     gui=NONE      ctermfg=NONE        ctermbg=NONE        cterm=BOLD
