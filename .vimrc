@@ -14,7 +14,7 @@ scriptencoding utf-8
 " Want utf8 at all times
 set termencoding=utf-8
 set encoding=utf-8
-set fenc=utf-8
+set fileencoding=utf-8
 
 " change cursor colour depending upon mode
 if exists('&t_SI')
@@ -1143,8 +1143,8 @@ map <S-F3> :2split ~/.vim/fun_ref.vim<CR>
 map <F4> :set rnu!<CR>
 map <S-F4> :set nu!<CR>
 map <F5> ggVGg?
-map <F6> :set encoding=utf-8<CR> | :set fenc=utf-8<CR>
-map <S-F6> :set encoding=iso8859-15<CR> | :set fenc=iso8859-15<CR>
+noremap <F6> :set encoding=utf-8<CR>:set fenc=utf-8<CR>
+noremap <S-F6> :set encoding=iso8859-15<CR>:set fenc=iso8859-15<CR>
 "map <F7> :SpellProposeAlternatives<CR>
 "map <S-F7> :SpellCheck<CR>
 "map <C-F7> :let spell_language_list = "english,spanish"
