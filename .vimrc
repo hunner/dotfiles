@@ -150,7 +150,7 @@ set autoindent
 set smartindent
 inoremap # X<BS>#
 
-" Enable folds {{{2
+" Disable folds by default; toggle with zi {{{2
 if has("folding")
   fun! ToggleFoldmethod()
     if &foldmethod == "marker"
@@ -160,10 +160,10 @@ if has("folding")
     endif
   endfun
   command! Tfdm call ToggleFoldmethod()
-  set foldenable
+  set nofoldenable
   set foldmethod=syntax
-  set foldlevelstart=99 " Start with all folds open
-  "set foldclose=all " Close folds when leaving them
+  set foldlevelstart=0 " Start with all folds closed
+  "set foldclose=all " Close folds when cursor leaves them
 endif
 
 " Syntax when printing {{{2
@@ -333,21 +333,6 @@ set dictionary=/usr/share/dict/words
 " autocmds
 "-----------------------------------------------------------------------
 " {{{1
-
-" Show number and fold columns in windows {{{2
-if has("eval")
-  " If we're in a wide window, enable line numbers.
-  fun! <SID>WindowWidth()
-    if winwidth(0) >= 76 " 72 + 4
-      setlocal foldcolumn=1
-      setlocal relativenumber
-    else
-      setlocal norelativenumber
-      setlocal foldcolumn=0
-    endif
-  endfun
-  autocmd VimEnter,WinEnter,TabEnter,BufWinEnter,BufNew * :call <SID>WindowWidth()
-endif
 
 " Show the column and/or line of the cursor {{{2
 au VimEnter,BufEnter,WinEnter * set cursorcolumn " cursorline
@@ -923,6 +908,33 @@ if has("eval")
   inoremap <S-Tab> <C-P>
 endif
 
+" ^n Show number and fold columns in windows {{{2
+if has("eval")
+  function! <SID>FoldNumbers()
+    " If we're in a wide window, enable line numbers.
+    if winwidth(0) >= 76 " 72 + 4, or should I use tw?
+      " Add folds, or cycle through number schemes
+      if &foldlevel < 99 && &foldenable && &foldcolumn == 0
+        setlocal foldcolumn=1
+      elseif (&foldlevel == 99 || ! &foldenable) && &foldcolumn != 0
+        setlocal foldcolumn=0
+      elseif ! &rnu && ! &nu
+        setlocal relativenumber
+      elseif &rnu
+        setlocal number
+      elseif &nu
+        setlocal nonumber
+      endif
+    else
+      setlocal norelativenumber
+      setlocal nonumber
+      setlocal foldcolumn=0
+    endif
+  endfun
+  "autocmd WinEnter,BufWinEnter,BufNew * :call <SID>FoldNumbers()
+  noremap <silent> <C-n> :call <SID>FoldNumbers()<CR>
+endif
+
 " }}}1
 
 "-----------------------------------------------------------------------
@@ -1138,7 +1150,7 @@ map <F23> <S-F11>
 map <F24> <S-F12>
 map <S-F2> :vsplit ~/.vim/ref_full.vim<CR>
 map <F2> :11vsplit ~/.vim/ref.vim<CR>
-map <F3> :Sexplore $HOME<CR>
+"map <F3> :Sexplore $HOME<CR>
 map <S-F3> :2split ~/.vim/fun_ref.vim<CR>
 map <F4> :set rnu!<CR>
 map <S-F4> :set nu!<CR>
