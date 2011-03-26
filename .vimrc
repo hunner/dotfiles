@@ -636,8 +636,11 @@ endif
 "nmap <Leader>cwc :cclose<CR>
 "nmap <Leader>cwo :botright copen 5<CR><C-w>p
 "nmap <Leader>cn  :cnext<CR>
-nmap -  :cnext<CR>
 "nmap <Leader>cp  :cprevious<CR>
+nmap -  :cnext<CR>
+nmap _  :cprev<CR>
+nmap <C--> :colder<CR>
+nmap <C-_> :cnewer<CR>
 
 " Make S-up/down do gk/gj {{{2
 inoremap <S-Up>   <C-o>gk
@@ -1111,7 +1114,7 @@ endif
 " }}}1
 
 "-----------------------------------------------------------------------
-" final commands
+" final commands (clean this cruft up -- don't add more here)
 "-----------------------------------------------------------------------
 " {{{1
 
@@ -1172,6 +1175,7 @@ nnoremap  :B        :b
 noremap <Leader>rg :color relaxedgreen<CR>
 noremap <Leader>ip :color inkpot<CR>
 noremap <Leader>ir :color ir_black<CR>
+noremap <Leader>mv :color macvim<CR>:set background=light<CR>
 map <Leader>f :FufFile<CR>
 map <Leader>b :FufBuffer<CR>
 map <Leader>c :FufDir<CR>
@@ -1202,7 +1206,7 @@ let g:EnhCommentifyPretty = 'Yes'
 
 " turn off any existing search
 if has("autocmd")
-    au VimEnter * nohls
+  au VimEnter * nohls
 endif
 
 " }}}1
@@ -1222,4 +1226,4 @@ endif
 " }}}1
 
 "-----------------------------------------------------------------------
-" vim: set sw=2 sts=2 et tw=72 fdm=marker                              :
+" vim: set sw=2 sts=2 et tw=72 fdm=marker:
