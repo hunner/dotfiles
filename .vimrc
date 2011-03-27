@@ -305,6 +305,10 @@ endif
 
 " content creation
 if has("autocmd")
+    augroup puppet
+        autocmd BufRead,BufNewFile *.pp
+                    \ set tabstop=2 shiftwidth=2 softtabstop=2
+    augroup END
     augroup text
         autocmd BufRead,BufNewFile *.txt
                      \ set nonumber tw=80
@@ -513,8 +517,10 @@ endif
 " Go to buffers
 nmap <silent> <S-Left>  :bprev<CR>
 nmap <silent> <S-Right> :bnext<CR>
-nmap <C-w>, :bp<CR>
-nmap <C-w>. :bn<CR>
+nmap <C-w>, :bprev<CR>
+nmap <C-w>. :bnext<CR>
+nmap gT :bprev<CR>
+nmap gt :bnext<CR>
 
 " v_K is really really annoying
 vmap K k
@@ -977,7 +983,7 @@ au Filetype html,xml,xsl,sgml ",docbook
 " explorador vertical
 let g:explVertical=1
 " define leader como =
-let mapleader = "="
+"let mapleader = "="
 
 " Terminal companability
 map <F15> <S-F3>

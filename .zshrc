@@ -1,9 +1,16 @@
+typeset -ga preexec_functions
+typeset -ga precmd_functions
+typeset -ga chpwd_functions
+fpath=($fpath $HOME/.zsh/func)
+#typeset -u fpath
+
 # Options
 setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
+
 zstyle :compinstall filename '~/.zshrc'
-autoload -Uz compinit
+autoload -Uz compinit colors zgitinit && colors && zgitinit
 compinit -u
 #bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
@@ -28,7 +35,8 @@ paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /usr/local/bin /usr/openwin/bin
 /usr/bin/X11 /usr/local/bin/X11 /usr/openwin/lib/X11/xkb /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(~/.cabal/bin ~/local/bin ~/local/sbin ~/local/share/bin)
+prepaths=(/opt/local/sbin /opt/local/bin ~/.cabal/bin ~/local/bin ~/local/sbin
+~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
         export PATH=$PATH:$dir
@@ -56,20 +64,42 @@ fi
 if [ -d ~/.gems/bin ] ; then
     export PATH="$HOME/.gems/bin:$PATH"
 fi
+if [ -d ~/.gem/ruby/1.8/bin ] ; then
+    export PATH="$PATH:$HOME/.gem/ruby/1.8/bin"
+fi
 #for dir in `find /opt/*/bin|grep /bin$` `find /opt/csw/*/bin|grep /bin$` ; do
 #    export PATH=$PATH:$dir
 #done
 
 # Setting vars
 #TERM=rxvt
-export GEM_HOME="$HOME/.gems"
-export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
+#export GEM_HOME="$HOME/.gems"
+#export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
 zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
 HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
-PS1="%m%# "
+
+# Prompt
+#PS1="%m%# "
+prompt_precmd() {
+    gitcolor=""
+    if zgit_isgit ; then
+        if ! zgit_isindexclean ; then
+            #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f](%F{cyan}$(zgit_branch)%f)>"
+            gitcolor=$fg[blue]
+        elif ! zgit_isworktreeclean ; then
+            #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f]>"
+            gitcolor=$fg[green]
+        fi
+    fi
+    color="%(?.$gitcolor.$fg[red])"
+    PROMPT="%m$color%#%{$reset_color%} "
+}
+#precmd_functions+=prompt_precmd
+PROMPT="%m%# "
+
 if [ `uname -s` = "SunOS" ] ; then
     export LANG="C"
 else
@@ -114,6 +144,9 @@ else
     export VISUAL=vi
     export EDITOR=vi
 fi
+if [ -n "$SSH_AUTH_SOCK" ] ; then
+    ln -fs $SSH_AUTH_SOCK $HOME/.ssh-agent
+fi
 #xset fp+ /usr/APL2/fonts/X11
 #xset fp  rehash
 #if [ -d $HOME/.gems/gems ] ; then
@@ -132,6 +165,7 @@ alias ll="l -Fl"
 alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
+cl() { cd $@ && ls }
 alias e="TERM=rxvt-256color; emacs -nw"
 alias et="TERM=rxvt-256color; emacsclient -t"
 alias ec="emacsclient -c --eval '(set-background-color \"black\")'"
@@ -145,7 +179,7 @@ alias m="TERM=rxvt;ssh hunner@mint.cic.pdx.edu"
 alias chandra="TERM=rxvt;ssh hunner@chandra.cs.pdx.edu"
 export CS=cs.pdx.edu
 alias odin="TERM=xterm;ssh hunner@odin.pdx.edu"
-alias clancy="ssh hunnur@clancy.dreamhost.com"
+alias budda="ssh hunnur@budda.dreamhost.com"
 alias kvar="ssh hunner@131.252.134.134"
 alias kvin="ssh hunner@131.252.135.22"
 alias mutt="TERM=xterm-256color mutt"
@@ -154,13 +188,13 @@ alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
 alias mang="cd ~/zips/mangband ; DISPLAY=\"\" ./mangclient"
 alias nh="export HISTFILE=/dev/null"
-alias cl="co -l"
+#alias cl="co -l"
 alias cu="ci -u"
 alias sl="screen -ls"
 alias sr="screen -r"
 alias sx="screen -x"
 alias srd="screen -rd"
-alias t="SSH_AUTH_SOCK=$HOME/.tmux-ssh-agent TERM=xterm-256color tmux at"
+alias t="SSH_AUTH_SOCK=$HOME/.ssh-agent TERM=xterm-256color tmux at"
 alias tl="tmux ls"
 alias bc="bc -q"
 alias fm="fmstatus.sh&;shell-fm"
@@ -169,8 +203,26 @@ alias d="dtach -a /tmp/dtach"
 alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
-alias gem="nice -n19 gem"
+alias g="git"
+alias gl="git lg"
+alias gp="git push"
+alias gu="git pull"
+alias gs="git status"
+alias gm="git mv"
+alias gr="git r"
+alias ga="git add"
+alias gaf="git add --force"
+alias gb="git branch"
+alias gc="git commit"
+alias gca="git commit --amend"
+alias gd="git diff"
+alias go="git checkout"
+alias gob="git checkout -b"
+alias gk="gitk --all&"
+alias gx="gitx --all"
 alias uzbl="uzbl-browser"
+alias hide="SetFile -a V"
+alias show="SetFile -a v"
 #startup aliases
 alias -s pdf="zathura"
 alias -s txt="vi"

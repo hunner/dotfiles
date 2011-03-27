@@ -22,8 +22,8 @@
   (interactive)
   (color-theme-install
    '(color-theme-irblack
-     (;; (background-color . "black")
-      ;; (background-mode . dark)
+     ((background-color . "black")
+      (background-mode . dark)
       (border-color . "gray10")
       (cursor-color . "DarkOliveGreen2")
       (foreground-color . "#F6F3E8")
@@ -57,8 +57,10 @@
      (font-lock-variable-name-face ((t (:foreground "steel blue"))))
      (font-lock-warning-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
+     (fringe ((t (:background "grey10"))))
      (region ((t (:background "dark red"))))
      (mode-line ((t (:background "dim gray" :foreground "dark gray"))))
+     (mode-line-buffer-id ((t (:bold t :background "dim gray" : foreground "dark gray" :weight bold))))
      (highlight ((t (:background "#111111"))))
      (highline-face ((t (:background "SeaGreen"))))
      (left-margin ((t (nil))))
@@ -67,6 +69,8 @@
      (show-paren-mismatch ((t (:background "#FF1100"))))
      (underline ((nil (:underline nil))))
 
+     ;; whitespace
+     (trailing-whitespace ((t (:background "gray22"))))
      ;; mumamo
      ;(mumamo-background-chunk-major ((t (:background "#000000"))))
      ;(mumamo-background-chunk-submode ((t (:background "#222222"))))

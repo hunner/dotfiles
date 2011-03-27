@@ -1,3 +1,7 @@
 [user]
 	name = Hunter Haugen
 	email = h.haugen@gmail.com
+[color]
+	ui = true
+[alias]
+	lg = "log --pretty=format:'%C(yellow)%h%C(reset) %C(blue)%an%C(reset) %C(cyan)%cr%C(reset) %s %C(green)%d%C(reset)' --graph"

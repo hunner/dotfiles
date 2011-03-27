@@ -1,6 +1,6 @@
-(require 'cl)
+;; (require 'cl)
 
-(mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
+(mapc (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d"
           ))
 
@@ -12,15 +12,17 @@
                irblack
                parenface
                bar-cursor
+               tls
+               erc
                ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GLOBAL
 (color-theme-initialize)
 
-(if window-system
-    (set-background-color "black")
-    ())
+;; (if window-system
+;;     (set-background-color "black")
+;;     ())
 (color-theme-irblack)
 ;(if window-system
 ;    (color-theme-gentooish)
@@ -30,8 +32,15 @@
 ;(load-file "~/.emacs.d/color-theme-inkpot.el")
 ;(color-theme-inkpot)
 
+;; OS X settings
+;; (setq mac-option-key-is-meta nil)
+;; (setq mac-command-key-is-meta t)
+;; (setq mac-command-modifier 'meta)
+;; (setq mac-option-modifier nil)
+
 (bar-cursor-mode 1)
 (menu-bar-mode 0)
+(scroll-bar-mode -1)
 (tool-bar-mode 0)
 (setq linum-format "%3d ")
 (setq-default indent-tabs-mode nil)
@@ -80,8 +89,9 @@
 ;; (setq url-proxy-services '(("no_proxy" . "localhost")
 ;;                            ("http" . "localhost:8118")))
 
-(setq-default save-place t)                   ;; activate it for all buffers
 (setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
+(setq-default save-place t)                   ;; activate it for all buffers
+(require 'saveplace)                          ;; Need to require after setq
 
 (setq backup-directory-alist
       `((".*" . "~/.emacs.d/backups/")))
@@ -96,6 +106,7 @@
 ;; Highlight bad whitespace
 (global-whitespace-mode t)
 (setq whitespace-style (quote (tabs tab-mark)))
+(setq-default show-trailing-whitespace t)
 
 ;; Make % work like vi
 (global-set-key "%" 'match-paren)
@@ -107,12 +118,12 @@
         (t (self-insert-command (or arg 1)))))
 
 ;; Prevent Emacs from stupidly auto-changing my working directory
-(defun find-file-save-default-directory ()
-    (interactive)
-    (setq saved-default-directory default-directory)
-    (ido-find-file)
-    (setq default-directory saved-default-directory))
-(global-set-key "\C-x\C-f" 'find-file-save-default-directory)
+;; (defun find-file-save-default-directory ()
+;;     (interactive)
+;;     (setq saved-default-directory default-directory)
+;;     (ido-find-file)
+;;     (setq default-directory saved-default-directory))
+;; (global-set-key "\C-x\C-f" 'find-file-save-default-directory)
 
 ;; Give killing lines advice
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -164,6 +175,7 @@
           commands))
 (set-keys '(
             ("C-c t" totd)
+            ("C-c n" global-linum-mode)
             ("C-c s p" (lambda () (interactive)
                          (if (shellfm-running-p)
                              (shellfm-pause)
@@ -176,8 +188,14 @@
             ("C-c s a" shellfm-add-to-playlist)
             ("C-c s q" shellfm 0)
             ("C-c s i" shellfm-track-info)
+            ("C-c e"   ido-erc-buffer)
+            ("C-S-<left>"  shrink-window-horizontally)
+            ("C-S-<right>" enlarge-window-horizontally)
+            ("C-S-<down>"  shrink-window)
+            ("C-S-<up>"    enlarge-window)
             ("M-s" save-buffer)
-            ("M-n" global-linum-mode)
+            ("M-p" ctrl-y-in-vi)
+            ("M-n" ctrl-e-in-vi)
             ("M-N" make-frame)
             ("M-W" delete-frame)
             ("M-w" ido-kill-buffer)
@@ -190,20 +208,43 @@
             ("M-O" other-window)
             ("M-`" switch-to-next-frame)
             ("M-~" switch-to-previous-frame)
+            ("M-RET" ns-toggle-fullscreen)
             ))
+
+;;toggle full-screen
+;; (defun toggle-fullscreen ()
+;; (interactive)
+;; (set-frame-parameter
+;;  nil
+;;  'fullscreen
+;;  (if (frame-parameter nil 'fullscreen)
+;;      nil
+;;    'fullboth)))
+
+;; (global-set-key [(meta return)] 'toggle-fullscreen)
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
 (add-to-list 'default-frame-alist '(alpha 85 85))
+;; (set-frame-font "Droid Sans Mono Dotted-12")
 (eval-when-compile (require 'cl))
 (defun toggle-transparency ()
   (interactive)
   (if (/=
        (cadr (find 'alpha (frame-parameters nil) :key #'car))
-       10)
-      (set-frame-parameter nil 'alpha '(10 10))
+       40)
+      (set-frame-parameter nil 'alpha '(40 40))
     (set-frame-parameter nil 'alpha '(85 85))))
 (global-set-key (kbd "C-c T") 'toggle-transparency)
+
+;; Vim-like scrolling
+(defun ctrl-e-in-vi (n)
+  (interactive "p")
+  (scroll-up n))
+
+(defun ctrl-y-in-vi (n)
+  (interactive "p")
+  (scroll-down n))
 
 ;; (global-set-key (kbd "<XF86AudioPlay>")
 ;;                 (lambda () (interactive)
@@ -213,8 +254,29 @@
 
 ;; ERC stuff
 ;; (setq erc-encoding-coding-alist (quote (("#lisp" . utf-8)
-;;                                         ("#nihongo" . iso-2022-jp) ("#truelambda" . iso-latin-1)
-;;                                         ("#bitlbee" . iso-latin-1))))
+;;                                         ("#nihongo" . iso-2022-jp)
+;;                                         ("#" . iso-latin-1)
+;;                                         ("#" . iso-latin-1))))
+(autoload 'erc "erc")
+(add-hook 'erc-mode-hook
+          '(lambda ()
+             (setq scroll-margin 0)
+             (setq erc-scrolltobottom-mode 1)))
+(load "~/.emacs.d/erc-bip") ;; Passwords here
+(defun ido-erc-buffer()
+  (interactive)
+  (switch-to-buffer
+   (ido-completing-read "Channel:" 
+                        (save-excursion
+                          (delq
+                           nil
+                           (mapcar (lambda (buf)
+                                     (when (buffer-live-p buf)
+                                       (with-current-buffer buf
+                                         (and (eq major-mode 'erc-mode)
+                                              (buffer-name buf)))))
+                                   (buffer-list)))))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell mode
@@ -282,6 +344,13 @@
  '(scroll-step 1)
  '(scroll-up-aggressively 0.0)
  '(show-paren-mode t nil (paren)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(mumamo-border-face-in ((t nil)))
+ '(mumamo-border-face-out ((t nil))))
 
 
 ;;; This was installed by package-install.el.
@@ -294,10 +363,3 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize)
   (require 'starter-kit-elpa))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(mumamo-border-face-in ((t nil)))
- '(mumamo-border-face-out ((t nil))))
