@@ -348,6 +348,10 @@ if has("autocmd")
     autocmd BufRead,BufNewFile *.txt
           \ set nonumber tw=80
   augroup END
+  augroup gnupg " {{{3
+    autocmd BufRead,BufNewFile *.gpg
+          \ set nobackup
+  augroup END
   augroup helphelp " {{{3
     " For help files, move them to the top window and make <Return>
     " behave like <C-]> (jump to tag)
