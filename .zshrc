@@ -208,12 +208,12 @@ alias sl="screen -ls"
 alias sr="screen -r"
 alias sx="screen -x"
 alias srd="screen -rd"
-alias t="SSH_AUTH_SOCK=$HOME/.ssh-agent TERM=xterm-256color tmux at"
+alias t="TERM=xterm-256color tmux at"
 alias tl="tmux ls"
 alias bc="bc -q"
 alias fm="fmstatus.sh&;shell-fm"
 alias apl="gvim -font 'APL385 Unicode 14' -c 'set keymap=uniapl385'"
-alias d="dtach -a /tmp/dtach"
+alias d="dtach -a ~/.dtach"
 alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
@@ -309,7 +309,14 @@ zpush() {
         fi
     done;
 }
-
+function r() {
+    if [[ -n $TMUX ]]; then
+        NEW_SSH_AUTH_SOCK=`tmux showenv|grep ^SSH_AUTH_SOCK|cut -d = -f 2`
+        if [[ -n $NEW_SSH_AUTH_SOCK ]] && [[ -S $NEW_SSH_AUTH_SOCK ]]; then
+            SSH_AUTH_SOCK=$NEW_SSH_AUTH_SOCK
+        fi
+    fi
+}
 ex () {
     if whence gtar > /dev/null ; then
         TAR=gtar
