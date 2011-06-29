@@ -32,10 +32,10 @@ export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man
 paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin /pkgs/ghc/current/bin
 /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin /opt/SUNWut/sbin /opt/SUNWut/bin
-/usr/ccs/bin /usr/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
+/usr/ccs/bin /opt/local/sbin /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin /opt/java5/bin
 /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(/opt/local/sbin /opt/local/bin ~/.cabal/bin ~/local/bin ~/local/sbin
+prepaths=(/usr/local/bin /usr/local/sbin ~/.cabal/bin ~/local/bin ~/local/sbin
 ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
@@ -74,7 +74,9 @@ fi
 # Setting vars
 #TERM=rxvt
 #export GEM_HOME="$HOME/.gems"
+#export GEM_HOME="/Library/Ruby/Gems/1.8"
 #export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
+#export GEM_PATH="/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8"
 zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
 HISTSIZE=1000
 SAVEHIST=1000
