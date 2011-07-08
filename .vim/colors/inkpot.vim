@@ -54,6 +54,7 @@ if has("gui_running")
     endif
 
     hi CursorLine         guibg=#2e2e37
+    hi CursorColumn       guibg=#2e2e37
 
     hi IncSearch      gui=BOLD   guifg=#303030   guibg=#cd8b60
     hi Search         gui=NONE   guifg=#303030   guibg=#ad7b57

@@ -335,8 +335,8 @@ set dictionary=/usr/share/dict/words
 " {{{1
 
 " Show the column and/or line of the cursor {{{2
-au VimEnter,BufEnter,WinEnter * set cursorcolumn " cursorline
-au WinLeave * set nocursorcolumn " nocursorline
+"au VimEnter,BufEnter,WinEnter * set cursorcolumn " cursorline
+"au WinLeave * set nocursorcolumn " nocursorline
 
 " content creation {{{2
 if has("autocmd")
