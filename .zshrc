@@ -71,6 +71,9 @@ fi
 #    export PATH=$PATH:$dir
 #done
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+
+
 # Setting vars
 #TERM=rxvt
 #export GEM_HOME="$HOME/.gems"
