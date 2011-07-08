@@ -1,3 +1,9 @@
+## Profiling options
+#PS4='+$(date "+%s:%N") %N:%i> '
+#exec 3>&2 2>/tmp/zsh-startlog.$$
+#setopt prompt_subst
+#setopt xtrace
+
 typeset -ga preexec_functions
 typeset -ga precmd_functions
 typeset -ga chpwd_functions
@@ -352,3 +358,7 @@ ex () {
         echo "'$1' is not a valid file!"
     fi
 }
+
+## Profiling options
+#unsetopt xtrace
+#exec 2>&3 3>&-
