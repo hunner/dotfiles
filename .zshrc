@@ -155,6 +155,7 @@ fi
 export VISUAL="$VIM -f"
 export EDITOR="$VIM -f"
 alias v=$VIM
+alias vh="$VIM -c 'au VimLeave * maca hide:'"
 alias vi=$VIM
 alias vr="$VIM --remote-tab"
 alias vl="$VIM --serverlist"
