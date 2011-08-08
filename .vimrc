@@ -647,28 +647,28 @@ nmap <C--> :colder<CR>
 nmap <C-_> :cnewer<CR>
 
 " Make S-up/down do gk/gj {{{2
-inoremap <S-Up>   <C-o>gk
-inoremap <S-Down> <C-o>gj
-noremap  <S-Up>   gk
-noremap  <S-Down> gj
+imap <S-Up>   <C-o>gk
+imap <S-Down> <C-o>gj
+map  <S-Up>   gk
+map  <S-Down> gj
 
 " Better Bépo movement {{{2
-noremap © h
-noremap þ j
-noremap ß k
-noremap ® l
+map © h
+map þ j
+map ß k
+map ® l
 
 " Make <space>/<backspace> page up/down {{{2
-noremap <space> <C-f>
-noremap <backspace> <C-b>
+map <space> <C-f>
+map <backspace> <C-b>
 
 " Scrolling with arrows controls the window {{{2
-noremap <Up>   <C-y>
-noremap <Down> <C-e>
+map <Up>   <C-y>
+map <Down> <C-e>
 
 " Useful things from inside imode {{{2
-inoremap <C-z>w <C-o>:w<CR>
-inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
+imap <C-z>w <C-o>:w<CR>
+imap <C-z>q <C-o>gq}<C-o>k<C-o>$
 
 " Commonly used commands {{{2
 "nmap <silent> <F3> :silent nohlsearch<CR>
@@ -686,7 +686,7 @@ nmap <Leader><F8> :exec "make -C " . expand("%:p:h")<CR>
 "            \ . " TESTS=" . GetCurrentTest() <CR>
 
 " Insert a single char {{{2
-noremap <Leader>i i<Space><Esc>r
+map <Leader>i i<Space><Esc>r
 
 " Split the line into a (n)ew line or an (o)pen line {{{2
 nmap <Leader>n \i<CR>
@@ -696,33 +696,33 @@ nmap <Leader>o \i<CR>k$
 noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 
 " In normal mode, jj or jl escapes {{{2
-inoremap jj <Esc>
-inoremap jl <Esc>
+imap jj <Esc>
+imap jl <Esc>
 
 " Kill line like emacs {{{2
-"noremap <C-k> "_dd
+"map <C-k> "_dd
 
 " Select everything {{{2
-noremap <Leader>gg ggVG
+map <Leader>gg ggVG
 
 " Reformat everything {{{2
-noremap <Leader>gq gggqG
+map <Leader>gq gggqG
 
 " Reformat paragraph {{{2
-noremap <Leader>gp gqap
+map <Leader>gp gqap
 
 " Clear lines {{{2
-"noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
+"map <Leader>clr :s/^.*$//<CR>:nohls<CR>
 
 " Delete blank lines {{{2
-noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
+map <Leader>dbl :g/^$/d<CR>:nohls<CR>
 
 " Enclose each selected line with markers {{{2
-noremap <Leader>enc :<C-w>execute
+map <Leader>enc :<C-w>execute
       \ substitute(":'<,'>s/^.*/#&#/ \| :nohls", "#", input(">"), "g")<CR>
 
 " Edit something in the current directory {{{2
-noremap <Leader>ed :e <C-r>=expand("%:p:h")<CR>/<C-d>
+map <Leader>ed :e <C-r>=expand("%:p:h")<CR>/<C-d>
 
 " Enable fancy % matching {{{2
 if has("eval")
@@ -758,7 +758,7 @@ if has("eval")
     norm o
     call setline(line("."), "#endif")
   endfun
-  noremap <Leader>ig :call MakeIncludeGuards()<CR>
+  map <Leader>ig :call MakeIncludeGuards()<CR>
 endif
 
 " javascript folding {{{2
@@ -841,12 +841,12 @@ if v:version >= 700 && has("eval")
     endif
   endfun
 
-  noremap <Leader>sh :call SwitchHeader(0)<CR>
-  noremap <Leader>st :call SwitchTest(0)<CR>
-  noremap <Leader>sk :call SwitchMakefile(0)<CR>
-  noremap <Leader>ssh :call SwitchHeader(1)<CR>
-  noremap <Leader>sst :call SwitchTest(1)<CR>
-  noremap <Leader>ssk :call SwitchMakefile(1)<CR>
+  map <Leader>sh :call SwitchHeader(0)<CR>
+  map <Leader>st :call SwitchTest(0)<CR>
+  map <Leader>sk :call SwitchMakefile(0)<CR>
+  map <Leader>ssh :call SwitchHeader(1)<CR>
+  map <Leader>sst :call SwitchTest(1)<CR>
+  map <Leader>ssk :call SwitchMakefile(1)<CR>
 endif
 
 " super i_c-y / i_c-e {{{2
@@ -898,8 +898,8 @@ if v:version >= 700 && has("eval")
     endif
   endfun
 
-  inoremap <C-g>y <C-\><C-o>:call SuperYank(-1)<CR>
-  inoremap <C-g>e <C-\><C-o>:call SuperYank(1)<CR>
+  imap <C-g>y <C-\><C-o>:call SuperYank(-1)<CR>
+  imap <C-g>e <C-\><C-o>:call SuperYank(1)<CR>
 endif
 
 " tab completion {{{2
@@ -911,8 +911,8 @@ if has("eval")
       return "\<C-N>"
     endif
   endfun
-  inoremap <Tab> <C-R>=CleverTab()<CR>
-  inoremap <S-Tab> <C-P>
+  imap <Tab> <C-R>=CleverTab()<CR>
+  imap <S-Tab> <C-P>
 endif
 
 " ^n Show number and fold columns in windows {{{2
@@ -939,7 +939,7 @@ if has("eval")
     endif
   endfun
   "autocmd WinEnter,BufWinEnter,BufNew * :call <SID>FoldNumbers()
-  noremap <silent> <C-n> :call <SID>FoldNumbers()<CR>
+  map <silent> <C-n> :call <SID>FoldNumbers()<CR>
 endif
 
 " }}}1
@@ -1046,7 +1046,7 @@ if has("eval")
   let Tlist_Exit_OnlyWindow=1
   let Tlist_File_Fold_Auto_Close=1
   let Tlist_Inc_Winwidth=0
-  "nnoremap <silent> <F9> :Tlist<CR>
+  "nmap <silent> <F9> :Tlist<CR>
 
   " Settings minibufexpl.vim
   "let g:miniBufExplModSelTarget = 1
@@ -1162,31 +1162,32 @@ map <S-F3> :2split ~/.vim/fun_ref.vim<CR>
 map <F4> :set rnu!<CR>
 map <S-F4> :set nu!<CR>
 map <F5> ggVGg?
-noremap <F6> :set encoding=utf-8<CR>:set fenc=utf-8<CR>
-noremap <S-F6> :set encoding=iso8859-15<CR>:set fenc=iso8859-15<CR>
+map <F6> :set encoding=utf-8<CR>:set fenc=utf-8<CR>
+map <S-F6> :set encoding=iso8859-15<CR>:set fenc=iso8859-15<CR>
 "map <F7> :SpellProposeAlternatives<CR>
 "map <S-F7> :SpellCheck<CR>
 "map <C-F7> :let spell_language_list = "english,spanish"
-"nnoremap <silent> <F8> :Tlist<CR>
-"nnoremap <silent> <S-F8> :TlistSync<CR>
-nnoremap <Esc> :noh<CR><Esc>
+"nmap <silent> <F8> :Tlist<CR>
+"nmap <silent> <S-F8> :TlistSync<CR>
+nmap <Esc> :noh<CR><Esc>
 map <F11> !!date<CR>
 map <F12> :TC<CR>
-nnoremap  :X        :x
-nnoremap  :W        :w
-nnoremap  :Q        :q
-nnoremap  :B        :b
-noremap <Leader>rg :color relaxedgreen<CR>
-noremap <Leader>ip :color inkpot<CR>
-noremap <Leader>ir :color ir_black<CR>
-noremap <Leader>mv :color macvim<CR>:set background=light<CR>
-map <Leader>f :FufFile<CR>
+nmap  :X        :x
+nmap  :W        :w
+nmap  :Q        :q
+nmap  :B        :b
+map <Leader>rg :color relaxedgreen<CR>
+map <Leader>ip :color inkpot<CR>
+map <Leader>ir :color ir_black<CR>
+map <Leader>mv :color macvim<CR>:set background=light<CR>
+map <Leader>f :FufFileWithCurrentBufferDir<CR>
+map <Leader>v :FufCoverageFile<CR>
 map <Leader>b :FufBuffer<CR>
-map <Leader>c :FufDir<CR>
+map <Leader>c :FufDirWithFullCwd<CR>
 map <Leader>w :bdelete<CR>
 map <F1> :FufHelp<CR>
-noremap <F12> <Esc>:syntax sync fromstart<CR>
-inoremap <F12> <C-o>:syntax sync fromstart<CR>
+map <F12> <Esc>:syntax sync fromstart<CR>
+imap <F12> <C-o>:syntax sync fromstart<CR>
 syntax sync minlines=200
 
 " NERD tree. Yay!
