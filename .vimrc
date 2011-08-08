@@ -1118,6 +1118,56 @@ endif
 " }}}1
 
 "-----------------------------------------------------------------------
+" Default Fuf shortcuts Dvorakized from :help fuf-vimrc-example
+"-----------------------------------------------------------------------
+" {{{1
+let g:fuf_modesDisable = []
+let g:fuf_mrufile_maxItem = 400
+let g:fuf_mrucmd_maxItem = 400
+nmap <silent> sh     :FufBuffer<CR>
+nmap <silent> st     :FufFileWithCurrentBufferDir<CR>
+nmap <silent> sT     :FufFileWithFullCwd<CR>
+nmap <silent> s<C-t> :FufFile<CR>
+nmap <silent> sn     :FufCoverageFileChange<CR>
+nmap <silent> sN     :FufCoverageFileChange<CR>
+nmap <silent> s<C-n> :FufCoverageFileRegister<CR>
+ nmap <silent> sd     :FufDirWithCurrentBufferDir<CR>
+ nmap <silent> sD     :FufDirWithFullCwd<CR>
+ nmap <silent> s<C-d> :FufDir<CR>
+nmap <silent> sb     :FufMruFile<CR>
+nmap <silent> sB     :FufMruFileInCwd<CR>
+ nmap <silent> sm     :FufMruCmd<CR>
+ nmap <silent> su     :FufBookmarkFile<CR>
+ nmap <silent> s<C-u> :FufBookmarkFileAdd<CR>
+ vmap <silent> s<C-u> :FufBookmarkFileAddAsSelectedText<CR>
+ nmap <silent> si     :FufBookmarkDir<CR>
+ nmap <silent> s<C-i> :FufBookmarkDirAdd<CR>
+nmap <silent> sy     :FufTag<CR>
+nmap <silent> sY     :FufTag!<CR>
+ nmap <silent> s<C-]> :FufTagWithCursorWord!<CR>
+ nmap <silent> s,     :FufBufferTag<CR>
+ nmap <silent> s<     :FufBufferTag!<CR>
+ vmap <silent> s,     :FufBufferTagWithSelectedText!<CR>
+ vmap <silent> s<     :FufBufferTagWithSelectedText<CR>
+ nmap <silent> s}     :FufBufferTagWithCursorWord!<CR>
+ nmap <silent> s.     :FufBufferTagAll<CR>
+ nmap <silent> s>     :FufBufferTagAll!<CR>
+ vmap <silent> s.     :FufBufferTagAllWithSelectedText!<CR>
+ vmap <silent> s>     :FufBufferTagAllWithSelectedText<CR>
+ nmap <silent> s]     :FufBufferTagAllWithCursorWord!<CR>
+ nmap <silent> sg     :FufTaggedFile<CR>
+ nmap <silent> sG     :FufTaggedFile!<CR>
+ nmap <silent> so     :FufJumpList<CR>
+ nmap <silent> sp     :FufChangeList<CR>
+ nmap <silent> sq     :FufQuickfix<CR>
+nmap <silent> sf     :FufLine<CR>
+nmap <silent> sx     :FufHelp<CR>
+ nmap <silent> se     :FufEditDataFile<CR>
+ nmap <silent> sr     :FufRenewCache<CR>
+
+" }}}1
+
+"-----------------------------------------------------------------------
 " final commands (clean this cruft up -- don't add more here)
 "-----------------------------------------------------------------------
 " {{{1
