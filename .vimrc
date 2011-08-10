@@ -1122,6 +1122,7 @@ endif
 "-----------------------------------------------------------------------
 " {{{1
 "let g:fuf_modesDisable = []
+let g:fuf_modesDisable = ['mrucmd']
 "let g:fuf_mrufile_maxItem = 400
 "let g:fuf_mrucmd_maxItem = 400
 "nmap <silent> sh     :FufBuffer<CR>
@@ -1134,8 +1135,8 @@ nmap <silent> sN     :FufCoverageFileChange<CR>
  nmap <silent> sd     :FufDirWithCurrentBufferDir<CR>
  nmap <silent> sD     :FufDirWithFullCwd<CR>
  nmap <silent> s<C-d> :FufDir<CR>
-"nmap <silent> sb     :FufMruFile<CR>
-"nmap <silent> sB     :FufMruFileInCwd<CR>
+nmap <silent> sb     :FufMruFile<CR>
+nmap <silent> sB     :FufMruFileInCwd<CR>
 " nmap <silent> sm     :FufMruCmd<CR>
 " nmap <silent> su     :FufBookmarkFile<CR>
 " nmap <silent> s<C-u> :FufBookmarkFileAdd<CR>
@@ -1219,7 +1220,7 @@ map <S-F6> :set encoding=iso8859-15<CR>:set fenc=iso8859-15<CR>
 "map <C-F7> :let spell_language_list = "english,spanish"
 "nmap <silent> <F8> :Tlist<CR>
 "nmap <silent> <S-F8> :TlistSync<CR>
-nmap <Esc> :noh<CR><Esc>
+nmap <Esc> :noh<CR>
 map <F11> !!date<CR>
 map <F12> :TC<CR>
 nmap  :X        :x
