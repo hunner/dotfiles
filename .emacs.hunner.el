@@ -206,8 +206,8 @@
             ("M-a" beginning-of-line)
             ("M-o" other-window)
             ("M-O" other-window)
-            ("M-`" switch-to-next-frame)
-            ("M-~" switch-to-previous-frame)
+            ("M-`" next-window)
+            ("M-~" previous-window)
             ("M-RET" ns-toggle-fullscreen)
             ))
 
@@ -257,25 +257,25 @@
 ;;                                         ("#nihongo" . iso-2022-jp)
 ;;                                         ("#" . iso-latin-1)
 ;;                                         ("#" . iso-latin-1))))
-(autoload 'erc "erc")
-(add-hook 'erc-mode-hook
-          '(lambda ()
-             (setq scroll-margin 0)
-             (setq erc-scrolltobottom-mode 1)))
-(load "~/.emacs.d/erc-bip") ;; Passwords here
-(defun ido-erc-buffer()
-  (interactive)
-  (switch-to-buffer
-   (ido-completing-read "Channel:" 
-                        (save-excursion
-                          (delq
-                           nil
-                           (mapcar (lambda (buf)
-                                     (when (buffer-live-p buf)
-                                       (with-current-buffer buf
-                                         (and (eq major-mode 'erc-mode)
-                                              (buffer-name buf)))))
-                                   (buffer-list)))))))
+;; (autoload 'erc "erc")
+;; (add-hook 'erc-mode-hook
+;;           '(lambda ()
+;;              (setq scroll-margin 0)
+;;              (setq erc-scrolltobottom-mode 1)))
+;; (load "~/.emacs.d/erc-bip") ;; Passwords here
+;; (defun ido-erc-buffer()
+;;   (interactive)
+;;   (switch-to-buffer
+;;    (ido-completing-read "Channel:" 
+;;                         (save-excursion
+;;                           (delq
+;;                            nil
+;;                            (mapcar (lambda (buf)
+;;                                      (when (buffer-live-p buf)
+;;                                        (with-current-buffer buf
+;;                                          (and (eq major-mode 'erc-mode)
+;;                                               (buffer-name buf)))))
+;;                                    (buffer-list)))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
