@@ -36,7 +36,7 @@ esac
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man
-paths=(/cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin /pkgs/ghc/current/bin
+paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin /pkgs/ghc/current/bin
 /pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin /opt/SUNWut/sbin /opt/SUNWut/bin
 /usr/ccs/bin /opt/local/sbin /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin /opt/java5/bin
@@ -92,6 +92,7 @@ SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
+export ENVPUPPET_BASEDIR="/Users/hunner/Documents/work"
 
 # Prompt
 #PS1="%m%# "
