@@ -282,6 +282,10 @@ alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
 alias notes='vi ~/Dropbox/Notes/vim*'
+alias hibernateon='sudo pmset -a hibernatemode 25'
+alias hibernateoff='sudo pmset -a hibernatemode 3'
+alias hibernate='pmset -g|grep hibernatemode'
+
 if [ -f $HOME/.termcap ] ; then
     TERMCAP=$(< $HOME/.termcap)
     export TERMCAP
