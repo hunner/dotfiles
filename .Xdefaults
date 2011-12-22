@@ -1,3 +1,23 @@
+!Theme Twenty
+*foreground: rgb:aa/aa/aa
+*background: rgb:00/00/00
+*color0:     rgb:30/34/30
+*color1:     rgb:bf/79/79
+*color2:     rgb:97/b2/6b
+*color3:     rgb:cd/cd/c1
+*color4:     rgb:86/a2/be
+*color5:     rgb:d9/b7/98
+*color6:     rgb:a1/b5/cd
+*color7:     rgb:ff/ff/ff
+*color8:     rgb:cd/b5/cd
+*color9:     rgb:f4/a4/5f
+*color10:    rgb:c5/f7/79
+*color11:    rgb:ff/ff/ef
+*color12:    rgb:98/af/d9
+*color13:    rgb:d7/d9/98
+*color14:    rgb:a1/b5/cd
+*color15:    rgb:de/de/de
+
 Xft*antialias: true
 Xft*dpi: 96
 URxvt*scrollBar: false
@@ -10,14 +30,20 @@ URxvt*urgentOnBell: True
 !URxvt*shading: 30
 !URxvt*fadeColor: grey
 URxvt*buffered: true
-URxvt*cursorColor: #99ff00
-URxvt*font: xft:DroidSansMonoDotted:pixelsize=12,xft:IPAGothic:antialias=true
-!URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
+!URxvt*cursorColor: #99ff00
+URxvt*cursorColor: #9fbc00
+!URxvt*font: xft:DroidSansMonoDotted:pixelsize=12,xft:IPAGothic:antialias=true
+URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
 !URxvt*font: 6x13,xft:IPAGothic:antialias=true
+!URxvt*font: erusfont:IPAGothic:antialias=true
+!urxvt*font: xft: erusfont:pixelsize=7
+!URxvt.color2: #9fbc00
+!URxvt.color154: #9fbc00
 
 URxvt*perl-ext-common: default,matcher
 !URxvt*urlLauncher: urxvt-to-uzbl.sh
-URxvt*urlLauncher: chromium-dev
+!URxvt*urlLauncher: chromium
+URxvt*urlLauncher: jumanji
 URxvt*matcher.button: 1
 !URxvt*colorUL: green
 URxvt*searchable-scrollback: F10
