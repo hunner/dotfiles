@@ -283,6 +283,10 @@ alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
 alias notes='vi ~/Dropbox/Notes/vim*'
 alias 256colors='(x=`tput op` y=`printf %80s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done)'
+alias hibernateon='sudo pmset -a hibernatemode 25'
+alias hibernateoff='sudo pmset -a hibernatemode 3'
+alias hibernate='pmset -g|grep hibernatemode'
+
 if [ -f $HOME/.termcap ] ; then
     TERMCAP=$(< $HOME/.termcap)
     export TERMCAP
