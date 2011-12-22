@@ -282,6 +282,7 @@ alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
 alias notes='vi ~/Dropbox/Notes/vim*'
+alias 256colors='(x=`tput op` y=`printf %80s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done)'
 if [ -f $HOME/.termcap ] ; then
     TERMCAP=$(< $HOME/.termcap)
     export TERMCAP
