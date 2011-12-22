@@ -36,7 +36,7 @@ import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
 mTerminal      = "urxvtc"
-mBorderWidth   = 0
+mBorderWidth   = 1
 mModMask       = mod4Mask
 
 -- A tagging example:
@@ -47,8 +47,8 @@ mWorkspaces = map show [0 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-mNormalBorderColor  = "#999999"
-mFocusedBorderColor = "#dd0000"
+mNormalBorderColor  = "#232323"
+mFocusedBorderColor = "#9fbc00"
 
 -- Custom keys
 --
@@ -59,6 +59,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
         --, ("M-s"  , shellPromptHere sp mXPConfig ) -- Shell prompt
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
+        , ("M-p"  , spawn "dmenu_run")
         , ("<Scroll_lock>", spawn "xlock -mode fzort" ) -- SCReen LocK
 
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
@@ -75,8 +76,8 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("<XF86AudioStop>"       , spawn "mpc stop"         ) -- stop mpd
         , ("<XF86AudioPrev>"       , spawn "mpc prev"         ) -- prev song
         , ("<XF86AudioNext>"       , spawn "mpc next"         ) -- next song
-        , ("<XF86AudioLowerVolume>", spawn "amixer -q set PCM 1-") -- volume down
-        , ("<XF86AudioRaiseVolume>", spawn "amixer -q set PCM 1+") -- volume up
+        , ("<XF86AudioLowerVolume>", spawn "amixer -q set PCM 4-") -- volume down
+        , ("<XF86AudioRaiseVolume>", spawn "amixer -q set PCM 4+") -- volume up
         , ("<XF86AudioMute>"       , spawn "amixer -q set Headphone toggle") -- toggle mute
         , ("M-<XF86AudioMute>"     , spawn "amixer -q set Speaker toggle")
 
@@ -124,8 +125,9 @@ mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
 -}
 
 mXPConfig :: XPConfig
-mXPConfig = defaultXPConfig { fgColor = "#dd0000", bgColor = "black", borderColor = "#dd0000" }
+mXPConfig = defaultXPConfig { fgColor = "#9fbc00", bgColor = "black", borderColor = "#9fbc00" }
 
+{-
 gsConfig = defaultGSConfig
    { gs_navigate = M.unions
            [reset
@@ -143,7 +145,9 @@ gsConfig = defaultGSConfig
                               ]
         -- jump back to the center with the spacebar, regardless of the current position.
         reset = M.singleton (0,xK_space) (const (0,0))
+-}
 
+gsConfig = defaultGSConfig
 
 
 ------------------------------------------------------------------------
@@ -224,10 +228,39 @@ mManageHook = composeAll
     , resource  =? "kdesktop"       --> doIgnore
     , isFullscreen                  --> doFullFloat ]
 
+------------------------------------------------------------------------
 -- Whether focus follows the mouse pointer.
+--
 mFocusFollowsMouse :: Bool
 mFocusFollowsMouse = True
 
+-- Mouse bindings: default actions bound to mouse events
+--
+mMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
+    -- mod-button1, Set the window to floating mode and move by dragging
+    [ ((modm              , button1), (\w -> focus w >> mouseMoveWindow w
+                                                     >> windows W.shiftMaster))
+
+    -- mod-button2, Raise the window to the top of the stack
+    , ((modm              , button2), (\w -> focus w >> windows W.shiftMaster))
+
+    -- mod-shift-button1, Set the window to floating mode and resize by dragging
+    , ((modm .|. shiftMask, button1), (\w -> focus w >> mouseResizeWindow w
+                                                     >> windows W.shiftMaster))
+
+    -- button4: 2-swipe up
+    -- button5: 2-swipe down
+    -- button6: 2-swipe left
+    -- button7: 2-swipe right
+    -- button8: 3-swipe up
+    -- button9: 3-swipe down
+    -- button10: 3-swipe left
+    -- button11: 3-swipe right
+    -- button12: scale in
+    -- button13: scale out
+    -- button14: rotate left
+    -- button15: rotate right
+    ]
 {-
 [14:25]  dschoepe : Hunner: http://hpaste.org/fastcgi/hpaste.fcgi/view?id=8798#a8798
 [14:25]  dschoepe : that should work in darcs
@@ -255,6 +288,7 @@ mConfig = defaultConfig
   , borderWidth        = mBorderWidth
   , modMask            = mModMask
   , workspaces         = mWorkspaces
+  , mouseBindings      = mMouseBindings
   , normalBorderColor  = mNormalBorderColor
   , focusedBorderColor = mFocusedBorderColor
   , layoutHook         = mLayout
@@ -268,6 +302,4 @@ mConfig = defaultConfig
 
 -- Run xmonad!
 --
-main = do
-    sp <- mkSpawner
-    xmonad mConfig
+main = xmonad mConfig
