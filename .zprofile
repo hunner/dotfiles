@@ -93,6 +93,7 @@ HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export ENVPUPPET_BASEDIR="/Users/hunner/Documents/work/git"
+export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 
 # Prompt
 #PS1="%m%# "
