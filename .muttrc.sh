@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ x$HOST = xcz ] ; then
+if [ x"$HOST" = "xcz.local" ] ; then
     echo 'set imap_user="hunter@puppetlabs.com"'
     #set imap_pass="password"
 
@@ -8,8 +8,8 @@ if [ x$HOST = xcz ] ; then
 
     echo 'set folder="imaps://imap.gmail.com:993"'
     echo 'set spoolfile="+INBOX"'
-    #set postponed="+[Gmail]/Drafts"
-    #set record="+[Gmail]/Sent Mail"
+    set postponed="+[Gmail]/Drafts"
+    set record="+[Gmail]/Sent Mail"
 else
     # IMAP
     echo 'set imap_user="hunner"'
