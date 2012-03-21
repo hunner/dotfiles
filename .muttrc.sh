@@ -1,7 +1,9 @@
 #!/bin/sh
 
-if [ x"$HOST" = "xcz.local" ] ; then
+if [ x"$HOST" = "xcz.puppetlabs.lan" ] ; then
     echo 'set imap_user="hunter@puppetlabs.com"'
+    echo 'set from="hunter@puppetlabs.com"'
+    echo 'set realname="Hunter Haugen"'
     #set imap_pass="password"
 
     #set smtp_url="smtp://hunter.haugen@smtp.gmail.com:587/"

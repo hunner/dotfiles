@@ -7,20 +7,23 @@ set message_cachedir=~/.mutt/cache/bodies
 set certificate_file=~/.mutt/certificates
 
 set move=no
+set imap_keepalive=900
 
-# Sort like gmail sorts it
+# Sort like gmail sorts it, almost
 set sort=threads
 set sort_aux=last-date-received
 # Automatically poll subscribed mailboxes for new mail
 set imap_check_subscribed
 # Display download progress every 5K
 set net_inc=5
+# Don't skip past end of message on <space>
+set pager_stop=yes
 
 # uber-mutt stuff
 set sidebar_width=22
 set sidebar_visible=no
 set sidebar_delim='|'
-set sidebar_sort=yes
+#set sidebar_sort=yes
 color sidebar_new color148 default
 bind index \CP sidebar-prev
 bind index \CN sidebar-next
@@ -42,10 +45,13 @@ ignore "DKIM-Signature:"
 # default list of header fields to weed out when displaying mail
 # ignore them all and then unignore what you want to see
 ignore *
-unignore  Date To From: Cc Subject X-Tts
-hdr_order Date To From: Cc Subject X-Tts
+unignore Date To From: Cc Subject X-Tts X-Label
+unignore x-mailing-list: posted-to:
+unignore x-mailer:
+hdr_order Date To From: Cc Subject X-Tts X-Label
 color normal default default
-color header color148 default '^(Cc|Date|To|From|Subject|X-Tts):'
+color header color148 default '^(Cc|Date|To|From|Subject):'
+color header brightwhite default '^(X-Mailer|X-Label|X-Tts):'
 color hdrdefault cyan default
 
 color index white default ~N
@@ -69,9 +75,18 @@ color tilde blue default
 
 # Key bindings
 bind pager h display-toggle-weed
+bind pager J next-thread
+bind pager K previous-thread
+bind pager R group-reply
 
 # Macros
-macro index c   "<change-folder>?<toggle-mailboxes>" "open a different folder"
-macro pager c   "<change-folder>?<toggle-mailboxes>" "open a different folder"
+macro index,pager c   "<change-folder>?<toggle-mailboxes>" "open a different folder"
 macro index \ec "T.*\n;WN;WO^T.*\n"                  "catch up"
-macro generic ,sm ":source $HOME/.muttrc\r"          "Resource .muttrc without restart"
+macro generic,pager ,sm ":source $HOME/.muttrc\r"          "Resource .muttrc without restart"
+# Gmail macros
+macro index,pager y "<enter-command>unset trash\n<delete-message>" "Archive message"
+macro index,pager gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index,pager ga "<change-folder>=[Gmail]/All Mail<enter>" "Go to all mail"
+macro index,pager gs "<change-folder>=[Gmail]/Sent Mail<enter>" "Go to sent mail"
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to drafts"
+
