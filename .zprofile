@@ -36,9 +36,10 @@ esac
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man
-paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin /pkgs/ghc/current/bin
-/pkgs/chromium/bin /usr/sfw/sbin /usr/sfw/bin /opt/SUNWut/sbin /opt/SUNWut/bin
-/usr/ccs/bin /opt/local/sbin /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
+paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
+/pkgs/ghc/current/bin /usr/X11/bin /pkgs/chromium/bin /usr/sfw/sbin
+/usr/sfw/bin /opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /opt/local/sbin
+/opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin /opt/java5/bin
 /opt/java/jre/bin /opt/openoffice/program)
 prepaths=(/usr/local/bin /usr/local/sbin ~/.cabal/bin ~/local/bin ~/local/sbin
@@ -234,6 +235,7 @@ alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
 alias g="git"
 alias gl="git lg"
+alias gla="git lg --all"
 alias gp="git push"
 alias gu="git pull"
 alias gs="git status"
