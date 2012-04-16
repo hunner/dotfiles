@@ -1242,6 +1242,9 @@ noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 syntax sync minlines=200
 
+" Gundo - Vim's undo tree for humans
+nnoremap <silent> <C-U> :GundoToggle<CR>
+
 " NERD tree. Yay!
 nnoremap <silent> <C-G> :NERDTreeToggle<CR>
 
