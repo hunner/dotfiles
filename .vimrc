@@ -171,7 +171,7 @@ set popt+=syntax:y
 
 " Enable filetype settings {{{2
 if has("eval")
-  filetype on
+  filetype off " Off for vundle
   filetype plugin on
   filetype indent on
 endif
@@ -619,6 +619,10 @@ nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
+nmap <C-Left> <C-w>h
+nmap <C-Down> <C-w>j
+nmap <C-Up> <C-w>k
+nmap <C-Right> <C-w>l
 
 " Move through buffers instead of tabs with gt/gT {{{2
 "nmap gT :bprev<CR>
@@ -697,6 +701,8 @@ noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 
 " In normal mode, jj or jl escapes {{{2
 inoremap jj <Esc>
+inoremap hh <Esc>
+"inoremap kk <Esc> " Messes up final-k fuf searches
 inoremap jl <Esc>
 
 " Kill line like emacs {{{2
@@ -1063,15 +1069,16 @@ if has("eval")
   endif
 
   let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
+  "let g:showmarks_include="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
   if has("autocmd")
     fun! <SID>FixShowmarksColours()
-      if has('gui') 
-        hi ShowMarksHLl gui=bold guifg=#a0a0e0 guibg=#2e2e2e 
-        hi ShowMarksHLu gui=none guifg=#a0a0e0 guibg=#2e2e2e 
-        hi ShowMarksHLo gui=none guifg=#a0a0e0 guibg=#2e2e2e 
-        hi ShowMarksHLm gui=none guifg=#a0a0e0 guibg=#2e2e2e 
-        hi SignColumn   gui=none guifg=#f0f0f8 guibg=#2e2e2e 
+      if has('gui')
+        hi ShowMarksHLl gui=bold guifg=#a0a0e0 guibg=#2e2e2e
+        hi ShowMarksHLu gui=none guifg=#a0a0e0 guibg=#2e2e2e
+        hi ShowMarksHLo gui=none guifg=#a0a0e0 guibg=#2e2e2e
+        hi ShowMarksHLm gui=none guifg=#a0a0e0 guibg=#2e2e2e
+        hi SignColumn   gui=none guifg=#f0f0f8 guibg=#2e2e2e
       endif
     endfun
     if v:version >= 700
@@ -1114,6 +1121,22 @@ if has("eval")
     nnoremap <C-j><C-j>i :scscope find i ^<C-R>=expand("<cword>")<CR><CR>
   endif
 endif
+
+" Vundle
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+Bundle 'gmarik/vundle'
+Bundle 'vim-scripts/ShowMarks'
+
+filetype plugin indent on
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
 
 " }}}1
 
