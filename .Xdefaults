@@ -33,8 +33,8 @@ URxvt*buffered: true
 !URxvt*cursorColor: #99ff00
 URxvt*cursorColor: #9fbc00
 !URxvt*font: xft:DroidSansMonoDotted:pixelsize=12,xft:IPAGothic:antialias=true
-URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
-!URxvt*font: 6x13,xft:IPAGothic:antialias=true
+!URxvt*font: xft:Terminus:pixelsize=11,xft:IPAGothic:antialias=true
+URxvt*font: 6x13,xft:IPAGothic:antialias=true
 !URxvt*font: erusfont:IPAGothic:antialias=true
 !urxvt*font: xft: erusfont:pixelsize=7
 !URxvt.color2: #9fbc00
