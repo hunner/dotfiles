@@ -81,7 +81,7 @@ bind pager R group-reply
 
 # Macros
 macro index,pager c   "<change-folder>?<toggle-mailboxes>" "open a different folder"
-macro index \ec "T.*\n;WN;WO^T.*\n"                  "catch up"
+macro index ,cu "T.*\n;WN;WO^T.*\n"                  "catch up"
 macro generic,pager ,sm ":source $HOME/.muttrc\r"          "Resource .muttrc without restart"
 # Gmail macros
 macro index,pager y "<enter-command>unset trash\n<delete-message>" "Archive message"
