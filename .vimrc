@@ -1127,6 +1127,8 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'vim-scripts/ShowMarks'
+Bundle 'Align'
+Bundle 'Gundo'
 
 filetype plugin indent on
 " Brief help
