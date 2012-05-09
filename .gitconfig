@@ -10,3 +10,5 @@
 [difftool "vimdiff"]
 	cmd = mvimdiff
 	path = /Users/hunner/local/bin/mvimdiff
+[core]
+	excludesfile = /Users/hunner/.gitignore_global
