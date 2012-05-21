@@ -1127,6 +1127,8 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'vim-scripts/ShowMarks'
+Bundle 'Align'
+Bundle 'Gundo'
 
 filetype plugin indent on
 " Brief help
@@ -1259,6 +1261,7 @@ noremap <Leader>F :FufFile<CR>
 noremap <Leader>v :FufCoverageFile<CR>
 noremap <Leader>b :FufBuffer<CR>
 noremap <Leader>c :FufDirWithFullCwd<CR>
+noremap <Leader>u :FufRenewCache<CR>
 noremap <Leader>w :bdelete<CR>
 noremap <F1> :FufHelp<CR>
 noremap <F12> <Esc>:syntax sync fromstart<CR>

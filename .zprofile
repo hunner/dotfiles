@@ -93,7 +93,7 @@ SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
-export ENVPUPPET_BASEDIR="/Users/hunner/Documents/work/git"
+export ENVPUPPET_BASEDIR="/Users/hunner/git"
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 
 # Prompt
@@ -247,6 +247,7 @@ alias gb="git branch"
 alias gc="git commit"
 alias gca="git commit --amend"
 alias gd="git diff"
+alias gdc="git diff --cached"
 alias gdw="git diff --color-words"
 alias gdt="git difftool"
 alias go="git checkout"
