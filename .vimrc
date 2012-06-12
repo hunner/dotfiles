@@ -1125,6 +1125,15 @@ if has("eval")
   endif
 endif
 
+" CtrlP
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip   " Linux/MacOSX
+set wildignore+=tmp\*,*.swp,*.zip,*.exe    " Windows
+let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$',
+    \ }
+
 " Vundle
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
