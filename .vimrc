@@ -8,6 +8,9 @@
 "-----------------------------------------------------------------------
 " {{{1
 
+" Add path for windows
+set rtp+=~/.vim
+
 " This may contain utf-8 script
 scriptencoding utf-8
 
@@ -1127,7 +1130,7 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'vim-scripts/ShowMarks'
-Bundle 'Align'
+Bundle 'Align.vim'
 Bundle 'Gundo'
 
 filetype plugin indent on
@@ -1237,7 +1240,7 @@ map <F2> :11vsplit ~/.vim/ref.vim<CR>
 map <S-F3> :2split ~/.vim/fun_ref.vim<CR>
 noremap <F4> :set rnu!<CR>
 noremap <S-F4> :set nu!<CR>
-noremap <F5> ggVGg?
+noremap <F5> ggg?G
 noremap <F6> :set encoding=utf-8<CR>:set fenc=utf-8<CR>
 noremap <S-F6> :set encoding=iso8859-15<CR>:set fenc=iso8859-15<CR>
 "map <F7> :SpellProposeAlternatives<CR>
