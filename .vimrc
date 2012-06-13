@@ -1128,7 +1128,9 @@ endif
 " CtrlP
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip   " Linux/MacOSX
 set wildignore+=tmp\*,*.swp,*.zip,*.exe    " Windows
-let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+noremap <Leader>p :CtrlPBuffer<CR>
+noremap <Leader>P :CtrlPCurFile<CR>
+let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\.git$\|\.hg$\|\.svn$',
     \ 'file': '\.exe$\|\.so$\|\.dll$',
