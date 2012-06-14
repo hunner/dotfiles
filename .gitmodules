@@ -10,3 +10,6 @@
 	path = .vim/bundle/vundle
 	url = https://github.com/gmarik/vundle.git
 	ignore = dirty
+[submodule ".vim/bundle/Align.vim"]
+	path = .vim/bundle/Align.vim
+	url = https://github.com/vim-scripts/Align.vim.git

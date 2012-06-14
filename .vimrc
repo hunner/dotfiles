@@ -1129,8 +1129,8 @@ endif
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip   " Linux/MacOSX
 set wildignore+=tmp\*,*.swp,*.zip,*.exe    " Windows
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$',
+let g:ctrlp_working_path_mode = 1
+let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 noremap <Leader>p :CtrlPBuffer<CR>
 noremap <Leader>P :CtrlPCurFile<CR>
 
