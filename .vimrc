@@ -702,11 +702,8 @@ nmap <Leader>o \i<CR>k$
 " Pull the following line to the cursor position {{{2
 noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 
-" In normal mode, jj or jl escapes {{{2
+" In normal mode, jj escapes {{{2
 inoremap jj <Esc>
-inoremap hh <Esc>
-"inoremap kk <Esc> " Messes up final-k fuf searches
-inoremap jl <Esc>
 
 " Kill line like emacs {{{2
 "noremap <C-k> "_dd
