@@ -13,3 +13,6 @@
 [submodule ".vim/bundle/Align"]
 	path = .vim/bundle/Align
 	url = https://github.com/vim-scripts/Align.git
+[submodule ".vim/bundle/Markdown"]
+	path = .vim/bundle/Markdown
+	url = https://github.com/vim-scripts/Markdown.git
