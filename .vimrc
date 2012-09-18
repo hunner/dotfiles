@@ -21,8 +21,8 @@ set fileencoding=utf-8
 
 " change cursor colour depending upon mode
 if exists('&t_SI')
-  let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
-  let &t_EI = "\<Esc>]12;greenyellow\x7"
+"  let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
+"  let &t_EI = "\<Esc>]12;greenyellow\x7"
 elseif has("gui")
   set guicursor=n-v-c:block-Cursor/lCursor,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
 endif
@@ -299,6 +299,10 @@ endif
 map <silent> <F9> :set noet<CR>:set sw=8<CR>:set ts=8<CR>
 map <silent> <S-F9> :set list! listchars<CR>
 
+" Re-align '=' signs {{{2
+vnoremap <silent> <Leader>= :'<,'>Align =
+nnoremap <silent> <Leader>= V%:'<,'>Align =<CR>
+
 " Show lines longer than 80 characters {{{2
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
 "au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
@@ -345,7 +349,7 @@ set dictionary=/usr/share/dict/words
 if has("autocmd")
   augroup puppet " {{{3
     autocmd BufRead,BufNewFile *.pp
-          \ set tabstop=2 shiftwidth=2 softtabstop=2
+          \ set tabstop=2 shiftwidth=2 softtabstop=2 et
   augroup END
   augroup text " {{{3
     autocmd BufRead,BufNewFile *.txt
@@ -1132,12 +1136,14 @@ noremap <Leader>p :CtrlPBuffer<CR>
 noremap <Leader>P :CtrlPCurFile<CR>
 
 " Vundle
+filetype off " Off for vundle
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'vim-scripts/ShowMarks'
 Bundle 'Align'
 Bundle 'Gundo'
+Bundle 'tpope/vim-markdown'
 
 filetype plugin indent on
 " Brief help
@@ -1248,7 +1254,8 @@ map <F2> :11vsplit ~/.vim/ref.vim<CR>
 map <S-F3> :2split ~/.vim/fun_ref.vim<CR>
 noremap <F4> :set rnu!<CR>
 noremap <S-F4> :set nu!<CR>
-noremap <F5> ggg?G
+noremap <F5> gg=G2<C-o>
+noremap <S-F5> ggg?G2<C-o>
 noremap <F6> :set encoding=utf-8<CR>:set fenc=utf-8<CR>
 noremap <S-F6> :set encoding=iso8859-15<CR>:set fenc=iso8859-15<CR>
 "map <F7> :SpellProposeAlternatives<CR>
