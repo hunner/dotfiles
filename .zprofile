@@ -74,12 +74,12 @@ fi
 if [ -d ~/.gem/ruby/1.8/bin ] ; then
     export PATH="$PATH:$HOME/.gem/ruby/1.8/bin"
 fi
+#if [ -d ~/.rvm/bin ] ; then
+#    export PATH="$HOME/.rvm/bin:$PATH"
+#fi
 #for dir in `find /opt/*/bin|grep /bin$` `find /opt/csw/*/bin|grep /bin$` ; do
 #    export PATH=$PATH:$dir
 #done
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
-
 
 # Setting vars
 #TERM=rxvt
@@ -93,7 +93,7 @@ SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
-export ENVPUPPET_BASEDIR="/Users/hunner/git"
+export ENVPUPPET_BASEDIR="/Users/hunner/Documents/work/git"
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 
 # Prompt
