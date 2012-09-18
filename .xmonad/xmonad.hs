@@ -26,7 +26,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.SetWMName
-import Monad
+import Control.Monad (when)
 import Data.Monoid
 import Data.List
 import Data.Maybe
