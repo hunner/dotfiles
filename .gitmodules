@@ -16,3 +16,21 @@
 [submodule ".vim/bundle/vim-markdown"]
 	path = .vim/bundle/vim-markdown
 	url = https://github.com/tpope/vim-markdown.git
+[submodule ".vim/bundle/FuzzyFinder"]
+	path = .vim/bundle/FuzzyFinder
+	url = https://github.com/vim-scripts/FuzzyFinder.git
+[submodule ".vim/bundle/L9"]
+	path = .vim/bundle/L9
+	url = https://github.com/vim-scripts/L9.git
+[submodule ".vim/bundle/Tabular"]
+	path = .vim/bundle/Tabular
+	url = https://github.com/vim-scripts/Tabular.git
+[submodule ".vim/bundle/The-NERD-tree"]
+	path = .vim/bundle/The-NERD-tree
+	url = https://github.com/vim-scripts/The-NERD-tree.git
+[submodule ".vim/bundle/ctrlp.vim"]
+	path = .vim/bundle/ctrlp.vim
+	url = https://github.com/vim-scripts/ctrlp.vim.git
+[submodule ".vim/bundle/gnupg"]
+	path = .vim/bundle/gnupg
+	url = https://github.com/vim-scripts/gnupg.git
