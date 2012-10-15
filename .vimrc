@@ -1140,9 +1140,15 @@ filetype off " Off for vundle
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle 'gmarik/vundle'
-Bundle 'vim-scripts/ShowMarks'
 Bundle 'Align'
+Bundle 'FuzzyFinder'
 Bundle 'Gundo'
+Bundle 'L9'
+Bundle 'ShowMarks'
+Bundle 'Tabular'
+Bundle 'The-NERD-tree'
+Bundle 'ctrlp'
+Bundle 'gnupg'
 Bundle 'tpope/vim-markdown'
 
 filetype plugin indent on
