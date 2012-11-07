@@ -1150,6 +1150,7 @@ Bundle 'The-NERD-tree'
 Bundle 'ctrlp'
 Bundle 'gnupg'
 Bundle 'tpope/vim-markdown'
+Bundle 'hunner/vim-puppet'
 
 filetype plugin indent on
 " Brief help
