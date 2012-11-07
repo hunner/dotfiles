@@ -12,3 +12,5 @@
 	path = /Users/hunner/local/bin/mvimdiff
 [core]
 	excludesfile = /Users/hunner/.gitignore_global
+[push]
+	default = current
