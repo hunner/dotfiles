@@ -1126,15 +1126,6 @@ if has("eval")
   endif
 endif
 
-" CtrlP
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip   " Linux/MacOSX
-set wildignore+=tmp\*,*.swp,*.zip,*.exe    " Windows
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
-let g:ctrlp_working_path_mode = 1
-let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
-noremap <Leader>p :CtrlPBuffer<CR>
-noremap <Leader>P :CtrlPCurFile<CR>
-
 " Vundle
 filetype off " Off for vundle
 set rtp+=~/.vim/bundle/vundle
@@ -1147,7 +1138,7 @@ Bundle 'L9'
 Bundle 'ShowMarks'
 Bundle 'Tabular'
 Bundle 'The-NERD-tree'
-Bundle 'ctrlp'
+Bundle 'ctrlp.vim'
 Bundle 'gnupg'
 Bundle 'tpope/vim-markdown'
 Bundle 'hunner/vim-puppet'
@@ -1161,6 +1152,13 @@ filetype plugin indent on
 "
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
+
+" CtrlP
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip   " Linux/MacOSX
+set wildignore+=tmp\*,*.swp,*.zip,*.exe    " Windows
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
+let g:ctrlp_working_path_mode = 1
+let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 
 " }}}1
 
@@ -1290,6 +1288,12 @@ if v:version >= 703
   noremap <Leader>u :FufRenewCache<CR>
   noremap <Leader>w :bdelete<CR>
   noremap <F1> :FufHelp<CR>
+elseif v:version >= 702
+  noremap <Leader>f :CtrlPCurFile<CR>
+  noremap <Leader>F :CtrlPCurWD<CR>
+  noremap <Leader>v :CtrlPCurWD<CR>
+  noremap <Leader>b :CtrlPBuffer<CR>
+  noremap <Leader>c :CtrlPChange<CR>
 endif
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
