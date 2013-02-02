@@ -1288,7 +1288,12 @@ if v:version >= 703
   noremap <Leader>u :FufRenewCache<CR>
   noremap <Leader>w :bdelete<CR>
   noremap <F1> :FufHelp<CR>
-elseif v:version >= 702
+  noremap <Leader>pf :CtrlPCurFile<CR>
+  noremap <Leader>pF :CtrlPCurWD<CR>
+  noremap <Leader>pv :CtrlPCurWD<CR>
+  noremap <Leader>pb :CtrlPBuffer<CR>
+  noremap <Leader>pc :CtrlPChange<CR>
+elseif v:version >= 700
   noremap <Leader>f :CtrlPCurFile<CR>
   noremap <Leader>F :CtrlPCurWD<CR>
   noremap <Leader>v :CtrlPCurWD<CR>
