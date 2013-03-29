@@ -72,14 +72,16 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-g", warpToCentre >> goToSelected gsConfig )
 
         -- Multimedia
-        , ("<XF86AudioPlay>"       , spawn "mpc toggle"       ) -- play/pause mpd
-        , ("<XF86AudioStop>"       , spawn "mpc stop"         ) -- stop mpd
-        , ("<XF86AudioPrev>"       , spawn "mpc prev"         ) -- prev song
-        , ("<XF86AudioNext>"       , spawn "mpc next"         ) -- next song
-        , ("<XF86AudioLowerVolume>", spawn "amixer -q set PCM 4-") -- volume down
-        , ("<XF86AudioRaiseVolume>", spawn "amixer -q set PCM 4+") -- volume up
-        , ("<XF86AudioMute>"       , spawn "amixer -q set Headphone toggle") -- toggle mute
-        , ("M-<XF86AudioMute>"     , spawn "amixer -q set Speaker toggle")
+        , ("<XF86MonBrightnessUp>"   , spawn "xbacklight -inc 10"            ) -- Brightness up
+        , ("<XF86MonBrightnessDown>" , spawn "xbacklight -dec 10"            ) -- Brightness down
+        , ("<XF86AudioPlay>"         , spawn "mpc toggle"                    ) -- play/pause mpd
+        , ("<XF86AudioStop>"         , spawn "mpc stop"                      ) -- stop mpd
+        , ("<XF86AudioPrev>"         , spawn "mpc prev"                      ) -- prev song
+        , ("<XF86AudioNext>"         , spawn "mpc next"                      ) -- next song
+        , ("<XF86AudioLowerVolume>"  , spawn "amixer -q set Master 4-"       ) -- volume down
+        , ("<XF86AudioRaiseVolume>"  , spawn "amixer -q set Master 4+"       ) -- volume up
+        , ("<XF86AudioMute>"         , spawn "amixer -q set Headphone toggle") -- toggle mute
+        , ("M-<XF86AudioMute>"       , spawn "amixer -q set Speaker toggle"  )
 
         -- Dynamic workspace commands
         , ("M-S-<Backspace>"       , removeWorkspace)
