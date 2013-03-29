@@ -93,7 +93,7 @@ SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="48C7AF0C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
-export ENVPUPPET_BASEDIR="/Users/hunner/Documents/work/git"
+export ENVPUPPET_BASEDIR="$HOME/Documents/work/git"
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 
 # Prompt
@@ -277,7 +277,7 @@ if [ x$DISPLAY != x ] ; then
     precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [%~]\a" || : }
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
-alias resize="printf '\33]50;%s%d\007' 'xft:Terminus:pixelsize=' $1" # ':antialias=true'"
+alias resize="printf '\33]50;%s%d\007' 'xft:DroidSansMonoDotted:pixelsize=' $1" # ':antialias=true'"
 alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
