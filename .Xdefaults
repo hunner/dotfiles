@@ -42,8 +42,8 @@ URxvt*font: 6x13,xft:IPAGothic:antialias=true
 
 URxvt*perl-ext-common: default,matcher
 !URxvt*urlLauncher: urxvt-to-uzbl.sh
-!URxvt*urlLauncher: chromium
-URxvt*urlLauncher: jumanji
+URxvt*url-launcher: chromium
+!URxvt*urlLauncher: jumanji
 URxvt*matcher.button: 1
 !URxvt*colorUL: green
 URxvt*searchable-scrollback: F10
