@@ -302,7 +302,7 @@ map <silent> <S-F9> :set list! listchars<CR>
 " Re-align '=' signs {{{2
 vnoremap <Leader>> :Align =><CR>
 vnoremap <Leader>= :Align =<CR>
-nnoremap <Leader>= V%:'<,'>Align =<CR>
+"nnoremap <Leader>= V%:'<,'>Align =<CR>
 
 " Show lines longer than 80 characters {{{2
 "au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
