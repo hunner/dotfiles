@@ -934,7 +934,7 @@ endif
 if has("eval")
   function! <SID>FoldNumbers()
     " If we're in a wide window, enable line numbers.
-    if winwidth(0) >= 76 " 72 + 4, or should I use tw?
+    "if winwidth(0) >= 76 " 72 + 4, or should I use tw?
       " Add folds, or cycle through number schemes
       if &foldlevel < 99 && &foldenable && &foldcolumn == 0
         setlocal foldcolumn=1
@@ -947,11 +947,11 @@ if has("eval")
       elseif &nu
         setlocal nonumber
       endif
-    else
-      setlocal norelativenumber
-      setlocal nonumber
-      setlocal foldcolumn=0
-    endif
+    "else
+    "  setlocal norelativenumber
+    "  setlocal nonumber
+    "  setlocal foldcolumn=0
+    "endif
   endfun
   "autocmd WinEnter,BufWinEnter,BufNew * :call <SID>FoldNumbers()
   noremap <silent> <C-n> :call <SID>FoldNumbers()<CR>
