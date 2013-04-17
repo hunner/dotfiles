@@ -371,8 +371,12 @@ if has("autocmd")
           \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
           \ norm G
 
-    autocmd BufNewFile,BufRead *.rb,*rhtml,*haml
-          \ set tabstop=2 shiftwidth=2 softtabstop=2 |
+    autocmd BufNewFile,BufRead *.rb,Rakefile
+          \ set tabstop=2 shiftwidth=2 softtabstop=2 expandtab |
+          \ setf ruby
+
+    autocmd BufNewFile,BufRead *rhtml,*haml
+          \ set tabstop=2 shiftwidth=2 softtabstop=2 expandtab |
           \ setf eruby
 
     autocmd BufNewFile,BufRead *.php
