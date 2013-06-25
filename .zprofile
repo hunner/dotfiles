@@ -42,8 +42,8 @@ paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 ~/Library/Haskell/bin /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(/usr/local/bin /usr/local/sbin ~/.cabal/bin ~/.rbenv/bin ~/local/bin
-~/local/sbin ~/local/share/bin)
+prepaths=(/usr/local/bin /usr/local/sbin ~/.cabal/bin ~/local/bin ~/local/sbin
+~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
         export PATH=$PATH:$dir
@@ -369,7 +369,7 @@ ex () {
     fi
 }
 
-eval "$(rbenv init -)"
+[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 ## Profiling options
 #unsetopt xtrace
 #exec 2>&3 3>&-

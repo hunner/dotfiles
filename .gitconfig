@@ -11,6 +11,12 @@
 	cmd = mvimdiff
 	path = /Users/hunner/local/bin/mvimdiff
 [core]
-	excludesfile = /Users/hunner/.gitignore_global
+	excludesfile = /opt/boxen/config/git/gitignore
 [push]
 	default = current
+
+[credential]
+helper = /opt/boxen/bin/boxen-git-credential
+
+[hub]
+protocol = https
