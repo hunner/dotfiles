@@ -14,7 +14,7 @@ config windowHintsSpreadSearchHeight 200
 # Aliases
 #--------------------------------------------------------------------
 # Modal key
-alias modal-key w,shift,cmd
+alias modal-key cmd,space
 
 # Some apps
 alias app-browser 'Google Chrome'
@@ -73,15 +73,31 @@ bind j:cmd,alt focus down
 bind k:cmd,alt focus up
 
 # Move windows to certain locations on the screen
-bind space:cmd,ctrl ${full}
-bind h:cmd,ctrl ${left-half}
-bind l:cmd,ctrl ${right-half}
-bind j:cmd,ctrl ${bot-half}
-bind k:cmd,ctrl ${top-half}
-bind y:cmd,ctrl ${top-left-corner}
-bind u:cmd,ctrl ${top-right-corner}
-bind b:cmd,ctrl ${bot-left-corner}
-bind n:cmd,ctrl ${bot-right-corner}
+bind f:${modal-key}:toggle ${full}
+bind h:${modal-key}:toggle ${left-half}
+bind l:${modal-key}:toggle ${right-half}
+bind j:${modal-key}:toggle ${bot-half}
+bind k:${modal-key}:toggle ${top-half}
+bind y:${modal-key}:toggle ${top-left-corner}
+bind u:${modal-key}:toggle ${top-right-corner}
+bind b:${modal-key}:toggle ${bot-left-corner}
+bind n:${modal-key}:toggle ${bot-right-corner}
+
+# Resize Bindings
+bind right:alt       resize +8% +0
+bind left:alt        resize -8% +0
+bind up:alt          resize +0  -8%
+bind down:alt        resize +0  +8%
+bind right:ctrl;alt  resize -8% +0 bottom-right
+bind left:ctrl;alt   resize +8% +0 bottom-right
+bind up:ctrl;alt     resize +0  +8% bottom-right
+bind down:ctrl;alt   resize +0  -8% bottom-right
+
+# Nudge Bindings
+bind right:shift;alt nudge +8% +0
+bind left:shift;alt  nudge -8% +0
+bind up:shift;alt    nudge +0  -8%
+bind down:shift;alt  nudge +0  +8%
 
 # Focus helpers
 bind b:e,cmd focus ${app-browser}
