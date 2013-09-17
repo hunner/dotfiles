@@ -134,9 +134,9 @@ export MAILCHECK=0
 #export AWT_TOOLKIT=XToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
 if [ -x `whence less` ] ; then
-    export PAGER==less
+    export PAGER='less -R'
 else
-    export PAGER==more
+    export PAGER=more
 fi
 if [ -z "$PERL5LIB" ] ; then
         # If PERL5LIB wasn't previously defined, set it...
@@ -201,7 +201,7 @@ alias et="TERM=rxvt-256color; emacsclient -t"
 alias ec="emacsclient -c --eval '(set-background-color \"black\")'"
 alias ecx="emacsclient --eval '(make-frame-on-display \"$DISPLAY\")'"
 #alias s="TERM=xterm;ssh serenity.cat.pdx.edu"
-alias s="TERM=rxvt;ssh hunner@serenity.cat.pdx.edu"
+alias s="TERM=rxvt;ssh hunner@destiny.cat.pdx.edu"
 alias f="TERM=rxvt;ssh hunner@firefly.cat.pdx.edu"
 alias z="TERM=rxvt;ssh hunner@zabava.cat.pdx.edu"
 alias o="TERM=rxvt;ssh hunner@osiris.cat.pdx.edu"
@@ -245,6 +245,7 @@ alias gdc="git diff --cached"
 alias gc="git commit"
 alias gca="git commit --amend"
 alias gfa="git fetch --all"
+alias gfap="git fetch --all --prune"
 alias gr="git remote -v show"
 alias gp="git push"
 alias gu="git pull"
