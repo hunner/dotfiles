@@ -145,8 +145,8 @@ set background=dark
 
 " By default, go for an indent of 4 and use spaces {{{2
 set expandtab
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Do clever indent things. Don't make a # force column zero. {{{2
 set autoindent
