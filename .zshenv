@@ -158,7 +158,6 @@ else
 fi
 export VISUAL="$VIM -f"
 export EDITOR="$VIM -f"
-alias v=$VIM
 alias vh="mvim -c 'au VimLeave * maca hide:'"
 alias vi=$VIM
 alias vr="$VIM --remote-tab"
@@ -214,6 +213,7 @@ alias kvar="ssh hunner@131.252.134.134"
 alias kvin="ssh hunner@131.252.135.22"
 alias mutt="TERM=xterm-256color mutt"
 alias x="exit"
+alias v="vagrant"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
 alias mang="cd ~/zips/mangband ; DISPLAY=\"\" ./mangclient"
@@ -266,6 +266,7 @@ alias -s mpg="mplayer"
 # Functions
 args() { echo $#; }
 title() { WINTITLE="$*"; print -Pn "\e]0;$WINTITLE\a" }
+hl() { pbpaste | highlight --syntax=$1 -O rtf | pbcopy }
 #if [ x$WINDOW != x ]; then
 #    # Running under screen(1)
 #    precmd()  { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [W$WINDOW] [%~]\a" || : }
@@ -370,6 +371,7 @@ ex () {
     fi
 }
 
+[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
 [ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 ## Profiling options
 #unsetopt xtrace
