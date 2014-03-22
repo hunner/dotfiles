@@ -179,6 +179,7 @@ alias vd=${VIM}diff
 alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
+alias n=nvim
 
 ## For forwarding ssh auth I think
 if [ -n "$SSH_AUTH_SOCK" ] ; then
