@@ -182,8 +182,9 @@ alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
 alias n=nvim
 
 ## For forwarding ssh auth I think
-if [ -n "$SSH_AUTH_SOCK" ] ; then
-    ln -fs $SSH_AUTH_SOCK $HOME/.ssh-agent
+if [ ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh-agent" ] ; then
+    ln -fs $SSH_AUTH_SOCK "$HOME/.ssh-agent"
+    export SSH_AUTH_SOCK="$HOME/.ssh-agent"
 fi
 
 ## Add extra fonts
@@ -352,7 +353,7 @@ zpush() {
 }
 function r() {
     if [[ -n $TMUX ]]; then
-        NEW_SSH_AUTH_SOCK=`tmux showenv|grep ^SSH_AUTH_SOCK|cut -d = -f 2`
+        NEW_SSH_AUTH_SOCK=`tmux showenv|grep '^SSH_AUTH_SOCK'|cut -d = -f 2`
         if [[ -n $NEW_SSH_AUTH_SOCK ]] && [[ -S $NEW_SSH_AUTH_SOCK ]]; then
             SSH_AUTH_SOCK=$NEW_SSH_AUTH_SOCK
         fi
