@@ -944,6 +944,7 @@ if has("eval")
         setlocal relativenumber
       elseif &rnu
         setlocal number
+        setlocal norelativenumber
       elseif &nu
         setlocal nonumber
       endif
@@ -1168,7 +1169,7 @@ let g:ctrlp_switch_buffer = 1
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 
 " GuiTabLabel
-function GuiTabLabel()
+function! GuiTabLabel()
   let label = ''
   let bufnrlist = tabpagebuflist(v:lnum)
 
