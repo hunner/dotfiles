@@ -15,6 +15,8 @@ setopt prompt_subst appendhistory hist_ignore_space hist_ignore_all_dups extende
 unsetopt beep
 bindkey -e
 
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
 autoload -Uz compinit colors vcs_info select-word-style && colors
 compinit -u
 
