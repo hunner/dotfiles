@@ -49,7 +49,7 @@
 (set-language-environment "UTF-8")
 (set-input-method "japanese-ascii") ; C-x C-m C-\
 (winner-mode t)
-(display-battery-mode t)
+;;(display-battery-mode t) ;; broken on 10.9.2
 (setq display-time-24hr-format t)
 (display-time-mode t)
 (line-number-mode 1)
@@ -84,6 +84,26 @@
       (dabbrev-expand arg)
     (indent-according-to-mode)))
 (global-set-key [C-tab] 'indent-according-to-mode)
+
+(autoload 'copy-from-above-command "misc"
+  "Copy characters from previous nonblank line, starting just above point.
+
+  \(fn &optional arg)"
+  'interactive)
+(global-set-key [up] 'copy-from-above-command)
+(global-set-key [down] (lambda ()
+                         (interactive)
+                         (forward-line 1)
+                         (open-line 1)
+                         (copy-from-above-command)))
+(global-set-key [right] (lambda ()
+                          (interactive)
+                          (copy-from-above-command 1)))
+(global-set-key [left] (lambda ()
+                         (interactive)
+                         (copy-from-above-command -1)
+                         (forward-char -1)
+                         (delete-char -1)))
 
 ;; Proxy for ssh tunnel + privoxy
 ;; (setq url-proxy-services '(("no_proxy" . "localhost")
@@ -124,6 +144,11 @@
 ;;     (ido-find-file)
 ;;     (setq default-directory saved-default-directory))
 ;; (global-set-key "\C-x\C-f" 'find-file-save-default-directory)
+
+;; Enable mit-scheme
+(setq scheme-program-name
+      "/opt/boxen/homebrew/bin/mit-scheme")
+(require 'xscheme)
 
 ;; Give killing lines advice
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -208,18 +233,18 @@
             ("M-O" other-window)
             ("M-`" next-window)
             ("M-~" previous-window)
-            ("M-RET" ns-toggle-fullscreen)
+            ("M-RET" toggle-fullscreen)
             ))
 
 ;;toggle full-screen
-;; (defun toggle-fullscreen ()
-;; (interactive)
-;; (set-frame-parameter
-;;  nil
-;;  'fullscreen
-;;  (if (frame-parameter nil 'fullscreen)
-;;      nil
-;;    'fullboth)))
+(defun toggle-fullscreen ()
+(interactive)
+(set-frame-parameter
+ nil
+ 'fullscreen
+ (if (frame-parameter nil 'fullscreen)
+     nil
+   'fullboth)))
 
 ;; (global-set-key [(meta return)] 'toggle-fullscreen)
 
@@ -351,15 +376,3 @@
  ;; If there is more than one, they won't work right.
  '(mumamo-border-face-in ((t nil)))
  '(mumamo-border-face-out ((t nil))))
-
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize)
-  (require 'starter-kit-elpa))
