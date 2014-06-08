@@ -230,6 +230,7 @@ alias bc="bc -q"
 alias fm="fmstatus.sh&;shell-fm"
 alias apl="gvim -font 'APL385 Unicode 14' -c 'set keymap=uniapl385'"
 alias d="dtach -a ~/.dtach"
+alias wd="dtach -a ~/.dtach-weechat"
 alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
