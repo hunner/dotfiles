@@ -20,3 +20,5 @@ helper = /opt/boxen/bin/boxen-git-credential
 
 [hub]
 protocol = https
+[gitreview]
+	username = hunner

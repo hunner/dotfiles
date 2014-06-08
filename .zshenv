@@ -11,15 +11,23 @@ fpath=($fpath $HOME/.zsh/func)
 #typeset -u fpath
 
 # Options
-setopt appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
+setopt prompt_subst appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
 
-zstyle :compinstall filename '~/.zshrc'
-autoload -Uz compinit colors zgitinit && colors && zgitinit
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+autoload -Uz compinit colors vcs_info select-word-style && colors
 compinit -u
+
+zstyle :compinstall filename '~/.zshenv'
+zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:*' enable git
+
 #bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
+#select-word-style bash
 umask 022
 
 # Fix $TERM
@@ -97,23 +105,29 @@ export ENVPUPPET_BASEDIR="$HOME/Documents/work/git"
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 
 # Prompt
-#PS1="%m%# "
-prompt_precmd() {
-    gitcolor=""
-    if zgit_isgit ; then
-        if ! zgit_isindexclean ; then
-            #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f](%F{cyan}$(zgit_branch)%f)>"
-            gitcolor=$fg[blue]
-        elif ! zgit_isworktreeclean ; then
-            #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f]>"
-            gitcolor=$fg[green]
-        fi
-    fi
-    color="%(?.$gitcolor.$fg[red])"
-    PROMPT="%m$color%#%{$reset_color%} "
-}
+#prompt_precmd() {
+#    gitcolor=""
+#    if zgit_isgit ; then
+#        if ! zgit_isindexclean ; then
+#            #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f](%F{cyan}$(zgit_branch)%f)>"
+#            gitcolor=$fg[blue]
+#        elif ! zgit_isworktreeclean ; then
+#            #PROMPT="[%F{$usercolor}%n%F{white}@%F{$hostcolor}%m%F{white}:%F{blue}%~%f]>"
+#            gitcolor=$fg[green]
+#        fi
+#    fi
+#    color="%(?.$gitcolor.$fg[red])"
+#    PROMPT="%m$color%#%{$reset_color%} "
+#}
 #precmd_functions+=prompt_precmd
 PROMPT="%m%# "
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+RPROMPT=$'$(vcs_info_wrapper)'
 
 if [ `uname -s` = "SunOS" ] ; then
     export LANG="C"
@@ -167,10 +181,12 @@ alias vd=${VIM}diff
 alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
+alias n=nvim
 
 ## For forwarding ssh auth I think
-if [ -n "$SSH_AUTH_SOCK" ] ; then
-    ln -fs $SSH_AUTH_SOCK $HOME/.ssh-agent
+if [ ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh-agent" ] ; then
+    ln -fs $SSH_AUTH_SOCK "$HOME/.ssh-agent"
+    export SSH_AUTH_SOCK="$HOME/.ssh-agent"
 fi
 
 ## Add extra fonts
@@ -245,14 +261,14 @@ alias gd="git diff"
 alias gdc="git diff --cached"
 alias gc="git commit"
 alias gca="git commit --amend"
-alias gfa="git fetch --all"
-alias gfap="git fetch --all --prune"
+alias gfa="git fetch --all --prune"
 alias gr="git remote -v show"
 alias gp="git push"
 alias gu="git pull"
 alias gdw="git diff --color-words"
 alias gk="gitk --all&"
 alias gx="gitx --all"
+alias be="bundle exec"
 alias uzbl="uzbl-browser"
 alias hide="SetFile -a V"
 alias show="SetFile -a v"
@@ -265,6 +281,10 @@ alias -s mkv="mplayer"
 alias -s mpg="mplayer"
 
 # Functions
+function listvm() { curl -s --url http://vcloud.delivery.puppetlabs.net/vm/ ; }
+function getvm() { curl -d --url http://vcloud.delivery.puppetlabs.net/vm/$1 ; }
+function sshvm() { ssh -i ~/.ssh/id_rsa-acceptance root@$1 ; }
+function rmvm() { curl -X DELETE --url http://vcloud.delivery.puppetlabs.net/vm/$1 ; }
 args() { echo $#; }
 title() { WINTITLE="$*"; print -Pn "\e]0;$WINTITLE\a" }
 hl() { pbpaste | highlight --syntax=$1 -O rtf | pbcopy }
@@ -336,7 +356,7 @@ zpush() {
 }
 function r() {
     if [[ -n $TMUX ]]; then
-        NEW_SSH_AUTH_SOCK=`tmux showenv|grep ^SSH_AUTH_SOCK|cut -d = -f 2`
+        NEW_SSH_AUTH_SOCK=`tmux showenv|grep '^SSH_AUTH_SOCK'|cut -d = -f 2`
         if [[ -n $NEW_SSH_AUTH_SOCK ]] && [[ -S $NEW_SSH_AUTH_SOCK ]]; then
             SSH_AUTH_SOCK=$NEW_SSH_AUTH_SOCK
         fi
