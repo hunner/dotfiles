@@ -1149,6 +1149,7 @@ Bundle 'gnupg'
 Bundle 'tpope/vim-markdown'
 Bundle 'hunner/vim-puppet'
 Bundle 'hunner/vim-plist'
+Bundle 'vim-coffee-script'
 
 filetype plugin indent on
 " Brief help

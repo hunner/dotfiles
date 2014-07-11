@@ -40,3 +40,6 @@
 [submodule ".vim/bundle/vim-plist"]
 	path = .vim/bundle/vim-plist
 	url = https://github.com/hunner/vim-plist.git
+[submodule ".vim/bundle/vim-coffee-script"]
+	path = .vim/bundle/vim-coffee-script
+	url = https://github.com/vim-scripts/vim-coffee-script.git
