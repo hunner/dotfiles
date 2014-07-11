@@ -14,11 +14,9 @@
 	excludesfile = /opt/boxen/config/git/gitignore
 [push]
 	default = current
-
 [credential]
-helper = /opt/boxen/bin/boxen-git-credential
-
+	helper = /opt/boxen/bin/boxen-git-credential
 [hub]
-protocol = https
+	protocol = https
 [gitreview]
 	username = hunner
