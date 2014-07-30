@@ -739,6 +739,10 @@ noremap <Leader>enc :<C-w>execute
 " Edit something in the current directory {{{2
 noremap <Leader>ed :e <C-r>=expand("%:p:h")<CR>/<C-d>
 
+" Insert pry line {{{2
+noremap <Leader>pry orequire'pry';binding.pry<Esc>
+noremap <Leader>PRY Orequire'pry';binding.pry<Esc>
+
 " Enable fancy % matching {{{2
 if has("eval")
   runtime! macros/matchit.vim
