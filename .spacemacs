@@ -21,7 +21,8 @@
 (setq-default
  ;; Default theme applied at startup
  ;dotspacemacs-default-theme 'solarized-light
- dotspacemacs-default-theme 'subatomic256
+ dotspacemacs-themes '(subatomic256)
+ dotspacemacs-default-font '("source code pro" :size 12)
  ;; The leader key
  dotspacemacs-leader-key "SPC"
  ;; Major mode leader key is a shortcut key which is the equivalent of
@@ -39,7 +40,7 @@
  dotspacemacs-fullscreen-at-startup nil
  ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only).
  ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
- dotspacemacs-maximized-at-startup nil
+ dotspacemacs-maximized-at-startup t
  ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth scrolling
  ;; overrides the default behavior of Emacs which recenters the point when
  ;; it reaches the top or bottom of the screen
@@ -57,6 +58,12 @@
  dotspacemacs-default-package-repository nil
  ;; Paradox github integration
  paradox-github-token "00fe70131a6be7e7bda0cb642d7fdac2a87fd7bd"
+ ;; Don't use os x native fullscreen
+ ns-use-native-fullscreen nil
+ ;; Always show trailing whitespace
+ show-trailing-whitespace t
+ ;; Fix paren/quote matching
+ sp-cancel-autoskip-on-backward-movement nil
 )
 
  ;; undo-tree history across restarts
@@ -64,13 +71,19 @@
       `((".*" . ,(concat spacemacs-cache-directory "undo-tree-history"))))
 (setq undo-tree-auto-save-history t)
 
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/org")
+(setq org-mobile-inbox-for-pull "~/org/inbox.org")
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+(setq org-mobile-files '("~/org"))
+
 ;; Bind to the correct mac keys
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'super)
-(setq mac-pass-control-to-system nil)
-(global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
-(global-set-key (kbd "s-v") 'yank)
-(global-set-key (kbd "s-c") 'copy-region-as-kill)
+;(setq mac-option-modifier 'meta)
+;(setq mac-command-modifier 'super)
+;(setq mac-pass-control-to-system nil)
+;(global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
+;(global-set-key (kbd "s-v") 'yank)
+;(global-set-key (kbd "s-c") 'copy-region-as-kill)
 
 ;; Configure colors for the powerline
 (setq ns-use-srgb-colorspace t)
@@ -92,14 +105,23 @@
 (defun dotspacemacs/config ()
   "This is were you can ultimately override default Spacemacs configuration.
 This function is called at the very end of Spacemacs initialization."
-  (spacemacs/set-font "source code pro" 12)
   ;; Make C-g work like <esc>
   ;(define-key evil-normal-state-map "\C-g" 'evil-normal-state)
   (define-key evil-visual-state-map "\C-g" 'evil-normal-state)
   (define-key evil-insert-state-map "\C-g" 'evil-normal-state)
   (define-key evil-visual-state-map "\C-c" 'evil-normal-state)
   (define-key evil-insert-state-map "\C-c" 'evil-normal-state)
+  (define-key evil-normal-state-map "\C-h" 'evil-window-left)
+  (define-key evil-normal-state-map "\C-j" 'evil-window-down)
+  (define-key evil-normal-state-map "\C-k" 'evil-window-up)
+  (define-key evil-normal-state-map "\C-l" 'evil-window-right)
   (setq powerline-default-separator nil)
+  ;; Make jumping between buffers work
+  (global-evil-jumper-mode t)
+  ;;(smartparens-global-mode f)
+  ;; Relative line numbers by default
+  ;(linum-relative-toggle)
+  ;(global-linum-mode t)
 )
 
 ;; Custom variables
