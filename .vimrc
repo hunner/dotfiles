@@ -41,6 +41,9 @@ autocmd!
 " Don't be compatible with vi {{{2
 set nocompatible
 
+" Use old regex engine to speed ruby syntax up
+set re=1
+
 " Enable a nice big viminfo file {{{2
 set viminfo='1000,f1,:1000,/1000
 set history=500
@@ -98,6 +101,7 @@ set whichwrap+=<,>,[,]
 set wildmenu
 set wildignore+=*.o,*~,.lo
 set suffixes+=.in,.a,.1
+set complete=.,w,b,u
 
 " Allow edit buffers to be hidden {{{2
 set hidden
@@ -261,9 +265,10 @@ if v:version >= 703
 endif
 
 " Use blowfish for :X encryption {{{2
-if v:version >= 703
-  set cryptmethod=blowfish
-endif
+" not with nvim
+"if v:version >= 703
+"  set cryptmethod=blowfish
+"endif
 
 " If possible, try to use a narrow number column. {{{2
 if v:version >= 700
@@ -370,6 +375,10 @@ if has("autocmd")
     autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
           \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
           \ norm G
+
+    autocmd FileType ruby set omnifunc=rubycomplete#Complete
+    autocmd FileType ruby let g:rubycomplete_buffer_loading=1
+    autocmd FileType ruby let g:rubycomplete_classes_in_global=1
 
     autocmd BufNewFile,BufRead *.rb,Rakefile
           \ set tabstop=2 shiftwidth=2 softtabstop=2 expandtab |
@@ -1047,7 +1056,7 @@ if has("eval")
   let g:c_no_curly_error=1
 
   " eruby options
-  au Syntax * hi link erubyRubyDelim Directory
+  "au Syntax * hi link erubyRubyDelim Directory
 
   " ruby options
   let ruby_operators=1
@@ -1154,6 +1163,8 @@ Bundle 'tpope/vim-markdown'
 Bundle 'hunner/vim-puppet'
 Bundle 'hunner/vim-plist'
 Bundle 'vim-coffee-script'
+Bundle 'syntastic'
+Bundle 'YouCompleteMe'
 
 filetype plugin indent on
 " Brief help
@@ -1343,7 +1354,7 @@ elseif v:version >= 700
 endif
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
-syntax sync minlines=200
+"syntax sync minlines=200
 
 " Gundo - Vim's undo tree for humans
 nnoremap <silent> <C-U> :GundoToggle<CR>
