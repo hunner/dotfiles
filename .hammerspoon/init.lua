@@ -6,7 +6,7 @@ hs.grid.MARGINY = 0
 k = hs.hotkey.modal.new({"cmd","shift"}, "space")
 
 function k:entered() hs.alert.show('↩') end
-function k:exited()  hs.alert.show('⎋')  end
+function k:exited()  hs.alert.show('⎋') end
 
 local top         = {x=0,y=0,w=2,h=1}
 local bottom      = {x=0,y=1,w=2,h=1}
