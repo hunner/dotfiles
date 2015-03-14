@@ -14,8 +14,8 @@ local left        = {x=0,y=0,w=1,h=2}
 local right       = {x=1,y=0,w=1,h=2}
 local topleft     = {x=0,y=0,w=1,h=1}
 local topright    = {x=1,y=0,w=1,h=1}
-local bottomright = {x=0,y=1,w=1,h=1}
-local bottomleft  = {x=1,y=1,w=1,h=1}
+local bottomleft  = {x=0,y=1,w=1,h=1}
+local bottomright = {x=1,y=1,w=1,h=1}
 local full        = {x=0,y=0,w=2,h=2}
 
 function sendTo(area)
