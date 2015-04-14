@@ -49,3 +49,6 @@
 [submodule ".vim/bundle/YouCompleteMe"]
 	path = .vim/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule ".vim/bundle/ag"]
+	path = .vim/bundle/ag
+	url = https://github.com/rking/ag.vim

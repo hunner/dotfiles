@@ -168,7 +168,7 @@ if has("folding")
   endfun
   command! Tfdm call ToggleFoldmethod()
   set nofoldenable
-  set foldmethod=syntax
+  set foldmethod=manual
   set foldlevelstart=0 " Start with all folds closed
   "set foldclose=all " Close folds when cursor leaves them
 endif
@@ -1165,6 +1165,7 @@ Bundle 'hunner/vim-plist'
 Bundle 'vim-coffee-script'
 Bundle 'syntastic'
 Bundle 'YouCompleteMe'
+Bundle 'rking/ag'
 
 filetype plugin indent on
 " Brief help
