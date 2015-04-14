@@ -22,7 +22,7 @@
  ;; Default theme applied at startup
  ;dotspacemacs-default-theme 'solarized-light
  dotspacemacs-themes '(subatomic256)
- dotspacemacs-default-font '("source code pro" :size 12)
+ dotspacemacs-default-font '("Droid Sans Mono Dotted" :size 12)
  ;; The leader key
  dotspacemacs-leader-key "SPC"
  ;; Major mode leader key is a shortcut key which is the equivalent of
@@ -40,7 +40,7 @@
  dotspacemacs-fullscreen-at-startup nil
  ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only).
  ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
- dotspacemacs-maximized-at-startup t
+ dotspacemacs-maximized-at-startup nil
  ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth scrolling
  ;; overrides the default behavior of Emacs which recenters the point when
  ;; it reaches the top or bottom of the screen
@@ -107,14 +107,19 @@
 This function is called at the very end of Spacemacs initialization."
   ;; Make C-g work like <esc>
   ;(define-key evil-normal-state-map "\C-g" 'evil-normal-state)
-  (define-key evil-visual-state-map "\C-g" 'evil-normal-state)
-  (define-key evil-insert-state-map "\C-g" 'evil-normal-state)
+  ;(define-key evil-visual-state-map "\C-g" 'evil-normal-state)
+  ;(define-key evil-insert-state-map "\C-g" 'evil-normal-state)
   (define-key evil-visual-state-map "\C-c" 'evil-normal-state)
   (define-key evil-insert-state-map "\C-c" 'evil-normal-state)
   (define-key evil-normal-state-map "\C-h" 'evil-window-left)
   (define-key evil-normal-state-map "\C-j" 'evil-window-down)
   (define-key evil-normal-state-map "\C-k" 'evil-window-up)
   (define-key evil-normal-state-map "\C-l" 'evil-window-right)
+;  (define-key global-map "\\" nil)
+;  (define-key global-map "\\f" 'ido-find-file)
+;  (define-key global-map "\\v" 'helm-projectile-find-file)
+;  (define-key global-map "\\c" 'helm-projectile-switch-project)
+;  (define-key global-map "\\b" 'helm-mini)
   (setq powerline-default-separator nil)
   ;; Make jumping between buffers work
   (global-evil-jumper-mode t)
