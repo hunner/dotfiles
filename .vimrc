@@ -42,7 +42,9 @@ autocmd!
 set nocompatible
 
 " Use old regex engine to speed ruby syntax up
-set re=1
+if v:version >= 703 && has("patch970")
+  set re=1
+endif
 
 " Enable a nice big viminfo file {{{2
 set viminfo='1000,f1,:1000,/1000
@@ -1164,7 +1166,9 @@ Bundle 'hunner/vim-puppet'
 Bundle 'hunner/vim-plist'
 Bundle 'vim-coffee-script'
 Bundle 'syntastic'
-Bundle 'YouCompleteMe'
+if v:version >= 703 && has("patch584")
+  Bundle 'YouCompleteMe'
+endif
 Bundle 'rking/ag'
 
 filetype plugin indent on
