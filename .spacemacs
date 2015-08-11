@@ -201,6 +201,8 @@ before layers configuration."
 
   ;; Don't use the clipboard please
   (setq select-enable-clipboard nil)
+  ;; Don't show the menu bar on the terminal
+  (setq menu-bar-mode nil)
   ;;  ;; Bind to the correct mac keys
   ;;  ;(setq mac-option-modifier 'meta)
   ;;  ;(setq mac-command-modifier 'super)

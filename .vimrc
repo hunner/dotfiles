@@ -708,6 +708,9 @@ inoremap <C-z>q <C-o>gq}<C-o>k<C-o>$
 map <F7> :Tfdm<CR>
 "nmap <Leader><F7> :exec "make -C " . expand("%:p:h") . " check"<CR>
 nmap <F8> :make<CR>
+nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+      \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+      \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 nmap <Leader><F8> :exec "make -C " . expand("%:p:h")<CR>
 "nmap <F9> :exec "make -C " . expand("%:p:h") . " check SUBDIRS= check_PROGRAMS=" . GetCurrentTest()
 "            \ . " TESTS=" . GetCurrentTest() <CR>

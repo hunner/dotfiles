@@ -7,7 +7,7 @@
 typeset -ga preexec_functions
 typeset -ga precmd_functions
 typeset -ga chpwd_functions
-fpath=($fpath $HOME/.zsh/func)
+fpath=(/usr/local/share/zsh-completions $fpath)
 #typeset -u fpath
 
 # Options
@@ -182,6 +182,7 @@ alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
 alias n=nvim
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 ## For forwarding ssh auth I think
 if [ ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh-agent" ] ; then
@@ -212,21 +213,21 @@ alias lla="ll -Fa"
 alias c="cd"
 cl() { cd $@ && ls }
 #old linux aliases
-alias e="TERM=rxvt-256color emacs -nw"
-alias et="TERM=rxvt-256color emacsclient -t"
+alias e="TERM=xterm-256color emacs -nw"
+alias et="TERM=xterm-256color emacsclient -t"
 #alias ec="emacsclient -c --eval '(set-background-color \"black\")'"
 alias ec="emacsclient -c"
 alias ed="emacs --daemon"
 alias ecx="emacsclient --eval '(make-frame-on-display \"$DISPLAY\")'"
 #alias s="TERM=xterm;ssh serenity.cat.pdx.edu"
-alias s="TERM=rxvt;ssh hunner@destiny.cat.pdx.edu"
-alias f="TERM=rxvt;ssh hunner@firefly.cat.pdx.edu"
-alias z="TERM=rxvt;ssh hunner@zabava.cat.pdx.edu"
-alias o="TERM=rxvt;ssh hunner@osiris.cat.pdx.edu"
-alias m="TERM=rxvt;ssh hunner@mint.cic.pdx.edu"
-alias chandra="TERM=rxvt;ssh hunner@chandra.cs.pdx.edu"
+alias s="TERM=xterm ssh hunner@destiny.cat.pdx.edu"
+alias f="TERM=xterm ssh hunner@firefly.cat.pdx.edu"
+alias z="TERM=xterm ssh hunner@zabava.cat.pdx.edu"
+alias o="TERM=xterm ssh hunner@osiris.cat.pdx.edu"
+alias m="TERM=xterm ssh hunner@mint.cic.pdx.edu"
+alias chandra="TERM=xterm ssh hunner@chandra.cs.pdx.edu"
 export CS=cs.pdx.edu
-alias odin="TERM=xterm;ssh hunner@odin.pdx.edu"
+alias odin="TERM=xterm ssh hunner@odin.pdx.edu"
 alias budda="ssh hunnur@budda.dreamhost.com"
 alias kvar="ssh hunner@131.252.134.134"
 alias kvin="ssh hunner@131.252.135.22"
@@ -399,8 +400,8 @@ ex () {
     fi
 }
 
+eval "$(rbenv init -)"
 [ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
-[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 ## Profiling options
 #unsetopt xtrace
 #exec 2>&3 3>&-
