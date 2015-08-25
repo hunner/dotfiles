@@ -1338,6 +1338,7 @@ nnoremap  :B        :b
 noremap <Leader>rg :color relaxedgreen<CR>
 noremap <Leader>ip :color inkpot<CR>
 noremap <Leader>ir :color ir_black<CR>
+noremap <Leader>sm :color smyck<CR>
 noremap <Leader>mv :color macvim<CR>:set background=light<CR>
 if v:version >= 703
   noremap <Leader>f :FufFileWithCurrentBufferDir<CR>
