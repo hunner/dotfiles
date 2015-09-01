@@ -175,12 +175,15 @@ before layers configuration."
   ;;   sp-cancel-autoskip-on-backward-movement nil
 
   ;; Custom font
-  dotspacemacs-default-font '("Droid Sans Mono Dotted for Powerline"
-                              :size 13
-                              :weight normal
-                              :width normal
-                              :powerline-scale 1.1)
-  )
+   dotspacemacs-default-font `("Liberation Mono for Powerline"
+                               :size ,(if (eq window-system 'x)
+                                          26
+                                        13
+                                        )
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.4)
+   )
   ;; Set to the location of your Org files on your local system
   ;;  (setq org-directory "~/org")
   ;;  (setq org-mobile-inbox-for-pull "~/org/inbox.org")
@@ -239,7 +242,10 @@ layers configuration."
   ;(define-key global-map "\\v" 'helm-projectile-find-file)
   ;(define-key global-map "\\c" 'helm-projectile-switch-project)
   ;(define-key global-map "\\b" 'helm-mini)
-  (setq powerline-default-separator nil)
+  (setq powerline-default-separator (if (eq window-system 'x)
+                                        'arrow
+                                      nil
+                                      ))
   ;;(smartparens-global-mode f)
   ;; Relative line numbers by default
   ;(linum-relative-toggle)
