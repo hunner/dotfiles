@@ -17,11 +17,23 @@ local topright    = {x=1,y=0,w=1,h=1}
 local bottomleft  = {x=0,y=1,w=1,h=1}
 local bottomright = {x=1,y=1,w=1,h=1}
 local full        = {x=0,y=0,w=2,h=2}
+local first       = hs.screen.allScreens()[3]
+local second      = hs.screen.allScreens()[2]
+local third       = hs.screen.allScreens()[1]
 
 function sendTo(area)
   local win    = hs.window.focusedWindow()
-  local screen = hs.screen.mainScreen()
+  local screen = win:screen()
   hs.grid.set(win,area,screen)
+end
+
+function selectWindow()
+  hs.hints.windowHints()
+end
+
+function moveToScreen(screen)
+  local win = hs.window.focusedWindow()
+  win:moveToScreen(screen,0)
 end
 
 k:bind({}, 'escape', function() k:exit() end)
@@ -34,6 +46,11 @@ k:bind({}, 'u', function() sendTo(topright) end)
 k:bind({}, 'b', function() sendTo(bottomleft) end)
 k:bind({}, 'n', function() sendTo(bottomright) end)
 k:bind({}, 'f', function() sendTo(full) end)
+
+hs.hotkey.bind({"cmd","ctrl"}, 'f', function() selectWindow() end)
+k:bind({"shift"}, 'a', function() moveToScreen(first) end)
+k:bind({"shift"}, 'o', function() moveToScreen(second) end)
+k:bind({"shift"}, 'e', function() moveToScreen(third) end)
 
 function reload_config(files)
   hs.reload()
