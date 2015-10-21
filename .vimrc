@@ -728,6 +728,9 @@ noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 " In normal mode, jj escapes {{{2
 inoremap jj <Esc>
 
+" C-c and <Esc> are not entirely the same, but I want them to be
+noremap <C-c> <Esc>
+
 " Kill line like emacs {{{2
 "noremap <C-k> "_dd
 
@@ -1368,8 +1371,8 @@ inoremap <F12> <C-o>:syntax sync fromstart<CR>
 " Gundo - Vim's undo tree for humans
 nnoremap <silent> <C-U> :GundoToggle<CR>
 
-" NERD tree. Yay!
-nnoremap <silent> <C-G> :NERDTreeToggle<CR>
+" NERD tree. Boo!
+"nnoremap <silent> <C-G> :NERDTreeToggle<CR>
 
 " Javac
 "set makeprg=javac\ %
