@@ -2,6 +2,7 @@
 -- xmonad config file.
 --
 {-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 
 import XMonad hiding (Tall)
@@ -35,7 +36,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
-mTerminal      = "urxvtc"
+mTerminal      = "st"
 mBorderWidth   = 1
 mModMask       = mod4Mask
 
@@ -47,8 +48,8 @@ mWorkspaces = map show [0 .. 9 :: Int]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-mNormalBorderColor  = "#232323"
-mFocusedBorderColor = "#9fbc00"
+mNormalBorderColor  = "#222222"
+mFocusedBorderColor = "#005577"
 
 -- Custom keys
 --
@@ -60,7 +61,7 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         --, ("M-s"  , shellPromptHere sp mXPConfig ) -- Shell prompt
         , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
         , ("M-p"  , spawn "dmenu_run")
-        , ("<Scroll_lock>", spawn "xlock -mode fzort" ) -- SCReen LocK
+        , ("<Scroll_lock>", spawn "xlock -mode fzort -echokeys -usefirst" ) -- SCReen LocK
 
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
         , ("M-a"  , windows copyToAll)  -- Copy focused window to all workspaces
@@ -78,8 +79,8 @@ mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
         , ("<XF86AudioStop>"         , spawn "mpc stop"                      ) -- stop mpd
         , ("<XF86AudioPrev>"         , spawn "mpc prev"                      ) -- prev song
         , ("<XF86AudioNext>"         , spawn "mpc next"                      ) -- next song
-        , ("<XF86AudioLowerVolume>"  , spawn "amixer -q set Master 4-"       ) -- volume down
-        , ("<XF86AudioRaiseVolume>"  , spawn "amixer -q set Master 4+"       ) -- volume up
+        , ("<XF86AudioLowerVolume>"  , spawn "amixer -q set Master 4%-"      ) -- volume down
+        , ("<XF86AudioRaiseVolume>"  , spawn "amixer -q set Master 4%+"      ) -- volume up
         , ("<XF86AudioMute>"         , spawn "amixer -q set Headphone toggle") -- toggle mute
         , ("M-<XF86AudioMute>"       , spawn "amixer -q set Speaker toggle"  )
 
@@ -127,7 +128,7 @@ mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
 -}
 
 mXPConfig :: XPConfig
-mXPConfig = defaultXPConfig { fgColor = "#9fbc00", bgColor = "black", borderColor = "#9fbc00" }
+mXPConfig = defaultXPConfig { fgColor = "#005577", bgColor = "#222222", borderColor = "#005577" }
 
 {-
 gsConfig = defaultGSConfig
@@ -304,4 +305,4 @@ mConfig = defaultConfig
 
 -- Run xmonad!
 --
-main = xmonad mConfig
+main = xmonad $ mConfig
