@@ -53,14 +53,15 @@ mFocusedBorderColor = "#005577"
 
 -- Custom keys
 --
-mKeys = [ ("M-S-n", sendMessage MirrorShrink  ) -- Expand current window
-        , ("M-S-t", sendMessage MirrorExpand  ) -- Shrink current window
-        , ("M-r"  , warpToCorner              ) -- Kill the rodent
-        , ("M-b"  , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
-        , ("M-g"  , warpToCentre >> promptedWs) -- Gridselect to pick windows
-        --, ("M-s"  , shellPromptHere sp mXPConfig ) -- Shell prompt
-        , ("M-S-b", spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
-        , ("M-p"  , spawn "dmenu_run")
+mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
+        , ("M-S-t"   , sendMessage MirrorExpand  ) -- Shrink current window
+        , ("M-r"     , warpToCorner              ) -- Kill the rodent
+        , ("M-b"     , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
+        , ("M-g"     , warpToCentre >> promptedWs) -- Gridselect to pick windows
+        --, ("M-s"     , shellPromptHere sp mXPConfig ) -- Shell prompt
+        , ("M-M1-C-8", spawn "xcalib -i -a"      ) -- Invert screen color
+        , ("M-S-b"   , spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
+        , ("M-p"     , spawn "dmenu_run")
         , ("<Scroll_lock>", spawn "xlock -mode fzort -echokeys -usefirst" ) -- SCReen LocK
 
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
