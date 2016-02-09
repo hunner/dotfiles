@@ -729,7 +729,9 @@ noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
 inoremap jj <Esc>
 
 " C-c and <Esc> are not entirely the same, but I want them to be
-noremap <C-c> <Esc>
+inoremap <C-c> <Esc>
+" ... but that doesn't seem to work, so
+inoremap <C-l> <Esc>
 
 " Kill line like emacs {{{2
 "noremap <C-k> "_dd
