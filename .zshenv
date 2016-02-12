@@ -182,7 +182,6 @@ alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
 alias n=nvim
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 ## For forwarding ssh auth I think
 if [ ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh-agent" ] ; then
@@ -313,7 +312,8 @@ if [ x$DISPLAY != x ] ; then
     preexec() { [ -z "$WINTITLE" ] && print -Pn "\e]0;%m [$1]\a" || : }
 fi
 alias resize="printf '\33]50;%s%d\007' 'xft:DroidSansMonoDotted:pixelsize=' $1" # ':antialias=true'"
-alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
+#alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
+alias asdf="setxkbmap us dvorak ctrl:nocaps"
 alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
