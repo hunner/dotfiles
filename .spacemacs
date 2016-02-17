@@ -262,7 +262,6 @@ in `dotspacemacs/user-config'."
   ;;  (setq eshell-review-quick-commands nil)
   ;;  (setq eshell-smart-space-goes-to-end t)
   ;;  (setq eshell-scroll-to-bottom-on-input t)
-  (spacemacs/toggle-mode-line-battery-on)
   ;; Configure colors for the powerline
                                         ;(setq ns-use-srgb-colorspace t)
   ;; undo-tree history across restarts
@@ -291,6 +290,7 @@ layers configuration. You are free to put any user code."
   (define-key evil-normal-state-map "\C-j" 'evil-window-down)
   (define-key evil-normal-state-map "\C-k" 'evil-window-up)
   (define-key evil-normal-state-map "\C-l" 'evil-window-right)
+  (spacemacs/toggle-mode-line-battery-on)
   ;(define-key global-map "\\" nil)
   ;(define-key global-map "\\f" 'ido-find-file)
   ;(define-key global-map "\\v" 'helm-projectile-find-file)
