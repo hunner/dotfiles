@@ -36,6 +36,8 @@ values."
      syntax-checking
      ;; version-control
      puppet
+     yaml
+     (rcirc :variables rcirc-enable-znc-support t)
      themes-megapack
      )
    ;; List of additional packages that will be installed without being
@@ -98,6 +100,7 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(smyx
+                         molokai
                          monokai)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -129,7 +132,7 @@ values."
    ;; and TAB or <C-m> and RET.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
    ;; (Not implemented) dotspacemacs-distinguish-gui-ret nil
    ;; The command key used for Evil commands (ex-commands) and
    ;; Emacs commands (M-x).
@@ -273,6 +276,19 @@ in `dotspacemacs/user-config'."
   ;; (setq select-enable-clipboard nil)
   ;; Don't show the menu bar on the terminal
   ;; (setq menu-bar-mode nil)
+  (setq rcirc-server-alist
+        ;; This will replace :auth with the correct thing, see the doc for that function
+        '(("freenode"
+           :host "destiny.cat.pdx.edu"
+           :port "2300"
+           :auth "hunner/freenode"
+           :channels ("#voxpupuli"))
+          ("sithmail"
+           :host "destiny.cat.pdx.edu"
+           :auth "hunner/sithmail"
+           :port "2300"
+           :encryption tls
+           :channels ("#social"))))
   )
 
 (defun dotspacemacs/user-config ()
