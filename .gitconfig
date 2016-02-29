@@ -1,6 +1,7 @@
 [user]
 	name = Hunter Haugen
 	email = hunter@puppetlabs.com
+	signingkey = 48C7AF0C
 [color]
 	ui = true
 [alias]
@@ -11,10 +12,14 @@
 	cmd = mvimdiff
 	path = /Users/hunner/local/bin/mvimdiff
 [core]
-	excludesfile = /opt/boxen/config/git/gitignore
+	excludesfile = ~/.gitignore_global
 [push]
 	default = current
 [hub]
 	protocol = https
 [gitreview]
 	username = hunner
+[github]
+	user = hunner
+	password = 
+	oauth-token = 
