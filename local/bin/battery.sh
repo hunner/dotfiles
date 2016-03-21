@@ -17,9 +17,8 @@ FN='"xft:Liberation Mono:size=7"' # font
 STATEFILE='/sys/class/power_supply/BAT0/status' # battery's state file
 CAPFILE='/sys/class/power_supply/BAT0/capacity'   # battery's capacity file
 
-MIDBAT=65        # percentage of battery life marked as low
-MIDCOL='#dddd47' # color when battery is low
-LOWBAT=30        # percentage of battery life marked as low
+CHRGCOL='#99ff00' # color when battery is charging
+LOWBAT=15        # percentage of battery life marked as low
 LOWCOL='#dd4747' # color when battery is low
 TIME_INT=15      # time interval in seconds
 
@@ -32,11 +31,12 @@ DATE_FORMAT="%H:%M"
 while true; do
     # find remaining power
     RPERC=`cat $CAPFILE`;
+    STATE=`cat $STATEFILE`;
 
     # draw the bar and pipe everything into dzen
-    if [ $RPERC -gt $MIDBAT ]; then GFGC=$GFG; fi
-    if [ $RPERC -le $MIDBAT ]; then GFGC=$MIDCOL; fi
+    if [ $RPERC -gt $LOWBAT ]; then GFGC=$GFG; fi
     if [ $RPERC -le $LOWBAT ]; then GFGC=$LOWCOL; fi
+    if [ $STATE = "Charging" ]; then GFGC=$CHRGCOL; fi
 
     case $RPERC in
         $LOWBAT)

@@ -185,6 +185,7 @@ alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
 alias n=nvim
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 ## For forwarding ssh auth I think
 if [ ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh-agent" ] ; then
@@ -317,6 +318,33 @@ fi
 alias resize="printf '\33]50;%s%d\007' 'xft:DroidSansMonoDotted:pixelsize=' $1" # ':antialias=true'"
 #alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias asdf="setxkbmap us dvorak ctrl:nocaps"
+kinesis_activate() {
+  xmodmap -e "keycode 124 = NoSymbol Insert"
+  xmodmap -e "keycode 62 = Scroll_Lock Scroll_Lock"
+  xmodmap -e "keycode 37 = Control_R Control_R"
+  xset r rate 220 32
+}
+leopold_activate() {
+  kinesis_activate
+  ma
+  remote_ids=($(xinput list | sed -n 's/.*Cypress.*id=\([0-9]*\).*keyboard.*/\1/p'))
+  if [ "$remote_ids" ] ; then
+#    mkdir -p /tmp/xkb/symbols
+#    cat > /tmp/xkb/symbols/custom <<EOF
+#xkb_symbols "leopold" {
+#  key <LALT> { [ Super_L       ] };
+#  key <LWIN> { [ Alt_L, Meta_L ] };
+#  key <RALT> { [ Super_R       ] };
+#  key <RWIN> { [ Alt_R, Meta_R ] };
+#};
+#EOF
+    for remote_id in $remote_ids ; do
+      echo Setting $remote_id
+      setxkbmap -device $remote_id us dvorak ctrl:nocaps altwin:swap_lalt_lwin
+#      setxkbmap -device $remote_id -print | sed 's/\(xkb_symbols.*\)"/\1+custom(leopold)"/' | xkbcomp -I/tmp/xkb -i $remote_id -synch - $DISPLAY 2>/dev/null
+    done
+  fi
+}
 alias auie="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias aoeu='setxkbmap us'
 alias bepo='setxkbmap fr bepo "ctrl:swapcaps"'
@@ -332,10 +360,13 @@ if [ -f $HOME/.termcap ] ; then
 fi
 make_termcap() {
     cat > $HOME/.termcap << EOF
-rxvt-256color|rxvt-256color terminal (X Window System):\
-    :Co#256:\
-    :tc=rxvt-unicode:\
+st+24bit|st+24bit terminal (X Window System):\
+    :Co#16777216:\
+    :tc=xterm-unicode:\
     :tc=rxvt:
+    :setrgbf=\E[38;2;#1%d;#2%d;#3%dm:\
+    :setrgbb=\E[48;2;#1%d;#2%d;#3%dm:\
+    :use=st+24bit:
 EOF
 }
 type7() {

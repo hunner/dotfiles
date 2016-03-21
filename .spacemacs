@@ -26,9 +26,12 @@ values."
      auto-completion
      better-defaults
      emacs-lisp
+     (ruby :variables ruby-version-manager 'rbenv)
      git
+     github
      markdown
      org
+     spacemacs-ivy
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -106,7 +109,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Liberation Mono for Powerline"
+   dotspacemacs-default-font '("Droid Sans Mono Dotted for Powerline"
                                :size 26
                                ;;:size ,(if (eq window-system 'x)
                                ;;           26
@@ -254,10 +257,10 @@ in `dotspacemacs/user-config'."
   ;;                             :powerline-scale 1.4)
   ;; )
   ;; Set to the location of your Org files on your local system
-  ;;  (setq org-directory "~/org")
-  ;;  (setq org-mobile-inbox-for-pull "~/org/inbox.org")
-  ;;  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-  ;;  (setq org-mobile-files '("~/org"))
+  (setq org-directory "~/Dropbox/org")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org")
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-mobile-files '("~/Dropbox/org"))
 
   ;;  ;; Stuff for eshell
   ;;  (require 'em-smart)
@@ -268,9 +271,9 @@ in `dotspacemacs/user-config'."
   ;; Configure colors for the powerline
                                         ;(setq ns-use-srgb-colorspace t)
   ;; undo-tree history across restarts
-  ;; (setq undo-tree-history-directory-alist
-  ;;       `((".*" . ,(concat spacemacs-cache-directory "undo-tree-history"))))
-  ;; (setq undo-tree-auto-save-history t)
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,(concat spacemacs-cache-directory "undo-tree-history"))))
+  (setq undo-tree-auto-save-history t)
 
   ;; Don't use the clipboard please
   ;; (setq select-enable-clipboard nil)
