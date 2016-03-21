@@ -79,6 +79,9 @@ fi
 if [ -d ~/.gems/bin ] ; then
     export PATH="$HOME/.gems/bin:$PATH"
 fi
+if [ -d ~/.gem/ruby/1.9.1/bin ] ; then
+    export PATH="$PATH:$HOME/.gem/ruby/1.9.1/bin"
+fi
 if [ -d ~/.gem/ruby/1.8/bin ] ; then
     export PATH="$PATH:$HOME/.gem/ruby/1.8/bin"
 fi
