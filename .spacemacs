@@ -31,7 +31,6 @@ values."
      github
      markdown
      org
-     spacemacs-ivy
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -274,6 +273,9 @@ in `dotspacemacs/user-config'."
   (setq undo-tree-history-directory-alist
         `((".*" . ,(concat spacemacs-cache-directory "undo-tree-history"))))
   (setq undo-tree-auto-save-history t)
+
+  ;; Allow vim-like undo
+  (setq evil-want-fine-undo "No")
 
   ;; Don't use the clipboard please
   ;; (setq select-enable-clipboard nil)
