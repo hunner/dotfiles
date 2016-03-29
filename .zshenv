@@ -326,7 +326,6 @@ kinesis_activate() {
 }
 leopold_activate() {
   kinesis_activate
-  ma
   remote_ids=($(xinput list | sed -n 's/.*Cypress.*id=\([0-9]*\).*keyboard.*/\1/p'))
   if [ "$remote_ids" ] ; then
 #    mkdir -p /tmp/xkb/symbols

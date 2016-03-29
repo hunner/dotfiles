@@ -29,7 +29,9 @@ values."
      auto-completion
      better-defaults
      emacs-lisp
-     (ruby :variables ruby-version-manager 'rbenv)
+     (ruby :variables
+           ruby-enable-enh-ruby-mode t
+           ruby-version-manager 'rbenv)
      git
      github
      markdown
