@@ -333,7 +333,6 @@ layers configuration. You are free to put any user code."
   ;(define-key global-map "\\v" 'helm-projectile-find-file)
   ;(define-key global-map "\\c" 'helm-projectile-switch-project)
   ;(define-key global-map "\\b" 'helm-mini)
-  (setq powerline-default-separator 'arrow)
   ;; (setq powerline-default-separator (if (eq window-system 'x)
   ;;                                       'arrow
   ;;                                     nil
