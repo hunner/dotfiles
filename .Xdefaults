@@ -18,8 +18,13 @@
 *color14:    rgb:a1/b5/cd
 *color15:    rgb:de/de/de
 
-Xft*antialias: true
-Xft*dpi: 96
+Xft.autohint: 0
+Xft.dpi: 150
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
 URxvt*scrollBar: false
 URxvt*background: rgba:0000/0000/0000/dddd
 URxvt.depth: 32
