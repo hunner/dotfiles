@@ -34,6 +34,7 @@ values."
      emacs-lisp
      git
      github
+     hoon
      markdown
      org
      puppet
