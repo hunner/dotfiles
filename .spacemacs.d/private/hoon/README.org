@@ -1,7 +1,7 @@
 #+TITLE: hoon layer
 
 # The maximum height of the logo should be 200 pixels.
-[[img/hoon.png]]
+[[img/urbit.png]]
 
 * Table of Contents                                        :TOC_4_gh:noexport:
  - [[#description][Description]]

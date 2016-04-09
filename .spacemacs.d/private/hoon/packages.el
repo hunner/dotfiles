@@ -31,7 +31,8 @@
 
 (defconst hoon-packages
   '(
-    (hoon-mode :location local))
+    (hoon-mode :location (recipe :fetcher github
+                                 :repo "urbit/hoon-mode.el")))
   "The list of Lisp packages required by the hoon layer.
 
 Each entry is either:
