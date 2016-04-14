@@ -161,7 +161,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
@@ -288,6 +288,7 @@ in `dotspacemacs/user-config'."
   ;;  (setq eshell-scroll-to-bottom-on-input t)
   ;; Configure colors for the powerline
                                         ;(setq ns-use-srgb-colorspace t)
+  (setq powerline-default-separator 'utf-8)
   ;; undo-tree history across restarts
   (setq undo-tree-history-directory-alist
         `((".*" . ,(concat spacemacs-cache-directory "undo-tree-history"))))
