@@ -52,6 +52,7 @@ values."
      (rcirc :variables rcirc-enable-znc-support t)
      themes-megapack
      vagrant
+     vimscript
      yaml
      )
    ;; List of additional packages that will be installed without being
@@ -288,7 +289,6 @@ in `dotspacemacs/user-config'."
   ;;  (setq eshell-scroll-to-bottom-on-input t)
   ;; Configure colors for the powerline
                                         ;(setq ns-use-srgb-colorspace t)
-  (setq powerline-default-separator 'utf-8)
   ;; undo-tree history across restarts
   (setq undo-tree-history-directory-alist
         `((".*" . ,(concat spacemacs-cache-directory "undo-tree-history"))))
@@ -337,10 +337,10 @@ layers configuration. You are free to put any user code."
   ;(define-key global-map "\\v" 'helm-projectile-find-file)
   ;(define-key global-map "\\c" 'helm-projectile-switch-project)
   ;(define-key global-map "\\b" 'helm-mini)
-  ;; (setq powerline-default-separator (if (eq window-system 'x)
-  ;;                                       'arrow
-  ;;                                     nil
-  ;;                                     ))
+  (setq powerline-default-separator (if (eq window-system 'x)
+                                        'arrow
+                                      'utf-8
+                                      ))
   ;;(smartparens-global-mode f)
   ;; Relative line numbers by default
   ;(linum-relative-toggle)
