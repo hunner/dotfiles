@@ -437,7 +437,9 @@ ex () {
     fi
 }
 
-eval "$(rbenv init -)"
+if whence rbenv > /dev/null ; then
+  eval "$(rbenv init -)"
+fi
 [ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
 ## Profiling options
 #unsetopt xtrace
