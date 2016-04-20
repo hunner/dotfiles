@@ -33,7 +33,7 @@ end
 
 function moveToScreen(screen)
   local win = hs.window.focusedWindow()
-  win:moveToScreen(screen,0)
+  win:moveToScreen(screen)
 end
 
 k:bind({}, 'escape', function() k:exit() end)
