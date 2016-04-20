@@ -13,7 +13,7 @@ xmodmap -e "keycode 124 = NoSymbol Insert"
 xmodmap -e "keycode 62 = Scroll_Lock Scroll_Lock"
 xmodmap -e "keycode 37 = Control_R Control_R"
 xset r rate 220 32
-feh --bg-fill ~/Pictures/babybumbo.jpg
+feh --bg-fill ~/Dropbox/Photos/Adventurous\ Kate.jpg
 eval `ssh-agent -s`
 battery.sh &
 
