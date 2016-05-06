@@ -187,11 +187,9 @@ alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
 alias n=nvim
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-## For forwarding ssh auth I think
-if [ ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh-agent" ] ; then
-    ln -fs $SSH_AUTH_SOCK "$HOME/.ssh-agent"
-    export SSH_AUTH_SOCK="$HOME/.ssh-agent"
-fi
+# GPG 2.1.x SSH support
+# See : http://incenp.org/notes/2015/gnupg-for-ssh-authentication.html
+export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
 
 ## Add extra fonts
 #xset fp+ /usr/APL2/fonts/X11
