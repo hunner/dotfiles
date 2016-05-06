@@ -102,7 +102,7 @@ zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.e
 HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
-export GPGKEY="48C7AF0C"
+export GPGKEY="0x1CED67750173FC1C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export ENVPUPPET_BASEDIR="$HOME/Documents/work/git"
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
