@@ -1,1 +1,1 @@
-/home/hunner/.vimrc
+/Users/hunner/.vimrc
