@@ -1,7 +1,7 @@
 [user]
 	name = Hunter Haugen
 	email = hunter@puppet.com
-	signingkey = 48C7AF0C
+	signingkey = 0xEF99694AA599DDAD
 [color]
 	ui = true
 [alias]
@@ -23,3 +23,7 @@
 	user = hunner
 	password = 
 	oauth-token = 
+[gpg]
+	program = gpg2
+[commit]
+	gpgsign = true
