@@ -14,7 +14,7 @@ set message_cachedir=~/.mutt/cache/bodies
 set certificate_file=~/.mutt/certificates
 
 # ?
-set imap_keepalive=900
+set imap_keepalive=280
 
 # Sort like gmail sorts it: freshest-thread first
 set sort=threads
