@@ -213,6 +213,7 @@ alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
 cl() { cd $@ && ls }
+bellme() { echo "Done! (bellme)" ; while :; do echo -n '\a' ; sleep 2 ; done }
 #old linux aliases
 alias e="TERM=xterm-256color emacs -nw"
 alias et="TERM=xterm-256color emacsclient -t"
@@ -236,6 +237,7 @@ alias kvin="ssh hunner@131.252.135.22"
 alias mutt="TERM=xterm-256color mutt"
 alias x="exit"
 alias v="vagrant"
+alias w="cd ~/Documents/work/git"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
 alias mang="cd ~/zips/mangband ; DISPLAY=\"\" ./mangclient"
