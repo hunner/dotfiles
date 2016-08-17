@@ -25,6 +25,8 @@ zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{
 zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
 zstyle ':vcs_info:*' enable git
 
+# Don't have / as wordchar so ^w erases path parts
+local WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 #bindkey '^L' push-line
 bindkey "^I" expand-or-complete-prefix
 #select-word-style bash
@@ -50,8 +52,8 @@ paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 ~/Library/Haskell/bin /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(~/.rbenv/shims ~/.cabal/bin ~/Library/Haskell/bin ~/local/bin ~/local/sbin /usr/local/bin /usr/local/sbin
-~/local/share/bin)
+prepaths=(/usr/local/bin /usr/local/sbin ~/.rbenv/bin ~/.cabal/bin
+~/Library/Haskell/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
         export PATH=$PATH:$dir
@@ -438,7 +440,7 @@ ex () {
     fi
 }
 
-if whence rbenv > /dev/null ; then
+if [ -d ~/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
 #[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
