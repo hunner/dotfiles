@@ -214,6 +214,7 @@ alias ll="l -Fl"
 alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
+alias pg="ps auxww|grep"
 cl() { cd $@ && ls }
 bellme() { echo "Done! (bellme)" ; while :; do echo -ne '\a' ; sleep 2 ; done }
 #old linux aliases
