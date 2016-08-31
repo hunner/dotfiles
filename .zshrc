@@ -215,7 +215,7 @@ alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
 cl() { cd $@ && ls }
-bellme() { echo "Done! (bellme)" ; while :; do echo -n '\a' ; sleep 2 ; done }
+bellme() { echo "Done! (bellme)" ; while :; do echo -ne '\a' ; sleep 2 ; done }
 #old linux aliases
 alias e="TERM=xterm-256color emacs -nw"
 alias et="TERM=xterm-256color emacsclient -t"
