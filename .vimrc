@@ -685,9 +685,14 @@ noremap þ j
 noremap ß k
 noremap ® l
 
-" Make <space>/<backspace> page up/down {{{2
-noremap <space> <C-f>
-noremap <backspace> <C-b>
+" Make <space>/<backspVjace> page up/down {{{2
+"noremap <space> <C-f>
+"noremap <backspace> <C-b>
+
+" Some spacemacs -> vim things {{{2
+noremap <Space>fs :w<CR>
+noremap <Space>qq :q<CR>
+inoremap <C-g> <Esc>
 
 " Scrolling with arrows controls the window {{{2
 noremap <Up>   <C-y>
@@ -936,8 +941,8 @@ if v:version >= 700 && has("eval")
     endif
   endfun
 
-  inoremap <C-g>y <C-\><C-o>:call SuperYank(-1)<CR>
-  inoremap <C-g>e <C-\><C-o>:call SuperYank(1)<CR>
+  "inoremap <C-g>y <C-\><C-o>:call SuperYank(-1)<CR>
+  "inoremap <C-g>e <C-\><C-o>:call SuperYank(1)<CR>
 endif
 
 " tab completion {{{2
