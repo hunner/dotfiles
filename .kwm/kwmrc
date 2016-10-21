@@ -133,6 +133,7 @@ kwmc bindsym cmd+alt+ctrl-q quit
 // Launch iTerm2
 //kwmc bindsym cmd-return exec osascript /Users/hunner/local/bin/iterm_window.scpt
 kwmc bindsym cmd-return exec osascript /Users/hunner/local/bin/terminal.scpt
+kwmc bindsym cmd+ctrl+alt-9 exec osascript /Users/hunner/local/bin/grayscale.scpt
 // Set Space Tiling Mode To BSP
 kwmc bindsym cmd+ctrl-a space -t bsp
 // Set Space Tiling Mode To Monocle
