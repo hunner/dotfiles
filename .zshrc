@@ -108,6 +108,9 @@ export GPGKEY="0x1CED67750173FC1C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export ENVPUPPET_BASEDIR="$HOME/Documents/work/git"
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
+if whence rg > /dev/null ; then
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!.git/*"'
+fi
 
 # Prompt
 #prompt_precmd() {
@@ -448,3 +451,5 @@ fi
 ## Profiling options
 #unsetopt xtrace
 #exec 2>&3 3>&-
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

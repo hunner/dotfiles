@@ -4,9 +4,9 @@ Plug 'simnalamburt/vim-mundo'
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-scripts/Align'
 Plug 'neomake/neomake' | Plug 'dojoteef/neomake-autolint'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neosnippet.vim' | Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/denite.nvim' | Plug 'Shougo/neoyank.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
@@ -19,14 +19,23 @@ Plug 'rodjek/vim-puppet'
 call plug#end()
 
 " Because.
-noremap <Space> :
+"noremap <Space> :
 let mapleader = ","
 
 nnoremap <C-U> :MundoToggle<CR>
 " <Leader><Leader>+(s)earch, (w)ord for jumping
+
+noremap <Space>fs :w<CR>
+noremap <Space>qq :q<CR>
+noremap <Space>qa :qa<CR>
+noremap <Space>ff :Files<CR>
+noremap <Space>pf :GFiles<CR>
+noremap <Space>bb :Buffers<CR>
+
 noremap <Leader>f :Files<CR>
 noremap <Leader>F :Files %:p:h<CR>
 noremap <Leader>v :GFiles<CR>
+" TODO I'd like to merge the history / buffers list
 noremap <Leader>b :Buffers<CR>
 noremap <Leader>h :History<CR>
 noremap <Leader>gc :Commits<CR>
@@ -34,8 +43,21 @@ noremap <Leader>gb :BCommits<CR>
 noremap <Leader>c :ChangeDir<CR>
 "noremap <Leader>u :FufRenewCache<CR>
 "noremap <Leader>w :bdelete<CR>
-noremap <Leader>/ :Ag<Space>
 noremap <F1> :Helptags<CR>
+
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Rg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+noremap <Leader>/ :Rg<CR>
+noremap <Space>/ :Rg<CR>
 
 function s:get_buffer_git_root(...)
   let root = fugitive#repo().tree(expand('%:p:h'))
@@ -67,21 +89,74 @@ command! -bar -bang ChangeDir
 " 24-bit blue/orange theme
 colorscheme tender
 let g:lightline = {
-      \ 'colorscheme': 'tenderplus',
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+  \ 'colorscheme': 'tenderplus',
+  \ 'component': {
+  \   'lineinfo': '0x%02B:%03l:%-2v'
+  \ },
+  \ 'separator': { 'left': '', 'right': '' },
+  \ 'subseparator': { 'left': '', 'right': '' }
+  \ }
 
 noremap <Leader>tn :color tender<CR>
 noremap <Leader>ip :color inkpot<CR>
 noremap <Leader>ir :color ir_black<CR>
 
+" TODO quickfix for ripgrep results
+" TODO quickfix for autolint and rake stuff
+
+let g:deoplete#enable_at_startup = 1
+
 " Undo files in undodir=~/.local/share/nvim/undo/
+" Backup files in backupdir=~/.local/share/nvim/backup/
 set undofile
+
+" Copy between instances
+let g:neoyank#file = $HOME.'/.local/share/nvim/yankring.txt'
+nmap <C-p> :Denite neoyank<CR>
+"vmap <Leader>y :'<,'>! cat \| tee ~/.local/share/nvim/yank.txt<CR>
+"nmap <Leader>p o<Esc>:.!cat ~/.local/share/nvim/yank.txt<CR>
+
+" ^n Show number and fold columns in windows {{{2
+if has("eval")
+  function! <SID>FoldNumbers()
+    " If we're in a wide window, enable line numbers.
+    "if winwidth(0) >= 76 " 72 + 4, or should I use tw?
+      " Add folds, or cycle through number schemes
+      if &foldlevel < 99 && &foldenable && &foldcolumn == 0
+        setlocal foldcolumn=1
+      elseif (&foldlevel == 99 || ! &foldenable) && &foldcolumn != 0
+        setlocal foldcolumn=0
+      elseif ! &rnu && ! &nu
+        setlocal relativenumber
+      elseif &rnu
+        setlocal number
+        setlocal norelativenumber
+      elseif &nu
+        setlocal nonumber
+      endif
+    "else
+    "  setlocal norelativenumber
+    "  setlocal nonumber
+    "  setlocal foldcolumn=0
+    "endif
+  endfun
+  "autocmd WinEnter,BufWinEnter,BufNew * :call <SID>FoldNumbers()
+  noremap <silent> <C-n> :call <SID>FoldNumbers()<CR>
+endif
 
 " Case insensitivity for searching
 set ignorecase
 set infercase
+
+" Indentation
+set expandtab
+set tabstop=2
+set shiftwidth=2
+set smartindent
+
+" More sane directory completion
+set wildmode=longest,list,full
+set wildignorecase
 
 " C-c and <Esc> are not entirely the same, but I want them to be
 inoremap <C-c> <Esc>
@@ -101,8 +176,8 @@ nmap <C-l> <C-w>l
 noremap <Leader>pry orequire'pry';binding.pry<Esc>
 noremap <Leader>PRY Orequire'pry';binding.pry<Esc>
 
-" Clear search highlights with <Esc>
-nnoremap <Esc> :noh<CR><Esc>
+" Clear search highlights
+nnoremap <Return> :noh<CR>
 
 " Show tabs and trailing whitespace visually {{{2
 set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
