@@ -135,7 +135,7 @@ info + ctrl - 0x2A      :   khd -e "mode activate default"
 switcher - y            :   khd -e "mode activate ytd"
 switcher - m            :   khd -e "mode activate swap"
 switcher - s            :   khd -e "mode activate space"
-switcher - d            :   khd -e "mode activate tree"
+switcher - t            :   khd -e "mode activate tree"
 switcher - i            :   khd -e "mode activate info"
 
 
@@ -234,10 +234,10 @@ swap + shift - m        :   kwmc window -m mark
 #
 #swap - z                :   kwmc window -m space left
 #swap - c                :   kwmc window -m space right
-#
-#swap + shift - 1        :   kwmc window -m display 0
-#swap + shift - 2        :   kwmc window -m display 1
-#swap + shift - 3        :   kwmc window -m display 2
+
+swap + shift - 1        :   kwmc window -m display 0
+swap + shift - 2        :   kwmc window -m display 1
+swap + shift - 3        :   kwmc window -m display 2
 
 
 

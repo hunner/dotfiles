@@ -169,12 +169,10 @@ else
 fi
 
 ## Set up vim aliases
-if whence vim > /dev/null ; then
+if whence nvim > /dev/null ; then
+    VIM=nvim
+elif whence vim > /dev/null ; then
     VIM=vim
-    if whence mvim > /dev/null ; then
-        #VIM=mvim
-        VIM="mvim -c 'au VimLeave * maca hide:'"
-    fi
 else
     VIM=vi
 fi

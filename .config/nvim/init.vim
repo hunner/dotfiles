@@ -19,18 +19,18 @@ Plug 'rodjek/vim-puppet'
 call plug#end()
 
 " Because.
-"noremap <Space> :
+noremap <Space> :
 let mapleader = ","
 
-nnoremap <C-U> :MundoToggle<CR>
+nnoremap <C-u> :MundoToggle<CR>
 " <Leader><Leader>+(s)earch, (w)ord for jumping
 
-noremap <Space>fs :w<CR>
-noremap <Space>qq :q<CR>
-noremap <Space>qa :qa<CR>
-noremap <Space>ff :Files<CR>
-noremap <Space>pf :GFiles<CR>
-noremap <Space>bb :Buffers<CR>
+"noremap <Space>fs :w<CR>
+"noremap <Space>qq :q<CR>
+"noremap <Space>qa :qa<CR>
+"noremap <Space>ff :Files<CR>
+"noremap <Space>pf :GFiles<CR>
+"noremap <Space>bb :Buffers<CR>
 
 noremap <Leader>f :Files<CR>
 noremap <Leader>F :Files %:p:h<CR>
@@ -57,7 +57,7 @@ noremap <F1> :Helptags<CR>
 " --color: Search color options
 command! -bang -nargs=* Rg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 noremap <Leader>/ :Rg<CR>
-noremap <Space>/ :Rg<CR>
+"noremap <Space>/ :Rg<CR>
 
 function s:get_buffer_git_root(...)
   let root = fugitive#repo().tree(expand('%:p:h'))
