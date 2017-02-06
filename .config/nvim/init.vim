@@ -100,11 +100,21 @@ let g:lightline = {
 noremap <Leader>tn :color tender<CR>
 noremap <Leader>ip :color inkpot<CR>
 noremap <Leader>ir :color ir_black<CR>
+noremap <Leader>fed :e ~/.config/nvim/init.vim<CR>
 
 " TODO quickfix for ripgrep results
 " TODO quickfix for autolint and rake stuff
 
+" Only lint when leaving insert or changing text in command mode
+let g:neomake_autolint_events = {
+  \ 'InsertLeave': {'delay': 0},
+  \ 'TextChanged': {},
+  \ }
+
 let g:deoplete#enable_at_startup = 1
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
 
 " Undo files in undodir=~/.local/share/nvim/undo/
 " Backup files in backupdir=~/.local/share/nvim/backup/
