@@ -16,6 +16,7 @@ Plug 'jacoborus/tender.vim'
 Plug 'ciaranm/inkpot'
 Plug 'twerth/ir_black'
 Plug 'rodjek/vim-puppet'
+Plug 'vim-ruby/vim-ruby'
 call plug#end()
 
 " Because.
@@ -44,6 +45,8 @@ noremap <Leader>c :ChangeDir<CR>
 "noremap <Leader>u :FufRenewCache<CR>
 "noremap <Leader>w :bdelete<CR>
 noremap <F1> :Helptags<CR>
+" Edit a file in the same directory as the current buffer
+noremap <Leader>e :e %:p:h/
 
 " --column: Show column number
 " --line-number: Show line number
@@ -119,6 +122,12 @@ xmap ga <Plug>(EasyAlign)
 " Undo files in undodir=~/.local/share/nvim/undo/
 " Backup files in backupdir=~/.local/share/nvim/backup/
 set undofile
+
+" Allow unwritten buffers to be hidden
+set hidden
+
+" Enable live preview of replace
+set inccommand=split
 
 " Copy between instances
 let g:neoyank#file = $HOME.'/.local/share/nvim/yankring.txt'
