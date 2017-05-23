@@ -27,7 +27,7 @@ from_sha=$( /bin/echo "$payload" | jq -r '.head.sha')
 from_user=$(/bin/echo "$payload" | jq -r '.head.user.login')
 from_desc=$(/bin/echo "$payload" | jq -r '.body')
 ssh_url=$(  /bin/echo "$payload" | jq -r '.head.repo.ssh_url')
-if [ "x" = "x$payload" -o "x" = "x$to_branch" -o "x" = "x$from_ref" -o "x" = "x$from_sha" -o "x" = "x$from_user" -o "x" = "x$from_desc" -o "x" = "x$ssh_url" ] ; then
+if [ "x" = "x$payload" -o "x" = "x$to_branch" -o "x" = "x$from_ref" -o "x" = "x$from_sha" -o "x" = "x$from_user" -o "x" = "x$ssh_url" ] ; then
   echo "Something is missing"
   exit 1
 fi
