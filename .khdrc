@@ -166,6 +166,16 @@ ctrl - 7                :   kwmc space -fExperimental 7
 ctrl - 8                :   kwmc space -fExperimental 8
 ctrl - 9                :   kwmc space -fExperimental 9
 ctrl - 0                :   kwmc space -fExperimental 10
+ctrl + alt - 1          :   kwmc space -fExperimental 11
+ctrl + alt - 2          :   kwmc space -fExperimental 12
+ctrl + alt - 3          :   kwmc space -fExperimental 13
+ctrl + alt - 4          :   kwmc space -fExperimental 14
+ctrl + alt - 5          :   kwmc space -fExperimental 15
+ctrl + alt - 6          :   kwmc space -fExperimental 16
+ctrl + alt - 7          :   kwmc space -fExperimental 17
+ctrl + alt - 8          :   kwmc space -fExperimental 18
+ctrl + alt - 9          :   kwmc space -fExperimental 19
+ctrl + alt - 0          :   kwmc space -fExperimental 20
 
 ctrl + shift - 1        :   kwmc window -m space 1
 ctrl + shift - 2        :   kwmc window -m space 2
