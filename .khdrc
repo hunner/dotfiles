@@ -106,20 +106,14 @@
 
 
 
-# enable kwm compatibility mode
-khd kwm on
-
-
-
 # set border color for different modes
-khd mode default color 0xddbdd322
-khd mode switcher color 0xddd5c4a1
-khd mode ytd color 0xddd75f5f
-khd mode swap color 0xdd458588
-khd mode tree color 0xddfabd2f
-khd mode space color 0xddb16286
-khd mode info color 0xddcd950c
-
+khd mode default on_enter kwmc config border focused color 0xddbdd322
+khd mode switcher on_enter kwmc config border focused color 0xddd5c4a1
+khd mode ytd on_enter kwmc config border focused color 0xddd75f5f
+khd mode swap on_enter kwmc config border focused color 0xdd458588
+khd mode tree on_enter kwmc config border focused color 0xddfabd2f
+khd mode space on_enter kwmc config border focused color 0xddb16286
+khd mode info on_enter kwmc config border focused color 0xddcd950c
 
 
 # 0x2A is \
@@ -143,10 +137,11 @@ switcher - i            :   khd -e "mode activate info"
 # switcher mode
 switcher - r            :   khd -e "reload" # reload config
 
-switcher - return       :   open -na /Applications/HyperTerm.app;\
+switcher - return       :   open -na /Applications/Hyper.app;\
                             khd -e "mode activate default"
 
-cmd - return            :   osascript /Users/hunner/local/bin/terminal.scpt
+#cmd - return            :   osascript /Users/hunner/local/bin/terminal.scpt
+cmd - return            :   osascript /Users/hunner/local/bin/iterm_window.scpt
 cmd + ctrl + alt - 9    :   osascript /Users/hunner/local/bin/grayscale.scpt
 
 cmd + alt - h           :   kwmc window -f west
@@ -187,6 +182,16 @@ ctrl + shift - 7        :   kwmc window -m space 7
 ctrl + shift - 8        :   kwmc window -m space 8
 ctrl + shift - 9        :   kwmc window -m space 9
 ctrl + shift - 0        :   kwmc window -m space 10
+ctrl + shift + alt - 1  :   kwmc window -m space 11
+ctrl + shift + alt - 2  :   kwmc window -m space 12
+ctrl + shift + alt - 3  :   kwmc window -m space 13
+ctrl + shift + alt - 4  :   kwmc window -m space 14
+ctrl + shift + alt - 5  :   kwmc window -m space 15
+ctrl + shift + alt - 6  :   kwmc window -m space 16
+ctrl + shift + alt - 7  :   kwmc window -m space 17
+ctrl + shift + alt - 8  :   kwmc window -m space 18
+ctrl + shift + alt - 9  :   kwmc window -m space 19
+ctrl + shift + alt - 0  :   kwmc window -m space 20
 
 #switcher - z            :   kwmc space -fExperimental left
 #switcher - c            :   kwmc space -fExperimental right

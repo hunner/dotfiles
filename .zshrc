@@ -52,7 +52,7 @@ paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 ~/Library/Haskell/bin /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(/usr/local/bin /usr/local/sbin ~/.rbenv/bin ~/.cabal/bin
+prepaths=(/usr/local/bin /usr/local/sbin ~/coreos-osx/bin ~/.rbenv/bin ~/.cabal/bin
 ~/Library/Haskell/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
@@ -111,6 +111,7 @@ export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 if whence rg > /dev/null ; then
   export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!.git/*"'
 fi
+eval "$(hub alias -s)"
 
 # Prompt
 #prompt_precmd() {

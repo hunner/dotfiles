@@ -17,6 +17,7 @@ Plug 'ciaranm/inkpot'
 Plug 'twerth/ir_black'
 Plug 'rodjek/vim-puppet'
 Plug 'vim-ruby/vim-ruby'
+Plug 'kchmck/vim-coffee-script'
 call plug#end()
 
 " Because.
