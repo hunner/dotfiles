@@ -1,119 +1,13 @@
 # sample config for khd
 
-# NOTE(koekeishiya): A bind is written in the form:
-#                   <keysym> [!] [<app list>] [->] : <command>
-#                   where
-#                       <keysym>   = mode + mod + ... + mod - literal
-#                       <keysym>   = mode + mod + ... + mod - keycode (must have 0x prefix)
-#                       <keysym>   = mode + mod + ... + mod (modifier only binding)
-#
-#                       [<app,
-#                         app,     = optional list '[app1, ..., appN]' of applications
-#                         app>]      that this bind will be activated for. if the
-#                                    focused application is not contained in this list,
-#                                    the associated command will not be triggered, and
-#                                    the keypress will be passed through as normal.
-#
-#                       [!]        = optional operator '!' negates the behaviour when a
-#                                    list of applications is given. this marks the bind
-#                                    as 'Hotkey_Exclude', causing the bind to not work
-#                                    when the focused application is in the given list.
-#
-#                       [->]       = optional operator '->' that marks this bind as
-#                                    'passthrough'. this causes the key to be passed
-#                                    through to the system, instead of being consumed.
-#
-#                       <command>  = command is executed through '$SHELL -c' and
-#                                    follows valid shell syntax. if the $SHELL environment
-#                                    variable is not set, it will default to '/bin/bash'.
-#                                    when bash is used, the ';' delimeter can be specified
-#                                    to chain commands.
-#
-#                                    to allow a command to extend into multiple lines,
-#                                    prepend '\' at the end of the previous line.
-#
-#                                    an EOL character signifies the end of the bind.
-
-# NOTE(koekeishiya) Example of passthrough
-# cmd - m -> : echo "alert and minimize window" | alerter -title Test passthrough -timeout 2
-
-# NOTE(koekeishiya) Example of app list
-# alt - e [
-#           iTerm2,
-#           Terminal,
-#           HyperTerm
-#         ]
-#         : echo "so this is how deep the rabbit hole goes.." |\
-#           alerter -title Test passthrough -timeout 2
-
-# NOTE(koekeishiya) Example of negated app list
-# alt - e [
-#           iTerm2,
-#           Terminal,
-#           HyperTerm
-#         ] !
-#         : echo "blue pill, i choose you!" |\
-#           alerter -title Test passthrough -timeout 2
-
-# NOTE(koekeishiya) Modifier only binding
-# left shift    -> (    right shift   -> )
-# left cmd      -> {    right cmd     -> }
-
-# khd mod_trigger_timeout 0.1
-# lshift : khd -p "shift - 8"
-# rshift : khd -p "shift - 9"
-# lcmd   : khd -p "shift + alt - 8"
-# rcmd   : khd -p "shift + alt - 9"
-
-# TODO(koekeishiya): possibly allow combined syntax such as
-# [switcher,ytd] + ctrl - f : khd -e "mode activate default"
-
-
-
-# vi-mode for non-terminal applications
-
-## remap left-control h/j/k/l -> arrow keys
-#lctrl - h         ![HyperTerm,Terminal,iTerm2]      :   khd -p "- left"
-#lctrl - j         ![HyperTerm,Terminal,iTerm2]      :   khd -p "- down"
-#lctrl - k         ![HyperTerm,Terminal,iTerm2]      :   khd -p "- up"
-#lctrl - l         ![HyperTerm,Terminal,iTerm2]      :   khd -p "- right"
-#
-#shift + lctrl - h ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift - left"
-#shift + lctrl - j ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift - down"
-#shift + lctrl - k ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift - up"
-#shift + lctrl - l ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift - right"
-#
-## remap left-control 0 / 4   -> start / end of line
-#lctrl - 0         ![HyperTerm,Terminal,iTerm2]      :   khd -p "cmd - left"
-#lctrl - 4         ![HyperTerm,Terminal,iTerm2]      :   khd -p "cmd - right"
-#
-## remap left-control g / G   -> start / end of text
-#lctrl - g         ![HyperTerm,Terminal,iTerm2]      :   khd -p "cmd - up"
-#lctrl + shift - g ![HyperTerm,Terminal,iTerm2]      :   khd -p "cmd - down"
-#
-#shift + lctrl - 0 ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift + cmd - left"
-#shift + lctrl - 4 ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift + cmd - right"
-#
-## remap left-control b / e   -> start / end of word
-#lctrl - b         ![HyperTerm,Terminal,iTerm2]      :   khd -p "alt - left"
-#lctrl - e         ![HyperTerm,Terminal,iTerm2]      :   khd -p "alt - right"
-#
-#shift + lctrl - b ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift + alt - left"
-#shift + lctrl - e ![HyperTerm,Terminal,iTerm2]      :   khd -p "shift + alt - right"
-#
-## remap left-control x       -> forward delete
-#lctrl - x         ![HyperTerm,Terminal,iTerm2]      :   khd -p "- delete"
-
-
-
 # set border color for different modes
-khd mode default on_enter kwmc config border focused color 0xddbdd322
-khd mode switcher on_enter kwmc config border focused color 0xddd5c4a1
-khd mode ytd on_enter kwmc config border focused color 0xddd75f5f
-khd mode swap on_enter kwmc config border focused color 0xdd458588
-khd mode tree on_enter kwmc config border focused color 0xddfabd2f
-khd mode space on_enter kwmc config border focused color 0xddb16286
-khd mode info on_enter kwmc config border focused color 0xddcd950c
+khd mode default  on_enter chunkc border::color 0xddbdd322
+khd mode switcher on_enter chunkc border::color 0xddd5c4a1
+khd mode ytd      on_enter chunkc border::color 0xddd75f5f
+khd mode swap     on_enter chunkc border::color 0xdd458588
+khd mode tree     on_enter chunkc border::color 0xddfabd2f
+khd mode space    on_enter chunkc border::color 0xddb16286
+khd mode info     on_enter chunkc border::color 0xddcd950c
 
 
 # 0x2A is \
@@ -137,77 +31,44 @@ switcher - i            :   khd -e "mode activate info"
 # switcher mode
 switcher - r            :   khd -e "reload" # reload config
 
-switcher - return       :   open -na /Applications/Hyper.app;\
-                            khd -e "mode activate default"
+#switcher - return       :   open -na /Applications/Hyper.app;\
+#                            khd -e "mode activate default"
 
 #cmd - return            :   osascript /Users/hunner/local/bin/terminal.scpt
 cmd - return            :   osascript /Users/hunner/local/bin/iterm_window.scpt
 cmd + ctrl + alt - 9    :   osascript /Users/hunner/local/bin/grayscale.scpt
 
-cmd + alt - h           :   kwmc window -f west
-cmd + alt - l           :   kwmc window -f east
-cmd + alt - j           :   kwmc window -f south
-cmd + alt - k           :   kwmc window -f north
-switcher - n            :   kwmc window -fm prev
-switcher - m            :   kwmc window -fm next
+cmd + alt - h           :   chunkc tiling::window --focus west
+cmd + alt - j           :   chunkc tiling::window --focus south
+cmd + alt - k           :   chunkc tiling::window --focus north
+cmd + alt - l           :   chunkc tiling::window --focus east
 
-ctrl - 1                :   kwmc space -fExperimental 1
-ctrl - 2                :   kwmc space -fExperimental 2
-ctrl - 3                :   kwmc space -fExperimental 3
-ctrl - 4                :   kwmc space -fExperimental 4
-ctrl - 5                :   kwmc space -fExperimental 5
-ctrl - 6                :   kwmc space -fExperimental 6
-ctrl - 7                :   kwmc space -fExperimental 7
-ctrl - 8                :   kwmc space -fExperimental 8
-ctrl - 9                :   kwmc space -fExperimental 9
-ctrl - 0                :   kwmc space -fExperimental 10
-ctrl + alt - 1          :   kwmc space -fExperimental 11
-ctrl + alt - 2          :   kwmc space -fExperimental 12
-ctrl + alt - 3          :   kwmc space -fExperimental 13
-ctrl + alt - 4          :   kwmc space -fExperimental 14
-ctrl + alt - 5          :   kwmc space -fExperimental 15
-ctrl + alt - 6          :   kwmc space -fExperimental 16
-ctrl + alt - 7          :   kwmc space -fExperimental 17
-ctrl + alt - 8          :   kwmc space -fExperimental 18
-ctrl + alt - 9          :   kwmc space -fExperimental 19
-ctrl + alt - 0          :   kwmc space -fExperimental 20
+ctrl + shift - 1        :   chunkc tiling::window --send-to-desktop 1
+ctrl + shift - 2        :   chunkc tiling::window --send-to-desktop 2
+ctrl + shift - 3        :   chunkc tiling::window --send-to-desktop 3
+ctrl + shift - 4        :   chunkc tiling::window --send-to-desktop 4
+ctrl + shift - 5        :   chunkc tiling::window --send-to-desktop 5
+ctrl + shift - 6        :   chunkc tiling::window --send-to-desktop 6
+ctrl + shift - 7        :   chunkc tiling::window --send-to-desktop 7
+ctrl + shift - 8        :   chunkc tiling::window --send-to-desktop 8
+ctrl + shift - 9        :   chunkc tiling::window --send-to-desktop 9
+ctrl + shift - 0        :   chunkc tiling::window --send-to-desktop 10
+ctrl + shift + alt - 1  :   chunkc tiling::window --send-to-desktop 11
+ctrl + shift + alt - 2  :   chunkc tiling::window --send-to-desktop 12
+ctrl + shift + alt - 3  :   chunkc tiling::window --send-to-desktop 13
+ctrl + shift + alt - 4  :   chunkc tiling::window --send-to-desktop 14
+ctrl + shift + alt - 5  :   chunkc tiling::window --send-to-desktop 15
+ctrl + shift + alt - 6  :   chunkc tiling::window --send-to-desktop 16
 
-ctrl + shift - 1        :   kwmc window -m space 1
-ctrl + shift - 2        :   kwmc window -m space 2
-ctrl + shift - 3        :   kwmc window -m space 3
-ctrl + shift - 4        :   kwmc window -m space 4
-ctrl + shift - 5        :   kwmc window -m space 5
-ctrl + shift - 6        :   kwmc window -m space 6
-ctrl + shift - 7        :   kwmc window -m space 7
-ctrl + shift - 8        :   kwmc window -m space 8
-ctrl + shift - 9        :   kwmc window -m space 9
-ctrl + shift - 0        :   kwmc window -m space 10
-ctrl + shift + alt - 1  :   kwmc window -m space 11
-ctrl + shift + alt - 2  :   kwmc window -m space 12
-ctrl + shift + alt - 3  :   kwmc window -m space 13
-ctrl + shift + alt - 4  :   kwmc window -m space 14
-ctrl + shift + alt - 5  :   kwmc window -m space 15
-ctrl + shift + alt - 6  :   kwmc window -m space 16
-ctrl + shift + alt - 7  :   kwmc window -m space 17
-ctrl + shift + alt - 8  :   kwmc window -m space 18
-ctrl + shift + alt - 9  :   kwmc window -m space 19
-ctrl + shift + alt - 0  :   kwmc window -m space 20
+# Focus display
+switcher + shift - 1    :   chunkc tiling::monitor --focus 1
+switcher + shift - 2    :   chunkc tiling::monitor --focus 2
+switcher + shift - 3    :   chunkc tiling::monitor --focus 3
 
-#switcher - z            :   kwmc space -fExperimental left
-#switcher - c            :   kwmc space -fExperimental right
-#switcher - f            :   kwmc space -fExperimental previous
-
-#switcher + shift - z    :   kwmc window -m space left;\
-#                            kwmc space -fExperimental left
-#
-#switcher + shift - c    :   kwmc window -m space right;\
-#                            kwmc space -fExperimental right
-
-#switcher + shift - 1    :   kwmc display -f 0
-#switcher + shift - 2    :   kwmc display -f 1
-#switcher + shift - 3    :   kwmc display -f 2
-
-
+# Move window to display
+swap + shift - 1        :   chunkc tiling::window --send-to-monitor 1
+swap + shift - 2        :   chunkc tiling::window --send-to-monitor 2
+swap + shift - 3        :   chunkc tiling::window --send-to-monitor 3
 
 ## ytd mode
 #ytd - x                 :   ytc play;\
@@ -226,59 +87,55 @@ ctrl + shift + alt - 0  :   kwmc window -m space 20
 #ytd - right             :   ytc seekfw
 #ytd - left              :   ytc seekbk
 
+# Swap windows around
+swap - h                :   chunkc tiling::window --swap west
+swap - j                :   chunkc tiling::window --swap south
+swap - k                :   chunkc tiling::window --swap north
+swap - l                :   chunkc tiling::window --swap east
 
+# Move windows around
+swap + shift - h        :   chunkc tiling::window --warp west
+swap + shift - j        :   chunkc tiling::window --warp south
+swap + shift - k        :   chunkc tiling::window --warp north
+swap + shift - l        :   chunkc tiling::window --warp east
 
-## swap mode
-swap - h                :   kwmc window -s west
-swap - j                :   kwmc window -s south
-swap - k                :   kwmc window -s north
-swap - l                :   kwmc window -s east
-swap - m                :   kwmc window -s mark
+# toggle window float
+swap - t                :   chunkc tiling::window --toggle float
 
-swap + shift - k        :   kwmc window -m north
-swap + shift - l        :   kwmc window -m east
-swap + shift - j        :   kwmc window -m south
-swap + shift - h        :   kwmc window -m west
-swap + shift - m        :   kwmc window -m mark
+# toggle window native fullscreen
+swap - f                :   chunkc tiling::window --toggle native-fullscreen
 
-#swap - 1                :   kwmc window -m space 1
-#swap - 2                :   kwmc window -m space 2
-#swap - 3                :   kwmc window -m space 3
-#swap - 4                :   kwmc window -m space 4
-#swap - 5                :   kwmc window -m space 5
-#
-#swap - z                :   kwmc window -m space left
-#swap - c                :   kwmc window -m space right
+# toggle sticky, float and resize to picture-in-picture size
+swap - s                :   chunkc tiling::window --toggle sticky;\
+                            chunkc tiling::window --warp-floating pip-right
 
-swap + shift - 1        :   kwmc window -m display 0
-swap + shift - 2        :   kwmc window -m display 1
-swap + shift - 3        :   kwmc window -m display 2
+# Change space mode
+space - a               :   chunkc tiling::desktop --layout bsp
+space - s               :   chunkc tiling::desktop --layout monocle
+space - d               :   chunkc tiling::desktop --layout float
 
+# Change padding
+space - p               :   chunkc tiling::desktop --padding inc
+space + shift - p       :   chunkc tiling::desktop --padding dec
 
-
-# space mode
-space - a               :   kwmc space -t bsp
-space - s               :   kwmc space -t monocle
-space - d               :   kwmc space -t float
-
-space - x               :   kwmc space -g increase horizontal
-space - y               :   kwmc space -g increase vertical
+# Change gap
+space - g               :   chunkc tiling::desktop --gap inc
+space + shift - g       :   chunkc tiling::desktop --gap dec
 
 space + shift - x       :   kwmc space -g decrease horizontal
 space + shift - y       :   kwmc space -g decrease vertical
 
-space - left            :   kwmc space -p increase left
-space - right           :   kwmc space -p increase right
-space - up              :   kwmc space -p increase top
-space - down            :   kwmc space -p increase bottom
-space - p               :   kwmc space -p increase all
+# Increase window padding
+space - h               :   chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west
+space - j               :   chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south
+space - k               :   chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south
+space - l               :   chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south
 
-space + shift - left    :   kwmc space -p decrease left
-space + shift - right   :   kwmc space -p decrease right
-space + shift - up      :   kwmc space -p decrease top
-space + shift - down    :   kwmc space -p decrease bottom
-space + shift - p       :   kwmc space -p decrease all
-
+# Decrease window padding
+space + shift - h       :   chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west
+space + shift - j       :   chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
+space + shift - k       :   chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
+space + shift - l       :   chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
 
 
 # tree mode
@@ -307,141 +164,3 @@ tree + shift - p        :   kwmc tree -pseudo destroy
 
 tree - o                :   kwmc window -s prev
 tree + shift - o        :   kwmc window -s next
-
-
-
-# default
-cmd + alt + ctrl - m    :   kwmc window -mk focused
-cmd + alt + ctrl - h    :   kwmc window -mk west wrap
-cmd + alt + ctrl - l    :   kwmc window -mk east wrap
-cmd + alt + ctrl - j    :   kwmc window -mk south wrap
-cmd + alt + ctrl - k    :   kwmc window -mk north wrap
-
-#cmd - 0x2A              :   khd -w "aasvi93@hotmail.com"
-#cmd - 7                 :   khd -w "\\"
-#cmd - 8                 :   khd -w "{"
-#cmd - 9                 :   khd -w "}"
-
-
-
-
-
-
-
-
-
-
-
-
-#// Activate prefix mode
-#kwmc bindsym ctrl-\ mode activate prefix
-
-#// Enable the prefix mode
-#kwmc mode prefix prefix on
-#kwmc mode prefix timeout 0.75
-#kwmc mode prefix restore default
-#kwmc mode prefix color 0xFF458588
-#// Where do these translate to?
-#////# Prefix is not applied globally
-#////kwmc config prefix-global off
-
-#// Quit Kwm
-#kwmc bindsym cmd+alt+ctrl-q quit
-#// Launch iTerm2
-#//kwmc bindsym cmd-return exec osascript /Users/hunner/local/bin/iterm_window.scpt
-#kwmc bindsym cmd-return exec osascript /Users/hunner/local/bin/terminal.scpt
-#kwmc bindsym cmd+ctrl+alt-9 exec osascript /Users/hunner/local/bin/grayscale.scpt
-#// Set Space Tiling Mode To BSP
-#kwmc bindsym cmd+ctrl-a space -t bsp
-#// Set Space Tiling Mode To Monocle
-#kwmc bindsym cmd+ctrl-s space -t monocle
-#// Set Space Tiling Mode To Floating
-#kwmc bindsym cmd+ctrl-d space -t float
-#// Rotate Window-Tree By 90degrees (Clockwise)
-#kwmc bindsym cmd+ctrl-r tree rotate 90
-#
-#// Modify Container
-#kwmc bindsym prefix-s window -c split-mode toggle
-#kwmc bindsym prefix-h window -c reduce 0.05
-#kwmc bindsym prefix-l window -c expand 0.05
-#kwmc bindsym prefix-< window -c type toggle
-#
-#// Set Temporary Window Container
-#kwmc bindsym prefix-f window -z fullscreen
-#kwmc bindsym prefix-d window -z parent
-#kwmc bindsym prefix-w window -t focused
-#
-#// Give Focus To Window
-#kwmc bindsym cmd+alt-h window -f west
-#kwmc bindsym cmd+alt-l window -f east
-#kwmc bindsym cmd+alt-j window -f south
-#kwmc bindsym cmd+alt-k window -f north
-#
-#// Give Focus To Screen
-#kwmc bindsym prefix-2 display -f 0
-#kwmc bindsym prefix-1 display -f 1
-#kwmc bindsym prefix-3 display -f 2
-
-#// Switch to space
-#kwmc bindsym ctrl-1 space -fExperimental 1
-#kwmc bindsym ctrl-2 space -fExperimental 2
-#kwmc bindsym ctrl-3 space -fExperimental 3
-#kwmc bindsym ctrl-4 space -fExperimental 4
-#kwmc bindsym ctrl-5 space -fExperimental 5
-#kwmc bindsym ctrl-6 space -fExperimental 6
-#kwmc bindsym ctrl-7 space -fExperimental 7
-#kwmc bindsym ctrl-8 space -fExperimental 8
-#kwmc bindsym ctrl-9 space -fExperimental 9
-#kwmc bindsym ctrl-0 space -fExperimental 10
-
-#// Move Focused Window To Space
-#kwmc bindsym ctrl+shift-1 window -m space 1
-#kwmc bindsym ctrl+shift-2 window -m space 2
-#kwmc bindsym ctrl+shift-3 window -m space 3
-#kwmc bindsym ctrl+shift-4 window -m space 4
-#kwmc bindsym ctrl+shift-5 window -m space 5
-#kwmc bindsym ctrl+shift-6 window -m space 6
-#kwmc bindsym ctrl+shift-7 window -m space 7
-#kwmc bindsym ctrl+shift-8 window -m space 8
-#kwmc bindsym ctrl+shift-9 window -m space 9
-#kwmc bindsym ctrl+shift-0 window -m space 10
-
-#// Move Focused Window To Screen
-#kwmc bindsym ctrl+alt-2 window -m display 0
-#kwmc bindsym ctrl+alt-1 window -m display 1
-#kwmc bindsym ctrl+alt-3 window -m display 2
-
-#// Swap Focused Window
-#kwmc bindsym ctrl+alt-h window -s west
-#kwmc bindsym ctrl+alt-j window -s south
-#kwmc bindsym ctrl+alt-k window -s north
-#kwmc bindsym ctrl+alt-l window -s east
-#// kwmc bindsym ctrl+alt-m window -s mark
-
-#// Increase Container Gaps
-#kwmc bindsym prefix-x space -g increase horizontal
-#kwmc bindsym prefix-y space -g increase vertical
-#
-#// Decrease Container Gaps
-#kwmc bindsym prefix+shift-x space -g decrease horizontal
-#kwmc bindsym prefix+shift-y space -g decrease vertical
-#
-#// Increase Screen Padding
-#kwmc bindsym prefix-left space -p increase left
-#kwmc bindsym prefix-right space -p increase right
-#kwmc bindsym prefix-up space -p increase top
-#kwmc bindsym prefix-down space -p increase bottom
-#kwmc bindsym prefix-p space -p increase all
-#
-#// Decrease Screen Padding
-#kwmc bindsym prefix+shift-left space -p decrease left
-#kwmc bindsym prefix+shift-right space -p decrease right
-#kwmc bindsym prefix+shift-up space -p decrease top
-#kwmc bindsym prefix+shift-down space -p decrease bottom
-#kwmc bindsym prefix+shift-p space -p decrease all
-
-##// Detach Focused Window And Reinsert In Direction
-##kwmc bindsym ctrl+shift-k window -m north
-##kwmc bindsym ctrl+shift-l window -m east
-##kwmc bindsym ctrl+shift-j window -m south
-##kwmc bindsym ctrl+shift-h window -m west
