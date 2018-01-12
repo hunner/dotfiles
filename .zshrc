@@ -289,6 +289,20 @@ alias bu="bundle update"
 alias uzbl="uzbl-browser"
 alias hide="SetFile -a V"
 alias show="SetFile -a v"
+alias dh="echo 'dl, da [container] [command], dr <image> [command]', drm, drmf"
+alias drm="docker rm $(docker ps -qa)"
+alias drmf="docker rm -f $(docker ps -qa)"
+alias dl="docker ps -a"
+function da() {
+  container_id=$1 && [ -z $1 ] && container_id=$(docker ps -qa | head -n 1)
+  cmd=$2 && [ -z $2 ] && cmd="bash"
+  docker exec -it $container_id $cmd
+}
+function dr() {
+  [ -z $1 ] && echo 'usage: dr <image> [command]' && exit 1
+  cmd=$2 && [ -z $2 ] && cmd="/bin/bash"
+  docker run -it --rm $1 $cmd
+}
 #startup aliases
 alias -s pdf="zathura"
 alias -s txt="vi"
