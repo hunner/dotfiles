@@ -290,8 +290,8 @@ alias uzbl="uzbl-browser"
 alias hide="SetFile -a V"
 alias show="SetFile -a v"
 alias dh="echo 'dl, da [container] [command], dr <image> [command]', drm, drmf"
-alias drm="docker rm $(docker ps -qa)"
-alias drmf="docker rm -f $(docker ps -qa)"
+alias drm="docker rm \$(docker ps -qa)"
+alias drmf="docker rm -f \$(docker ps -qa)"
 alias dl="docker ps -a"
 function da() {
   container_id=$1 && [ -z $1 ] && container_id=$(docker ps -qa | head -n 1)
