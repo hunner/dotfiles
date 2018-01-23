@@ -299,7 +299,7 @@ function da() {
   docker exec -it $container_id $cmd
 }
 function dr() {
-  [ -z $1 ] && echo 'usage: dr <image> [command]' && exit 1
+  [ -z $1 ] && echo 'usage: dr <image> [command]' && return 1
   cmd=$2 && [ -z $2 ] && cmd="/bin/bash"
   docker run -it --rm $1 $cmd
 }
