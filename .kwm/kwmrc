@@ -122,6 +122,7 @@ blacklists an application from Kwms tiling
 
     kwmc rule owner="Steam" properties={float="true"}
     kwmc rule owner="Photoshop" properties={float="true"}
+    kwmc rule owner="VOX" properties={float="true"}
 */
 kwmc rule owner="Lightroom" properties={float="true"}
 kwmc rule owner="Stickies" properties={float="true"}
@@ -130,6 +131,7 @@ kwmc rule owner="App Store" properties={float="true"}
 kwmc rule owner="Finder" properties={role="AXDialog"}
 kwmc rule owner="Finder" role="AXDialog" properties={float="true"}
 kwmc rule owner="System Preferences" properties={float="true"}
+kwmc rule owner="Arq" properties={float="true"}
 kwmc rule owner="Hyper" properties={role="AXDialog"}
 
 /*

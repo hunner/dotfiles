@@ -1,21 +1,57 @@
 call plug#begin()
+" Why?
 Plug 'tpope/vim-fugitive'
-Plug 'simnalamburt/vim-mundo'
-Plug 'easymotion/vim-easymotion'
-Plug 'vim-scripts/Align'
-Plug 'neomake/neomake' | Plug 'dojoteef/neomake-autolint'
-Plug 'Shougo/neosnippet.vim' | Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/deoplete.nvim'
+
+" Auto linting! See triggers below, plus built-in ones at https://github.com/neomake/neomake/blob/master/autoload/neomake/makers/ft/ruby.vim
+Plug 'neomake/neomake'
+
+" General completion. Needs plugins to extend
+Plug 'roxma/nvim-completion-manager'
+
+" Language-aware fancy things. Needs lang server config. Used, but what for?
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+
+" Fancy tab completion; did I ever use it? I think it needs other plugins
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Menu browser... I like fzf more for files; this is for neoyank
 Plug 'Shougo/denite.nvim' | Plug 'Shougo/neoyank.vim'
+
+" Snippets... I don't use them
+"Plug 'Shougo/neosnippet.vim' | Plug 'Shougo/neosnippet-snippets'
+
+" Show function signature in the command line (see noshowmode below)
+Plug 'Shougo/echodoc.vim'
+
+" Undo tree mapped below
+Plug 'simnalamburt/vim-mundo'
+
+" Motions... need to actually document them otherwise I forget
+Plug 'easymotion/vim-easymotion'
+
+" Align. See mapping below
+"Plug 'vim-scripts/Align'
+Plug 'junegunn/vim-easy-align'
+
+" Opening files/buffers. Mapped below
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
+
+" Reopen at the last place
 Plug 'dietsche/vim-lastplace'
+
+" Nice status line
 Plug 'itchyny/lightline.vim'
+
+" Color schemes
 Plug 'jacoborus/tender.vim'
 Plug 'ciaranm/inkpot'
 Plug 'twerth/ir_black'
+
+" Various langs
 Plug 'rodjek/vim-puppet'
+Plug 'keith/swift.vim'
+Plug 'hunner/vim-plist'
 Plug 'vim-ruby/vim-ruby'
 Plug 'kchmck/vim-coffee-script'
 call plug#end()
@@ -110,15 +146,18 @@ noremap <Leader>fed :e ~/.config/nvim/init.vim<CR>
 " TODO quickfix for autolint and rake stuff
 
 " Only lint when leaving insert or changing text in command mode
-let g:neomake_autolint_events = {
+call neomake#configure#automake({
   \ 'InsertLeave': {'delay': 0},
   \ 'TextChanged': {},
-  \ }
+  \ }, 500)
 
 let g:deoplete#enable_at_startup = 1
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
+
+" Show echodoc instead of -- INSERT -- in the status line.
+set noshowmode
 
 " Undo files in undodir=~/.local/share/nvim/undo/
 " Backup files in backupdir=~/.local/share/nvim/backup/

@@ -34,8 +34,8 @@ switcher - r            :   khd -e "reload" # reload config
 #switcher - return       :   open -na /Applications/Hyper.app;\
 #                            khd -e "mode activate default"
 
-#cmd - return            :   osascript /Users/hunner/local/bin/terminal.scpt
-cmd - return            :   osascript /Users/hunner/local/bin/iterm_window.scpt
+cmd - return            :   osascript /Users/hunner/local/bin/terminal.scpt
+#cmd - return            :   osascript /Users/hunner/local/bin/iterm_window.scpt
 cmd + ctrl + alt - 9    :   osascript /Users/hunner/local/bin/grayscale.scpt
 
 cmd + alt - h           :   chunkc tiling::window --focus west

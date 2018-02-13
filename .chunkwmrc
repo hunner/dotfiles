@@ -110,3 +110,4 @@ chunkc tiling::rule --owner \"Lightroom\" --state float
 chunkc tiling::rule --owner \"Steam\" --state float
 chunkc tiling::rule --owner \"Stickies\" --state float
 chunkc tiling::rule --owner \"System Preferences\" --state float
+chunkc tiling::rule --owner \"Emacs\" --state tile
