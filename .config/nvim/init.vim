@@ -1,6 +1,8 @@
 call plug#begin()
-" Why?
+" For git shortcuts below.
 Plug 'tpope/vim-fugitive'
+" To make :Gbrowse work. Shortcut below.
+Plug 'tpope/vim-rhubarb'
 
 " Auto linting! See triggers below, plus built-in ones at https://github.com/neomake/neomake/blob/master/autoload/neomake/makers/ft/ruby.vim
 Plug 'neomake/neomake'
@@ -82,6 +84,10 @@ noremap <Leader>c :ChangeDir<CR>
 "noremap <Leader>u :FufRenewCache<CR>
 "noremap <Leader>w :bdelete<CR>
 noremap <F1> :Helptags<CR>
+
+" From vim-rhubarb
+noremap <Leader>gh :Gbrowse<CR>
+
 " Edit a file in the same directory as the current buffer
 noremap <Leader>e :e %:p:h/
 
