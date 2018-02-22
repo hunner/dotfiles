@@ -35,8 +35,9 @@ Plug 'easymotion/vim-easymotion'
 "Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
 
-" Opening files/buffers. Mapped below
+" Opening files/buffers. Mapped below.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Also adds :Commits and :BCommits
 Plug 'junegunn/fzf.vim'
 
 " Reopen at the last place
@@ -72,6 +73,7 @@ nnoremap <C-u> :MundoToggle<CR>
 "noremap <Space>pf :GFiles<CR>
 "noremap <Space>bb :Buffers<CR>
 
+" From fzf.vim
 noremap <Leader>f :Files<CR>
 noremap <Leader>F :Files %:p:h<CR>
 noremap <Leader>v :GFiles<CR>
