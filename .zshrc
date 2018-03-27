@@ -317,10 +317,17 @@ function listtoken() { curl -u hunter --url vmpooler.delivery.puppetlabs.net/api
 function gettoken() { curl -X POST -u hunter --url vmpooler.delivery.puppetlabs.net/api/v1/token ; }
 function rmtoken() { curl -X DELETE -u hunter --url vmpooler.delivery.puppetlabs.net/api/v1/token/$1 ; }
 function listmyvm() { curl --url vmpooler.delivery.puppetlabs.net/api/v1/token/$(grep vmpooler_token ~/.fog | cut -d ' ' -f 4); }
+
 function listvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -s --url vmpooler.delivery.puppetlabs.net/api/v1/vm/ ; }
 function getvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -d --url vmpooler.delivery.puppetlabs.net/api/v1/vm/$1 ; }
 function sshvm() { ssh -i ~/.ssh/id_rsa-acceptance root@$1 ; }
 function rmvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -X DELETE --url vmpooler.delivery.puppetlabs.net/api/v1/vm/$1 ; }
+
+function listns() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -s -X GET --url https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/status/ ; }
+function getns() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -d '' -X POST --url https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/host/$1 ; }
+function sshns() { ssh -i ~/.ssh/id_rsa-acceptance root@$1 ; }
+function rmns() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -X DELETE --url https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/host/$1 ; }
+
 args() { echo $#; }
 title() { WINTITLE="$*"; print -Pn "\e]0;$WINTITLE\a" }
 hl() { pbpaste | highlight --syntax=$1 -O rtf | pbcopy }
