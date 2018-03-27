@@ -323,6 +323,7 @@ function getvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d 
 function sshvm() { ssh -i ~/.ssh/id_rsa-acceptance root@$1 ; }
 function rmvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -X DELETE --url vmpooler.delivery.puppetlabs.net/api/v1/vm/$1 ; }
 
+function migratetoken() { curl -X POST -d '' -u hunter --url "https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/token?token=$(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" }
 function listns() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -s -X GET --url https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/status/ ; }
 function getns() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -d '' -X POST --url https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/host/$1 ; }
 function sshns() { ssh -i ~/.ssh/id_rsa-acceptance root@$1 ; }
