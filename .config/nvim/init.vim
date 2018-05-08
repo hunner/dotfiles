@@ -54,9 +54,12 @@ Plug 'twerth/ir_black'
 " Various langs
 Plug 'rodjek/vim-puppet'
 Plug 'keith/swift.vim'
-Plug 'hunner/vim-plist'
+Plug 'darfink/vim-plist'
 Plug 'vim-ruby/vim-ruby'
 Plug 'kchmck/vim-coffee-script'
+Plug 'jceb/vim-orgmode'
+" For vim-orgmode
+Plug 'tpope/vim-speeddating'
 call plug#end()
 
 " Because.
