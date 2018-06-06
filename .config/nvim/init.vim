@@ -58,6 +58,7 @@ Plug 'darfink/vim-plist'
 Plug 'vim-ruby/vim-ruby'
 Plug 'kchmck/vim-coffee-script'
 Plug 'jceb/vim-orgmode'
+Plug 'bfontaine/Brewfile.vim'
 " For vim-orgmode
 Plug 'tpope/vim-speeddating'
 call plug#end()
@@ -110,7 +111,7 @@ command! -bang -nargs=* Rg call fzf#vim#grep('rg --column --line-number --no-hea
 noremap <Leader>/ :Rg<CR>
 "noremap <Space>/ :Rg<CR>
 
-function s:get_buffer_git_root(...)
+function! s:get_buffer_git_root(...)
   let root = fugitive#repo().tree(expand('%:p:h'))
   if empty(root)
     return s:warn('Not in git repo')
@@ -155,12 +156,35 @@ noremap <Leader>fed :e ~/.config/nvim/init.vim<CR>
 
 " TODO quickfix for ripgrep results
 " TODO quickfix for autolint and rake stuff
+"autocmd QuickFixCmdPost * botright cwindow 6
+" quickfix things like '-'
+"nmap <Leader>cwc :cclose<CR>
+"nmap <Leader>cwo :botright copen 5<CR><C-w>p
+"nmap <Leader>cn  :cnext<CR>
+"nmap <Leader>cp  :cprevious<CR>
+"nmap -  :cnext<CR>
+"nmap _  :cprev<CR>
+"nmap <C--> :colder<CR>
+"nmap <C-_> :cnewer<CR>
+" neomake uses the location window rather than quickfix window
+noremap -  :lnext<CR>
+noremap _  :lprev<CR>
+" See ToggleLocationList below
 
 " Only lint when leaving insert or changing text in command mode
 call neomake#configure#automake({
   \ 'InsertLeave': {'delay': 0},
   \ 'TextChanged': {},
   \ }, 500)
+let g:neomake_ruby_rubocop_maker = {
+  \ 'args': ['exec', 'rubocop', '--format', 'emacs', '--force-exclusion', '--display-cop-names'],
+  \ 'exe': 'bundle',
+  \ 'errorformat': '%f:%l:%c: %t: %m,%E%f:%l: %m',
+  \ 'postprocess': function('neomake#makers#ft#ruby#RubocopEntryProcess'),
+  \ 'output_stream': 'stdout',
+  \ }
+let g:neomake_ruby_rubocop_rails_maker = {
+  \ }
 
 let g:deoplete#enable_at_startup = 1
 
@@ -186,33 +210,64 @@ nmap <C-p> :Denite neoyank<CR>
 "vmap <Leader>y :'<,'>! cat \| tee ~/.local/share/nvim/yank.txt<CR>
 "nmap <Leader>p o<Esc>:.!cat ~/.local/share/nvim/yank.txt<CR>
 
-" ^n Show number and fold columns in windows {{{2
-if has("eval")
-  function! <SID>FoldNumbers()
-    " If we're in a wide window, enable line numbers.
-    "if winwidth(0) >= 76 " 72 + 4, or should I use tw?
-      " Add folds, or cycle through number schemes
-      if &foldlevel < 99 && &foldenable && &foldcolumn == 0
-        setlocal foldcolumn=1
-      elseif (&foldlevel == 99 || ! &foldenable) && &foldcolumn != 0
-        setlocal foldcolumn=0
-      elseif ! &rnu && ! &nu
-        setlocal relativenumber
-      elseif &rnu
-        setlocal number
-        setlocal norelativenumber
-      elseif &nu
-        setlocal nonumber
-      endif
-    "else
-    "  setlocal norelativenumber
-    "  setlocal nonumber
-    "  setlocal foldcolumn=0
-    "endif
-  endfun
-  "autocmd WinEnter,BufWinEnter,BufNew * :call <SID>FoldNumbers()
-  noremap <silent> <C-n> :call <SID>FoldNumbers()<CR>
-endif
+
+function! GetBufferList()
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
+endfunction
+
+function! ToggleLocationList()
+  let buflist = GetBufferList()
+  " Close if it's open
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec('lclose')
+      return
+    endif
+  endfor
+  " Don't open if it's empty
+  if len(getloclist(0)) == 0
+    echohl ErrorMsg
+    echo "Location List is Empty."
+    return
+  endif
+  " Open it
+  let winnr = winnr()
+  exec('lopen')
+  " Go back to window
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+noremap <Leader>- :call ToggleLocationList()<CR>
+
+" ^n Show number and fold columns in windows
+function! <SID>FoldNumbers()
+  " If we're in a wide window, enable line numbers.
+  "if winwidth(0) >= 76 " 72 + 4, or should I use tw?
+    " Add folds, or cycle through number schemes
+    if &foldlevel < 99 && &foldenable && &foldcolumn == 0
+      setlocal foldcolumn=1
+    elseif (&foldlevel == 99 || ! &foldenable) && &foldcolumn != 0
+      setlocal foldcolumn=0
+    elseif ! &rnu && ! &nu
+      setlocal relativenumber
+    elseif &rnu
+      setlocal number
+      setlocal norelativenumber
+    elseif &nu
+      setlocal nonumber
+    endif
+  "else
+  "  setlocal norelativenumber
+  "  setlocal nonumber
+  "  setlocal foldcolumn=0
+  "endif
+endfun
+"autocmd WinEnter,BufWinEnter,BufNew * :call <SID>FoldNumbers()
+noremap <silent> <C-n> :call <SID>FoldNumbers()<CR>
 
 " Case insensitivity for searching
 set ignorecase
