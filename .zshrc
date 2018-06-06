@@ -475,3 +475,6 @@ fi
 #exec 2>&3 3>&-
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# added by travis gem
+[ -f /Users/hunner/.travis/travis.sh ] && source /Users/hunner/.travis/travis.sh
