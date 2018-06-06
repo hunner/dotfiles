@@ -61,9 +61,9 @@ ctrl + shift + alt - 5  :   chunkc tiling::window --send-to-desktop 15
 ctrl + shift + alt - 6  :   chunkc tiling::window --send-to-desktop 16
 
 # Focus display
-switcher + shift - 1    :   chunkc tiling::monitor --focus 1
-switcher + shift - 2    :   chunkc tiling::monitor --focus 2
-switcher + shift - 3    :   chunkc tiling::monitor --focus 3
+switcher + shift - 1    :   chunkc tiling::monitor -f 1
+switcher + shift - 2    :   chunkc tiling::monitor -f 2
+switcher + shift - 3    :   chunkc tiling::monitor -f 3
 
 # Move window to display
 swap + shift - 1        :   chunkc tiling::window --send-to-monitor 1

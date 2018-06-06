@@ -6,6 +6,7 @@
 #
 
 chunkc core::plugin_dir /usr/local/opt/chunkwm/share/chunkwm/plugins
+chunkc core::log_file /usr/local/var/log/chunkwm/chunkwm.log
 
 #
 # NOTE: if enabled, chunkwm will monitor the specified plugin_dir
@@ -111,3 +112,4 @@ chunkc tiling::rule --owner \"Steam\" --state float
 chunkc tiling::rule --owner \"Stickies\" --state float
 chunkc tiling::rule --owner \"System Preferences\" --state float
 chunkc tiling::rule --owner \"Emacs\" --state tile
+chunkc tiling::rule --owner \"Adobe Lightroom CC\" --state tile
