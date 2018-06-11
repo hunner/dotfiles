@@ -23,6 +23,10 @@ brew "unzip" # Zip happens
 brew "nmap" # Port scanner
 brew "p0f" # Passive scanner
 cask "minikube" # k8s in a box
+brew "node@8" # LTS major version; 10 after oct 2018
+brew "yarn" # node stuff
+brew "stow" # node stuff?
+brew "hugo" # node stuff?
 
 # Mac fun
 cask "aerial" # Screensaver
