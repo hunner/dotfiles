@@ -27,6 +27,9 @@ brew "node@8" # LTS major version; 10 after oct 2018
 brew "yarn" # node stuff
 brew "stow" # node stuff?
 brew "hugo" # node stuff?
+cask "java8" # jdk 8
+brew "pyenv" # rbenv for py
+brew "pyenv-virtualenv" # rbenv for pyenv?
 
 # Mac fun
 cask "aerial" # Screensaver
