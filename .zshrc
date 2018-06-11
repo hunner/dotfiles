@@ -106,7 +106,8 @@ SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="0x1CED67750173FC1C"
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
-export ENVPUPPET_BASEDIR="$HOME/Documents/work/git"
+export DEV_ROOT="$HOME/Documents/work/git/"
+export JAVA_HOME=$(/usr/libexec/java_home)
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 if whence rg > /dev/null ; then
   export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!.git/*"'
@@ -234,6 +235,7 @@ alias z="TERM=xterm ssh hunner@zabava.cat.pdx.edu"
 alias o="TERM=xterm ssh hunner@osiris.cat.pdx.edu"
 alias m="TERM=xterm ssh hunner@mint.cic.pdx.edu"
 alias p="ping 8.8.8.8"
+alias pipe=pip # typos
 alias chandra="TERM=xterm ssh hunner@chandra.cs.pdx.edu"
 export CS=cs.pdx.edu
 alias odin="TERM=xterm ssh hunner@odin.pdx.edu"
@@ -468,6 +470,9 @@ ex () {
 
 if [ -d ~/.rbenv ] ; then
   eval "$(rbenv init -)"
+fi
+if [ -d ~/.pyenv ] ; then
+  eval "$(pyenv init -)"
 fi
 #[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
 ## Profiling options
