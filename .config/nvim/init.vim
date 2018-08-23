@@ -153,6 +153,7 @@ noremap <Leader>tn :color tender<CR>
 noremap <Leader>ip :color inkpot<CR>
 noremap <Leader>ir :color ir_black<CR>
 noremap <Leader>fed :e ~/.config/nvim/init.vim<CR>
+noremap <Leader>tod :e ~/Dropbox/todo.txt<CR>
 
 " TODO quickfix for ripgrep results
 " TODO quickfix for autolint and rake stuff

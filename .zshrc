@@ -52,7 +52,7 @@ paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
 /opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
 ~/Library/Haskell/bin /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
 /opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(/usr/local/bin /usr/local/sbin ~/coreos-osx/bin ~/.rbenv/bin ~/.cabal/bin
+prepaths=(/usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/coreos-osx/bin ~/.rbenv/bin ~/.cabal/bin
 ~/Library/Haskell/bin ~/local/bin ~/local/sbin ~/local/share/bin)
 for dir in $paths ; do
     if [ -d $dir ] ; then
@@ -306,6 +306,7 @@ function dr() {
   cmd=$2 && [ -z $2 ] && cmd="/bin/bash"
   docker run -it --rm $1 $cmd
 }
+alias k="kubectl"
 #startup aliases
 alias -s pdf="zathura"
 alias -s txt="vi"
@@ -483,3 +484,9 @@ fi
 
 # added by travis gem
 [ -f /Users/hunner/.travis/travis.sh ] && source /Users/hunner/.travis/travis.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/hunner/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/hunner/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/hunner/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/hunner/google-cloud-sdk/completion.zsh.inc'; fi

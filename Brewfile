@@ -1,6 +1,6 @@
 # Work fun
 tap "d12frosted/emacs-plus" ; brew "emacs-plus"
-cask "blue-jeans-launcher"
+cask "blue-jeans"
 cask "docker" # docker docker
 cask "hipchat" # Work chat
 cask "slack" # Work/fun chat
@@ -27,7 +27,10 @@ brew "node@8" # LTS major version; 10 after oct 2018
 brew "yarn" # node stuff
 brew "stow" # node stuff?
 brew "hugo" # node stuff?
+tap "homebrew/cask-versions" # For FF Nightly and java8
 cask "java8" # jdk 8
+cask "intellij-idea" # java dev
+cask "visual-studio-code" # frontend dev
 brew "pyenv" # rbenv for py
 brew "pyenv-virtualenv" # rbenv for pyenv?
 
@@ -38,6 +41,7 @@ tap "crisidev/chunkwm" ; brew "chunkwm" # Window manager
 tap "koekeishiya/formulae" ; brew "khd" # Keyboard shortcuts
 cask "cathode" # Silly terminal
 cask "ubersicht" # UI bar
+tap "homebrew/cask-fonts" # For fonts
 cask "font-hack" # I don't think I use this any more
 cask "font-liberation-mono-for-powerline" # For neovim
 
@@ -48,7 +52,8 @@ cask "steam" # Meta game
 
 # Life fun
 cask "1password" # Family accounts
-cask "adobe-creative-cloud" # Family pictures
+cask "adobe-creative-cloud" # Family pictures. Run /usr/local/Caskroom/adobe-creative-cloud/latest/Creative Cloud Installer.app
+cask "microsoft-office" # OneNote, word, outlook, etc.
 brew "ddrescue" # Photo recover
 brew "exiftool" # Photo munge
 brew "imagemagick" # manipulation
@@ -65,6 +70,7 @@ cask "zerotier-one" # Personal network
 # Browsers
 cask "brave" # For bt
 cask "firefox" # Personal browsing
-cask "firefoxnightly" # Work browsing
+cask "firefox-nightly" # Work browsing
+cask "choosy" # Browser choosing
 cask "multifirefox" # Profile manager
 cask "google-chrome" # Flash/music

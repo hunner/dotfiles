@@ -61,14 +61,14 @@ ctrl + shift + alt - 5  :   chunkc tiling::window --send-to-desktop 15
 ctrl + shift + alt - 6  :   chunkc tiling::window --send-to-desktop 16
 
 # Focus display
-switcher + shift - 1    :   chunkc tiling::monitor -f 1
-switcher + shift - 2    :   chunkc tiling::monitor -f 2
-switcher + shift - 3    :   chunkc tiling::monitor -f 3
+switcher - 1    :   chunkc tiling::monitor -f 1 ; khd -e "mode activate default"
+switcher - 2    :   chunkc tiling::monitor -f 2 ; khd -e "mode activate default"
+switcher - 3    :   chunkc tiling::monitor -f 3 ; khd -e "mode activate default"
 
 # Move window to display
-swap + shift - 1        :   chunkc tiling::window --send-to-monitor 1
-swap + shift - 2        :   chunkc tiling::window --send-to-monitor 2
-swap + shift - 3        :   chunkc tiling::window --send-to-monitor 3
+swap + shift - 1        :   chunkc tiling::window --send-to-monitor 1 ; khd -e "mode activate default"
+swap + shift - 2        :   chunkc tiling::window --send-to-monitor 2 ; khd -e "mode activate default"
+swap + shift - 3        :   chunkc tiling::window --send-to-monitor 3 ; khd -e "mode activate default"
 
 ## ytd mode
 #ytd - x                 :   ytc play;\
