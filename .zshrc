@@ -1,8 +1,10 @@
 ## Profiling options
-#PS4='+$(date "+%s:%N") %N:%i> '
-#exec 3>&2 2>/tmp/zsh-startlog.$$
-#setopt prompt_subst
-#setopt xtrace
+PROFILE_STARTUP=false
+if [[ "$PROFILE_STARTUP" == true ]]; then
+  PS4=$'%D{%M%S%.} %N:%i> '
+  exec 3>&2 2>/tmp/zsh-startlog.$$
+  setopt xtrace prompt_subst
+fi
 
 typeset -ga preexec_functions
 typeset -ga precmd_functions
@@ -58,16 +60,16 @@ for dir in $paths ; do
     if [ -d $dir ] ; then
         export PATH=$PATH:$dir
     fi
-    if [ -d `dirname $dir`/man ] ; then
-        export MANPATH=$MANPATH:`dirname $dir`/man
+    if [ -d ${dir:a:h}/man ] ; then
+        export MANPATH=$MANPATH:${dir:a:h}/man
     fi
 done
 for dir in $prepaths ; do
     if [ -d $dir ] ; then
         export PATH=$dir:$PATH
     fi
-    if [ -d `dirname $dir`/man ] ; then
-        export MANPATH=`dirname $dir`/man:$MANPATH
+    if [ -d ${dir:a:h}/man ] ; then
+        export MANPATH=${dir:a:h}/man:$MANPATH
     fi
 done
 # Load profiles from /etc/profile.d
@@ -112,7 +114,6 @@ export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 if whence rg > /dev/null ; then
   export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!.git/*"'
 fi
-eval "$(hub alias -s)"
 
 # Prompt
 #prompt_precmd() {
@@ -268,6 +269,7 @@ alias wd="dtach -a ~/.dtach-weechat"
 alias eo="xmodmap ~/keymaps/eo_dv_hunner.pke"
 alias vt="export TERM=vt220"
 alias rm=rm; unalias rm #hack
+alias git="hub"
 alias gs="git status"
 alias gl="git lg"
 alias gla="git lg --all"
@@ -472,13 +474,15 @@ ex () {
 if [ -d ~/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
-if [ -d ~/.pyenv ] ; then
-  eval "$(pyenv init -)"
-fi
+pyenv() {
+  if [ -d ~/.pyenv ] ; then
+    eval "$(command pyenv init -)"
+    pyenv "$@"
+  else
+    echo "pyenv isn't installed"
+  fi
+}
 #[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
-## Profiling options
-#unsetopt xtrace
-#exec 2>&3 3>&-
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -490,3 +494,9 @@ if [ -f '/Users/hunner/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/hun
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/hunner/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/hunner/google-cloud-sdk/completion.zsh.inc'; fi
+
+## Profiling options
+if [[ "$PROFILE_STARTUP" == true ]]; then
+  unsetopt xtrace
+  exec 2>&3 3>&-
+fi
