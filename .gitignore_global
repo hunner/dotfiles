@@ -3,3 +3,13 @@
 *.swp
 *.swo
 doc/tags*
+
+node_modules/
+.idea/*
+*.log
+*.iml
+target/*
+
+syntax: regexp
+(?i)\.iml
+

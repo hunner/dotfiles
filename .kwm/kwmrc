@@ -125,6 +125,7 @@ blacklists an application from Kwms tiling
     kwmc rule owner="VOX" properties={float="true"}
 */
 kwmc rule owner="Lightroom" properties={float="true"}
+kwmc rule owner="Adobe Lightroom CC" properties={float="true"}
 kwmc rule owner="Stickies" properties={float="true"}
 kwmc rule owner="Steam" properties={float="true"}
 kwmc rule owner="App Store" properties={float="true"}

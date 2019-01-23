@@ -1,11 +1,11 @@
 # Work fun
 tap "d12frosted/emacs-plus" ; brew "emacs-plus"
-cask "blue-jeans"
+cask "blue-jeans" # Need /usr/local/Caskroom/blue-jeans/2.7.0.450/BlueJeansInstaller.app
 cask "docker" # docker docker
 cask "hipchat" # Work chat
 cask "slack" # Work/fun chat
 cask "tunnelblick" # Work vpn
-cask "virtualbox" # vms
+cask "virtualbox" # vms - reboot and approve kernel extension
 cask "vagrant" # all the vms
 brew "git" # Newer than what brew installs
 brew "gnupg" # Crypto, not currency
@@ -13,7 +13,7 @@ brew "pinentry-mac" # gpg card pin entry
 brew "htop" # L33t
 brew "hub" # git, for github
 brew "ncdu" # Find big files
-brew "neovim" # Edit stuff
+brew "neovim" # Edit stuff. Then `curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
 brew "ripgrep" # Faster grep/ack/ag
 brew "socat" # Better netcat
 brew "tmux" # Terminal thingy
@@ -30,6 +30,7 @@ brew "hugo" # node stuff?
 tap "homebrew/cask-versions" # For FF Nightly and java8
 cask "java8" # jdk 8
 cask "intellij-idea" # java dev
+brew "maven" # java package management
 cask "visual-studio-code" # frontend dev
 brew "pyenv" # rbenv for py
 brew "pyenv-virtualenv" # rbenv for pyenv?
@@ -64,8 +65,7 @@ cask "onedrive" # File sync
 cask "little-snitch" # Personal egress filtering
 cask "vlc" # Music videos
 brew "youtube-dl" # Music videos
-cask "zerotier-one" # Personal network
-# cask microsoft-office # Not 365 apparently
+cask "zerotier-one" # Personal network - reboot and approve kernel extension
 
 # Browsers
 cask "brave" # For bt

@@ -1,5 +1,6 @@
 noremap <Space> :
 let mapleader = ","
+" Use :actionlist [pattern] to find more actions
 noremap <Leader>v :action SearchEverywhere<CR>
 noremap <Leader>c :action ActivateTerminalToolWindow<CR>
 noremap <C-h> <C-w>h
@@ -8,6 +9,7 @@ noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap - :action GotoNextError<CR>
 noremap _ :action GotoPreviousError<CR>
+noremap gq :action com.andrewbrookins.idea.wrap.WrapParagraphAction<CR>
 set ignorecase
 set smartcase
 set showmatch
