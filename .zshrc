@@ -298,14 +298,19 @@ alias bu="bundle update"
 alias uzbl="uzbl-browser"
 alias hide="SetFile -a V"
 alias show="SetFile -a v"
-alias dh="echo 'dl, da [container] [command], dr <image> [command]', drm, drmf"
+alias dh="echo 'dl                       -- list containers
+da [container] [command] -- attach to running container
+dr <image> [command]     -- run an image
+drm                      -- remove all containers
+drmf                     -- force remove all containers'"
 alias drm="docker rm \$(docker ps -qa)"
 alias drmf="docker rm -f \$(docker ps -qa)"
 alias dl="docker ps -a"
 function da() {
   container_id=$1 && [ -z $1 ] && container_id=$(docker ps -qa | head -n 1)
-  cmd=$2 && [ -z $2 ] && cmd="bash"
-  docker exec -it $container_id $cmd
+  shift
+  [ -z $1 ] && set -- bash
+  docker exec -it $container_id $@
 }
 function dr() {
   [ -z $1 ] && echo 'usage: dr <image> [command]' && return 1
