@@ -308,8 +308,9 @@ alias drmf="docker rm -f \$(docker ps -qa)"
 alias dl="docker ps -a"
 function da() {
   container_id=$1 && [ -z $1 ] && container_id=$(docker ps -qa | head -n 1)
+  [ -z "$container_id" ] && echo "No running container found to attach." && return 1
   shift
-  [ -z $1 ] && set -- bash
+  [ -z "$1" ] && set -- bash
   docker exec -it $container_id $@
 }
 function dr() {
@@ -317,7 +318,22 @@ function dr() {
   cmd=$2 && [ -z $2 ] && cmd="/bin/bash"
   docker run -it --rm $1 $cmd
 }
+alias kh="echo 'k              -- kubectl
+kg             -- kubectl get ...
+kga            -- kubectl get all
+kgan           -- kubectl get all in all namespaces
+kxl            -- list contexts
+knl            -- list namespaces
+kx <context>   -- switch context ...
+kn <namespace> -- switch namespace ...'"
 alias k="kubectl"
+alias kg="kubectl get"
+alias kga="kubectl get all"
+alias kgan="kubectl --all-namespaces=true get all"
+alias kx="kubectl config use-context"
+alias kxl="kubectl config get-contexts"
+alias kn="kubectl config set-context --current --namespace"
+alias knl="kubectl get namespaces"
 #startup aliases
 alias -s pdf="zathura"
 alias -s txt="vi"
