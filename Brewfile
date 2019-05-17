@@ -2,7 +2,6 @@
 tap "d12frosted/emacs-plus" ; brew "emacs-plus"
 cask "blue-jeans" # Need /usr/local/Caskroom/blue-jeans/2.7.0.450/BlueJeansInstaller.app
 cask "docker" # docker docker
-cask "hipchat" # Work chat
 cask "slack" # Work/fun chat
 cask "tunnelblick" # Work vpn
 cask "virtualbox" # vms - reboot and approve kernel extension
@@ -30,16 +29,17 @@ brew "hugo" # node stuff?
 tap "homebrew/cask-versions" # For FF Nightly and java8
 cask "java8" # jdk 8
 cask "intellij-idea" # java dev
+cask "jetbrains-toolbox" # other dev tools
 brew "maven" # java package management
-cask "visual-studio-code" # frontend dev
+#cask "visual-studio-code" # frontend dev
 brew "pyenv" # rbenv for py
 brew "pyenv-virtualenv" # rbenv for pyenv?
 
 # Mac fun
 cask "aerial" # Screensaver
 cask "alfred" # Launcher
-tap "crisidev/chunkwm" ; brew "chunkwm" # Window manager
-tap "koekeishiya/formulae" ; brew "khd" # Keyboard shortcuts
+tap "koekeishiya/formulae" ; brew "chunkwm" # Window manager
+brew "skhd" # Keyboard shortcuts
 cask "cathode" # Silly terminal
 cask "ubersicht" # UI bar
 tap "homebrew/cask-fonts" # For fonts
