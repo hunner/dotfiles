@@ -293,22 +293,22 @@ cmd + alt - j           :   chunkc tiling::window --focus south
 cmd + alt - k           :   chunkc tiling::window --focus north
 cmd + alt - l           :   chunkc tiling::window --focus east
 
-ctrl - 1        :   chunkc tiling::desktop --focus 1
-ctrl - 2        :   chunkc tiling::desktop --focus 2
-ctrl - 3        :   chunkc tiling::desktop --focus 3
-ctrl - 4        :   chunkc tiling::desktop --focus 4
-ctrl - 5        :   chunkc tiling::desktop --focus 5
-ctrl - 6        :   chunkc tiling::desktop --focus 6
-ctrl - 7        :   chunkc tiling::desktop --focus 7
-ctrl - 8        :   chunkc tiling::desktop --focus 8
-ctrl - 9        :   chunkc tiling::desktop --focus 9
-ctrl - 0        :   chunkc tiling::desktop --focus 10
-ctrl + alt - 1  :   chunkc tiling::desktop --focus 11
-ctrl + alt - 2  :   chunkc tiling::desktop --focus 12
-ctrl + alt - 3  :   chunkc tiling::desktop --focus 13
-ctrl + alt - 4  :   chunkc tiling::desktop --focus 14
-ctrl + alt - 5  :   chunkc tiling::desktop --focus 15
-ctrl + alt - 6  :   chunkc tiling::desktop --focus 16
+# ctrl - 1        :   chunkc tiling::desktop --focus 1
+# ctrl - 2        :   chunkc tiling::desktop --focus 2
+# ctrl - 3        :   chunkc tiling::desktop --focus 3
+# ctrl - 4        :   chunkc tiling::desktop --focus 4
+# ctrl - 5        :   chunkc tiling::desktop --focus 5
+# ctrl - 6        :   chunkc tiling::desktop --focus 6
+# ctrl - 7        :   chunkc tiling::desktop --focus 7
+# ctrl - 8        :   chunkc tiling::desktop --focus 8
+# ctrl - 9        :   chunkc tiling::desktop --focus 9
+# ctrl - 0        :   chunkc tiling::desktop --focus 10
+# ctrl + alt - 1  :   chunkc tiling::desktop --focus 11
+# ctrl + alt - 2  :   chunkc tiling::desktop --focus 12
+# ctrl + alt - 3  :   chunkc tiling::desktop --focus 13
+# ctrl + alt - 4  :   chunkc tiling::desktop --focus 14
+# ctrl + alt - 5  :   chunkc tiling::desktop --focus 15
+# ctrl + alt - 6  :   chunkc tiling::desktop --focus 16
 ctrl + shift - 1        :   chunkc tiling::window --send-to-desktop 1
 ctrl + shift - 2        :   chunkc tiling::window --send-to-desktop 2
 ctrl + shift - 3        :   chunkc tiling::window --send-to-desktop 3
