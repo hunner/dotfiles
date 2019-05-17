@@ -120,7 +120,14 @@ chunkc tiling::rule --owner \"Buckets\" --state float
 chunkc tiling::rule --owner \"Electron\" --state float
 chunkc tiling::rule --owner \"GlassBrowser\" --state float
 chunkc tiling::rule --owner \"Helium\" --state float
+chunkc tiling::rule --owner \"QuickTime Player\" --state float
+chunkc tiling::rule --owner \"MultiFirefox\" --state float
+chunkc tiling::rule --owner \"Cathode\" --state float
+chunkc tiling::rule --owner \"VLC\" --state float
+chunkc tiling::rule --owner \"IINA\" --state float
 chunkc tiling::rule --owner \"Emacs\" --state tile
 chunkc tiling::rule --owner \"Adobe Lightroom CC\" --state float
 chunkc tiling::rule --owner \"IntelliJ IDEA\" --name ".+Documents/work/git.+" --state tile
 chunkc tiling::rule --owner \"IntelliJ IDEA\" --except ".+Documents/work/git.+" --state float
+chunkc tiling::rule --owner \"GoLand\" --name ".+Documents/work/git.+" --state tile
+chunkc tiling::rule --owner \"GoLand\" --except ".+Documents/work/git.+" --state float
