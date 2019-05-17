@@ -9,6 +9,7 @@ node_modules/
 *.log
 *.iml
 target/*
+*/target
 
 syntax: regexp
 (?i)\.iml
