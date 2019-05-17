@@ -16,7 +16,6 @@ Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
 
-
 " Language-aware fancy things. Needs lang server config. Used, but what for?
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 
@@ -34,6 +33,9 @@ Plug 'Shougo/echodoc.vim'
 
 " Undo tree mapped below
 Plug 'simnalamburt/vim-mundo'
+
+" Netrw is nice, but so is this
+Plug 'scrooloose/nerdtree'
 
 " Motions... need to actually document them otherwise I forget
 Plug 'easymotion/vim-easymotion'
@@ -53,10 +55,16 @@ Plug 'dietsche/vim-lastplace'
 " Nice status line
 Plug 'itchyny/lightline.vim'
 
+" Make tmux status line match
+Plug 'edkolev/tmuxline.vim'
+
 " Color schemes
 Plug 'jacoborus/tender.vim'
 Plug 'ciaranm/inkpot'
 Plug 'twerth/ir_black'
+
+" Generate UUIDs
+Plug 'kburdett/vim-nuuid'
 
 " Various langs
 Plug 'rodjek/vim-puppet'
@@ -66,6 +74,8 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'kchmck/vim-coffee-script'
 Plug 'jceb/vim-orgmode'
 Plug 'bfontaine/Brewfile.vim'
+Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " For vim-orgmode
 Plug 'tpope/vim-speeddating'
 call plug#end()
@@ -77,7 +87,7 @@ let mapleader = ","
 nnoremap <C-u> :MundoToggle<CR>
 " <Leader><Leader>+(s)earch, (w)ord for jumping
 
-"noremap <Space>fs :w<CR>
+noremap <Space>fs :w<CR>
 "noremap <Space>qq :q<CR>
 "noremap <Space>qa :qa<CR>
 "noremap <Space>ff :Files<CR>
@@ -112,9 +122,12 @@ noremap <Leader>e :e %:p:h/
 " --no-ignore: Do not respect .gitignore, etc...
 " --hidden: Search hidden files and folders
 " --follow: Follow symlinks
-" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
-command! -bang -nargs=* Rg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+" --glob: Additional conditions for search, ignore with ! prefix
+let g:rg_command = '
+  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+  \ --glob "!{.git,node_modules,vendor}/*" '
+command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
 noremap <Leader>/ :Rg<CR>
 "noremap <Space>/ :Rg<CR>
 
@@ -155,6 +168,48 @@ let g:lightline = {
   \ 'separator': { 'left': '', 'right': '' },
   \ 'subseparator': { 'left': '', 'right': '' }
   \ }
+" Make tmux match. Uses tmuxline.vim
+let g:tmuxline_powerline_separators = 1 " yes please
+let g:tmuxline_preset = 'full' " info on the line
+"autocmd InsertEnter * :v
+"autocmd VisualEnter * call :Tmu
+
+" Go lang settings
+let g:go_highlight_array_whitespace_error = 1
+let g:go_highlight_chan_whitespace_error = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_generate_tags = 1
+let g:go_highlight_string_spellcheck = 1
+let g:go_highlight_format_strings = 1
+let g:go_highlight_variable_declarations = 1
+let g:go_highlight_variable_assignments = 1
+
+"nnoremap <silent> <C-G> :NERDTreeToggle<CR>
+function! ToggleNerdTreeFind()
+  if(exists("b:NERDTree") && b:NERDTree.IsOpen())
+    exec(':NERDTreeClose')
+  else
+    exec(':NERDTreeFind')
+  endif
+endfunction
+"nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
+
+" nerdtree alternative. I didn't finish this. https://shapeshed.com/vim-netrw/
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 1
+let g:netrw_winsize = 15
+augroup ProjectDrawer
+  autocmd!
+  "autocmd VimEnter * :Vexplore
+augroup END
 
 noremap <Leader>tn :color tender<CR>
 noremap <Leader>ip :color inkpot<CR>
@@ -297,8 +352,10 @@ set smartindent
 set wildmode=longest,list,full
 set wildignorecase
 
-" C-c and <Esc> are not entirely the same, but I want them to be
+" C-c and <Esc> are not entirely the same, but I want them to be. Also C-g
+" because emacs habits.
 inoremap <C-c> <Esc>
+inoremap <C-g> <Esc>
 
 " Scrolling with arrows controls the window
 noremap <Up>   <C-y>
