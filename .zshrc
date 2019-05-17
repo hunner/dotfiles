@@ -106,6 +106,9 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.history
 export GPGKEY="0x1CED67750173FC1C"
+if [ -f ~/.zsh_tokens ] ; then
+  source ~/.zsh_tokens
+fi
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export DEV_ROOT="$HOME/Documents/work/git/"
 export JAVA_HOME=$(/usr/libexec/java_home)
@@ -239,6 +242,7 @@ alias p="ping 8.8.8.8"
 alias pi="ping google.com"
 alias ph="ping pi.hole"
 alias pa="ping ads.google.com"
+alias pd="ping 192.168.194.93"
 alias pipe=pip # typos
 alias chandra="TERM=xterm ssh hunner@chandra.cs.pdx.edu"
 export CS=cs.pdx.edu
@@ -276,8 +280,8 @@ alias git="hub"
 alias gs="git status"
 alias gl="git lg"
 alias gla="git lg --all"
-alias go="git checkout"
-alias gob="git checkout -b"
+alias ge="git checkout"
+alias geb="git checkout -b"
 alias gb="git branch"
 alias ga="git add"
 alias gd="git diff"
@@ -288,6 +292,8 @@ alias gfa="git fetch --all --prune"
 alias gr="git remote -v show"
 alias gp="git push"
 alias gu="git pull"
+alias gst="git stash"
+alias gstp="git stash pop"
 alias gdw="git diff --color-words"
 alias gk="gitk --all&"
 alias gx="gitx --all"
@@ -300,9 +306,11 @@ alias show="SetFile -a v"
 alias dh="echo 'dl                       -- list containers
 da [container] [command] -- attach to running container
 dr <image> [command]     -- run an image
-drm                      -- remove all containers
+drm <image>              -- remove a containers
+drma                     -- remove all containers
 drmf                     -- force remove all containers'"
-alias drm="docker rm \$(docker ps -qa)"
+alias drm="docker rm"
+alias drma="docker rm \$(docker ps -qa)"
 alias drmf="docker rm -f \$(docker ps -qa)"
 alias dl="docker ps -a"
 function da() {
@@ -333,6 +341,7 @@ alias kx="kubectl config use-context"
 alias kxl="kubectl config get-contexts"
 alias kn="kubectl config set-context --current --namespace"
 alias knl="kubectl get namespaces"
+alias d-c="docker-compose"
 #startup aliases
 alias -s pdf="zathura"
 alias -s txt="vi"
@@ -340,6 +349,7 @@ alias -s flv="mplayer"
 alias -s avi="mplayer"
 alias -s mkv="mplayer"
 alias -s mpg="mplayer"
+alias gor="cd $GOPATH"
 alias djm="cd $DEV_ROOT/DistelliJavaModels"
 alias k8s="cd $DEV_ROOT/K8SDashboard"
 alias pwf="cd $DEV_ROOT/pfc-web-framework"
@@ -347,8 +357,19 @@ alias pvs="cd $DEV_ROOT/pipelines-version-set"
 alias pfc="cd $DEV_ROOT/PipelinesForContainers"
 alias apm="cd $DEV_ROOT/AppPipelineManager"
 alias aem="cd $DEV_ROOT/AppEventsManager"
-alias wui="cd $DEV_ROOT/DistelliWebUi"
+alias dwu="cd $DEV_ROOT/DistelliWebUi"
+alias pac="cd $DEV_ROOT/PipelinesAsCode"
 alias hm="cd $DEV_ROOT/HelmManager"
+
+function init_coalsack_vars() {
+  export COALSACK_CURRENT_CONTEXT=$(kubectl config current-context)
+  if [[ 'docker-for-desktop' = $COALSACK_CURRENT_CONTEXT ]] ; then
+    export COALSACK_TEST_K8S_ENDPOINT=$local_K8S_ENDPOINT
+    export COALSACK_TEST_CA_DATA=$local_CA_DATA
+    export COALSACK_TEST_BEARER_TOKEN=$local_BEARER_TOKEN
+    export COALSACK_TEST_PASSWORD=$local_PASSWORD
+  fi
+}
 
 # Functions
 function listtoken() { curl -u hunter --url vmpooler.delivery.puppetlabs.net/api/v1/token ; }
