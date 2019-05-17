@@ -43,27 +43,26 @@ case "$TERM" in
     rxvt-256color) export TERM=rxvt;;
 esac
 
+# Go lang stuff
+export GOPATH=$HOME/Documents/work/git/go
+export GOROOT=/usr/local/opt/go/libexec
+export GO111MODULE=on
+
 # Paths
 #export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
-export MANPATH=~/local/share/man:/usr/man:/usr/share/man
-paths=(/usr/texbin /cat/bin /cat/games/bin /opt/csw/sbin /opt/csw/bin
-/pkgs/ghc/current/bin /usr/X11/bin /pkgs/chromium/bin /usr/sfw/sbin
-/usr/sfw/bin /opt/SUNWut/sbin /opt/SUNWut/bin /usr/ccs/bin /opt/local/sbin
-/opt/local/bin /usr/local/share/bin /usr/openwin/bin /usr/bin/X11
-~/Library/Haskell/bin /usr/local/bin/X11 /usr/openwin/bin/xview /opt/java/bin
-/opt/java5/bin /opt/java/jre/bin /opt/openoffice/program)
-prepaths=(/usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/coreos-osx/bin ~/.rbenv/bin ~/.cabal/bin
-~/Library/Haskell/bin ~/local/bin ~/local/sbin ~/local/share/bin)
-for dir in $paths ; do
-    if [ -d $dir ] ; then
-        export PATH=$PATH:$dir
-    fi
-    if [ -d ${dir:a:h}/man ] ; then
-        export MANPATH=$MANPATH:${dir:a:h}/man
-    fi
-done
+export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
+#paths=(/cat/bin)
+prepaths=($GOPATH/bin $GOROOT/bin ~/.emacs.d/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/local/bin ~/local/sbin)
+#for dir in $paths ; do
+#    if [ -d $dir ] ; then
+#        export PATH=$PATH:$dir
+#    fi
+#    if [ -d ${dir:a:h}/man ] ; then
+#        export MANPATH=$MANPATH:${dir:a:h}/man
+#    fi
+#done
 for dir in $prepaths ; do
     if [ -d $dir ] ; then
         export PATH=$dir:$PATH
