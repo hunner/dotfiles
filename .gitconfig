@@ -30,3 +30,5 @@
 	gpgsign = true
 [http]
 	cookiefile = ~/.gitcookies
+[url "git@github.com:"]
+  insteadOf = https://github.com/
