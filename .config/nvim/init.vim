@@ -61,6 +61,7 @@ Plug 'edkolev/tmuxline.vim'
 " Color schemes
 Plug 'jacoborus/tender.vim'
 Plug 'ciaranm/inkpot'
+Plug 'arcticicestudio/nord-vim'
 Plug 'twerth/ir_black'
 
 " Generate UUIDs
@@ -159,14 +160,16 @@ command! -bar -bang ChangeDir
   \ }, <bang>0))
 
 " 24-bit blue/orange theme
-colorscheme tender
+colorscheme nord
+scriptencoding utf-8
+set encoding=utf-8
 let g:lightline = {
-  \ 'colorscheme': 'tenderplus',
+  \ 'colorscheme': 'nord',
   \ 'component': {
   \   'lineinfo': '0x%02B:%03l:%-2v'
   \ },
-  \ 'separator': { 'left': '', 'right': '' },
-  \ 'subseparator': { 'left': '', 'right': '' }
+  \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+  \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
   \ }
 " Make tmux match. Uses tmuxline.vim
 let g:tmuxline_powerline_separators = 1 " yes please
@@ -199,7 +202,7 @@ function! ToggleNerdTreeFind()
     exec(':NERDTreeFind')
   endif
 endfunction
-"nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
+nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
 
 " nerdtree alternative. I didn't finish this. https://shapeshed.com/vim-netrw/
 let g:netrw_banner = 0
