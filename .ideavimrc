@@ -5,6 +5,7 @@ let mapleader = ","
 " Use :actionlist [pattern] to find more actions
 noremap <Leader>v :action SearchEverywhere<CR>
 noremap <Leader>c :action ActivateTerminalToolWindow<CR>
+noremap <Leader>bo :action CloseAllEditorsButActive<CR>
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
@@ -13,6 +14,7 @@ noremap - :action GotoNextError<CR>
 noremap _ :action GotoPreviousError<CR>
 noremap gq :action com.andrewbrookins.idea.wrap.WrapParagraphAction<CR>
 noremap <Leader>pry odebugger;<Esc>
+nnoremap <Return> :noh<CR>
 set ignorecase
 set smartcase
 set showmatch

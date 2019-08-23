@@ -1,6 +1,6 @@
 [user]
 	name = Hunter Haugen
-	email = hunter@puppet.com
+	email = hunter@haugens.org
 	signingkey = 0xEF99694AA599DDAD
 [color]
 	ui = true
@@ -14,6 +14,7 @@
 	path = /Users/hunner/local/bin/mvimdiff
 [core]
 	excludesfile = ~/.gitignore_global
+	pager = `test \"$TERM\" = \"dumb\" && echo cat || echo less -R`
 [push]
 	default = current
 [hub]
