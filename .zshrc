@@ -226,6 +226,7 @@ cl() { cd $@ && ls }
 bellme() { echo "Done! (bellme)" ; while :; do echo -ne '\a' ; sleep 2 ; done }
 #old linux aliases
 alias e="TERM=xterm-256color emacs -nw"
+alias eq="e -q"
 alias et="TERM=xterm-256color emacsclient -t"
 #alias ec="emacsclient -c --eval '(set-background-color \"black\")'"
 alias ec="emacsclient -c"
@@ -323,7 +324,7 @@ function da() {
 function dr() {
   [ -z $1 ] && echo 'usage: dr <image> [command]' && return 1
   cmd=$2 && [ -z $2 ] && cmd="/bin/bash"
-  docker run -it --rm $1 $cmd
+  docker run -it --rm $1 $cmd ${@:3}
 }
 alias kh="echo 'k              -- kubectl
 kg             -- kubectl get ...
@@ -342,6 +343,9 @@ alias kxl="kubectl config get-contexts"
 alias kn="kubectl config set-context --current --namespace"
 alias knl="kubectl get namespaces"
 alias d-c="docker-compose"
+alias whyfail="tmux copy-mode && tmux send-keys -X search-backward fail"
+alias superscript="tr '+−=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ' \
+                      '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';"
 #startup aliases
 alias -s pdf="zathura"
 alias -s txt="vi"
@@ -543,14 +547,14 @@ pyenv() {
 # added by travis gem
 [ -f /Users/hunner/.travis/travis.sh ] && source /Users/hunner/.travis/travis.sh
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/hunner/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/hunner/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/hunner/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/hunner/google-cloud-sdk/completion.zsh.inc'; fi
-
 ## Profiling options
 if [[ "$PROFILE_STARTUP" == true ]]; then
   unsetopt xtrace
   exec 2>&3 3>&-
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/hunner/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hunner/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
