@@ -139,10 +139,10 @@ space + shift - l       :   chunkc tiling::window --use-temporary-ratio -0.05 --
 
 
 # tree mode
-tree - f                :   kwmc window -z fullscreen
-tree - d                :   kwmc window -z parent
-tree - w                :   kwmc window -t focused
-tree - r                :   kwmc tree rotate 90
+tree - f                :   chunkc tiling::window -z fullscreen
+tree - d                :   chunkc tiling::window -z parent
+tree - w                :   chunkc tiling::window -t focused
+tree - r                :   chunkc tree rotate 90
 
 tree - s                :   kwmc window -c split - mode toggle;\
                             khd -e "mode activate default"
