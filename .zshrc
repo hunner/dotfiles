@@ -23,8 +23,8 @@ autoload -Uz compinit colors vcs_info select-word-style && colors
 compinit -u
 
 zstyle :compinstall filename '~/.zshenv'
-zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:*' actionformats '%F{6}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats "%{$fg_bold[black]%}[%{$fg_no_bold[blue]%}%b%{$fg_bold[black]%}]%{$reset_color%}"
 zstyle ':vcs_info:*' enable git
 
 # Don't have / as wordchar so ^w erases path parts
@@ -133,14 +133,15 @@ fi
 #    PROMPT="%m$color%#%{$reset_color%} "
 #}
 #precmd_functions+=prompt_precmd
-PROMPT="%m%# "
+PROMPT="%m%{$fg_bold[blue]%}%#%{$reset_color%} "
+PTIME="%{$fg_bold[grey]%}[%{$fg_no_bold[blue]%}%T%{$fg_bold[grey]%}]%{$reset_color%}"
 vcs_info_wrapper() {
   vcs_info
   if [ -n "$vcs_info_msg_0_" ]; then
-    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+    echo "%{$fg_bold[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
-RPROMPT=$'$(vcs_info_wrapper)'
+RPROMPT=$'$(vcs_info_wrapper)${PTIME}'
 
 if [ `uname -s` = "SunOS" ] ; then
     export LANG="C"
