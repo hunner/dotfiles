@@ -111,7 +111,7 @@ if [ -f ~/.zsh/private ] ; then
 fi
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export DEV_ROOT="$HOME/Documents/work/git/"
-export JAVA_HOME=$(/usr/libexec/java_home)
+[ -e /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 #export DOCKER_HOST='tcp://192.168.99.100:2375'
 if whence rg > /dev/null ; then
@@ -181,7 +181,7 @@ fi
 
 # GPG 2.1.x SSH support
 # See : http://incenp.org/notes/2015/gnupg-for-ssh-authentication.html
-export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 ## Add extra fonts
 #xset fp+ /usr/APL2/fonts/X11

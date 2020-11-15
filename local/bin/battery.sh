@@ -5,14 +5,17 @@
 
 BG='#000'  # dzen backgrounad
 FG='#ddd'  # dzen foreground
-W=157      # width of the dzen bar
-GW=100     # width of the gauge
-GFG='#057' # color of the gauge
-GH=12      # height of the gauge
+W=112      # width of the dzen bar
+H=12       # height of the dzen bar
+GW=80     # width of the gauge
+#GFG='#5e81ac' # color of the gauge
+GFG='#379' # color of the gauge
+GH=10      # height of the gauge
 GBG='#333' # color of gauge background
-X=2722     # x position
+#X=1807     # x position
+X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 1)"     # x position
 Y=1        # y position
-FN='"xft:Liberation Mono:size=7"' # font
+FN='xft:Liberation Mono:size=8' # font
 
 STATEFILE='/sys/class/power_supply/BAT0/status' # battery's state file
 CAPFILE='/sys/class/power_supply/BAT0/capacity'   # battery's capacity file
@@ -54,4 +57,4 @@ while true; do
     echo -n "$(date +"$DATE_FORMAT") "
     eval echo $RPERC | $gdbar -h $GH -w $GW -fg $GFGC -bg $GBG
     sleep $TIME_INT;
-done | dzen2 -ta c -tw $W -y $Y -x $X -fg "$FG" -bg "$BG" -fn "$FN" -h 18 -e "sigusr1=raise"
+done | dzen2 -ta c -tw $W -y $Y -x $X -fg "$FG" -bg "$BG" -fn "$FN" -h $H -e "sigusr1=raise"

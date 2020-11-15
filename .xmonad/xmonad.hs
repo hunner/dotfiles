@@ -62,6 +62,7 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("M-M1-C-8", spawn "xcalib -i -a"      ) -- Invert screen color
         , ("M-S-b"   , spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
         , ("M-p"     , spawn "dmenu_run")
+        , ("M-C-c"   , spawn "CM_DIR=~/.config/clipmenu clipmenu")
         , ("<Scroll_lock>", spawn "xlock -mode fzort -echokeys -usefirst" ) -- SCReen LocK
 
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
@@ -80,13 +81,13 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("<XF86AudioStop>"         , spawn "mpc stop"                      ) -- stop mpd
         , ("<XF86AudioPrev>"         , spawn "mpc prev"                      ) -- prev song
         , ("<XF86AudioNext>"         , spawn "mpc next"                      ) -- next song
-        , ("<XF86AudioLowerVolume>"  , spawn "amixer -q set Master 4%-"      ) -- volume down
-        , ("<XF86AudioRaiseVolume>"  , spawn "amixer -q set Master 4%+"      ) -- volume up
-        , ("<XF86AudioMute>"         , spawn "amixer -q set Headphone toggle") -- toggle mute
+        , ("<XF86AudioLowerVolume>"  , spawn "pamixer --decrease 4"      ) -- volume down
+        , ("<XF86AudioRaiseVolume>"  , spawn "pamixer --increase 4"      ) -- volume up
+        , ("<XF86AudioMute>"         , spawn "pamixer --toggle-mute") -- toggle mute
         , ("M-<XF86AudioMute>"       , spawn "amixer -q set Speaker toggle"  )
 
         -- Dynamic workspace commands
-        , ("M-S-<Backspace>"       , removeWorkspace)
+        --, ("M-S-<Backspace>"       , removeWorkspace)
         , ("M-S-w"                 , selectWorkspace mXPConfig)
         , ("M-S-r"                 , renameWorkspace mXPConfig)
         , ("M-m"                   , withWorkspace mXPConfig (windows . W.shift))
