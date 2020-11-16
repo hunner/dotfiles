@@ -25,7 +25,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-nord)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -53,6 +54,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(use-package! puppet-mode
+  :mode "\\.pp\\'")
+
 (setq doom-leader-key ",")
 (setq doom-leader-alt-key "M-,")
 (setq doom-localleader-key ", m")
@@ -69,3 +73,17 @@
       :n   "C-l" #'evil-window-right
       :n   "-"   #'flycheck-next-error
       :n   "_"   #'flycheck-previous-error)
+
+
+;; Eshell stuff
+(setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
+
+;(eshell/addpath "/opt/puppetlabs/pdk/bin")
+
+;; Where to find rubocop
+(setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop")
+
+(eval-after-load "flymake-json"
+  '(defun flymake-json-command (filename)
+     "Construct a command that flymake can use to check json source in FILENAME."
+     (list "jsonlint" "-V" "/Users/hunner/.doom.d/draft-07.json" "-c" "-q" filename)))
