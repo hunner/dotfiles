@@ -32,6 +32,7 @@ alias mutt="TERM=xterm-256color mutt"
 alias x="exit"
 alias v="vagrant"
 alias w="cd ~/Documents/work/git"
+alias ssh-gpg="ssh -R ~/.gnupg/S.gpg-agent.extra:~/.gnupg/S-gpg-agent.extra -o 'StreamLocalBindUnlink=yes'"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
 alias mang="cd ~/zips/mangband ; DISPLAY=\"\" ./mangclient"
@@ -178,6 +179,22 @@ alias -s avi="mplayer"
 alias -s mkv="mplayer"
 alias -s mpg="mplayer"
 
+# stolen from eric0
+# if rust stuff is found, use it
+RBIN=$HOME/.cargo/bin
+if [[ -d $RBIN ]]; then
+  [[ -f $RBIN/bat ]] && for f in less more cat ; do
+    alias $f=bat;
+  done
+  [[ -f $RBIN/dua ]] && alias du=dua
+  [[ -f $RBIN/rg  ]] && alias grep=rg
+  [[ -f $RBIN/exa ]] && alias ls=exa
+  [[ -f $RBIN/fd  ]] && alias find=fd
+else
+  if whence bat > /dev/null ; then
+    alias cat=bat
+  fi
+fi
 
 # Vim
 if whence nvim > /dev/null ; then

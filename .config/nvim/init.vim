@@ -9,7 +9,7 @@ Plug 'neomake/neomake'
 
 " General completion. Needs plugins to extend
 Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp' " for ncm2
+Plug 'roxma/nvim-yarp' " for ncm2 -- seems to cause network timeouts sometimes
 " NOTE: you need to install completion sources to get completions. Check
 " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
 Plug 'ncm2/ncm2-bufword'
@@ -17,7 +17,10 @@ Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
 
 " Language-aware fancy things. Needs lang server config. Used, but what for?
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', {
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh',
+      \ }
 
 " Fancy tab completion; did I ever use it? I think it needs other plugins
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -35,7 +38,8 @@ Plug 'Shougo/echodoc.vim'
 Plug 'simnalamburt/vim-mundo'
 
 " Netrw is nice, but so is this
-Plug 'scrooloose/nerdtree'
+" Edit: this slows nvim's start-up time way down
+"Plug 'scrooloose/nerdtree'
 
 " Motions... need to actually document them otherwise I forget
 Plug 'easymotion/vim-easymotion'
@@ -45,7 +49,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
 
 " Opening files/buffers. Mapped below.
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Also adds :Commits and :BCommits
 Plug 'junegunn/fzf.vim'
 
@@ -77,8 +81,10 @@ Plug 'jceb/vim-orgmode'
 Plug 'bfontaine/Brewfile.vim'
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+"Plug 'govim/govim'
 " For vim-orgmode
 Plug 'tpope/vim-speeddating'
+Plug 'zpieslak/vim-autofix'
 call plug#end()
 
 " Because.
@@ -108,6 +114,9 @@ noremap <Leader>c :ChangeDir<CR>
 "noremap <Leader>u :FufRenewCache<CR>
 "noremap <Leader>w :bdelete<CR>
 noremap <F1> :Helptags<CR>
+
+" To close the current buffer without closing the current window
+noremap <Leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " From vim-rhubarb
 noremap <Leader>gh :Gbrowse<CR>
@@ -194,25 +203,26 @@ let g:go_highlight_format_strings = 1
 let g:go_highlight_variable_declarations = 1
 let g:go_highlight_variable_assignments = 1
 
-"nnoremap <silent> <C-G> :NERDTreeToggle<CR>
-function! ToggleNerdTreeFind()
-  if(exists("b:NERDTree") && b:NERDTree.IsOpen())
-    exec(':NERDTreeClose')
-  else
-    exec(':NERDTreeFind')
-  endif
-endfunction
-nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
+" Disable nerdtree because it's way slow and I don't use it. fzf4evr
+" "nnoremap <silent> <C-G> :NERDTreeToggle<CR>
+" function! ToggleNerdTreeFind()
+"   if(exists("b:NERDTree") && b:NERDTree.IsOpen())
+"     exec(':NERDTreeClose')
+"   else
+"     exec(':NERDTreeFind')
+"   endif
+" endfunction
+" nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
 
 " nerdtree alternative. I didn't finish this. https://shapeshed.com/vim-netrw/
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 1
-let g:netrw_winsize = 15
-augroup ProjectDrawer
-  autocmd!
-  "autocmd VimEnter * :Vexplore
-augroup END
+"let g:netrw_banner = 0
+"let g:netrw_liststyle = 3
+"let g:netrw_browse_split = 1
+"let g:netrw_winsize = 15
+"augroup ProjectDrawer
+"  autocmd!
+"  "autocmd VimEnter * :Vexplore
+"augroup END
 
 noremap <Leader>tn :color tender<CR>
 noremap <Leader>ip :color inkpot<CR>
@@ -380,3 +390,25 @@ nnoremap <Return> :noh<CR>
 
 " Show tabs and trailing whitespace visually {{{2
 set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+
+" Languageserver settings from the solargraph readme
+" Tell the language client to use the default IP and port
+" that Solargraph runs on
+let g:LanguageClient_serverCommands = {
+      \ 'go': ['gopls'],
+      \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+      \ }
+
+" note that if you are using Plug mapping you should not use `noremap` mappings.
+nmap <F5> <Plug>(lcn-menu)
+
+" Don't send a stop signal to the server when exiting vim.
+" This is optional, but I don't like having to restart Solargraph
+" every time I restart vim.
+"let g:LanguageClient_autoStop = 0
+
+" Configure ruby omni-completion to use the language client:
+autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+
+" Run gofmt on save
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()

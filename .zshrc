@@ -19,7 +19,7 @@ bindkey -e
 
 zstyle ':completion:*' completer _complete
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-autoload -Uz compinit colors vcs_info select-word-style && colors
+autoload -Uz compinit colors vcs_info select-word-style promptinit && colors && promptinit
 compinit -u
 
 zstyle :compinstall filename '~/.zshenv'
@@ -54,7 +54,7 @@ export GO111MODULE=on
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
-prepaths=($GOPATH/bin $GOROOT/bin ~/.emacs.d/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/local/bin ~/local/sbin)
+prepaths=(/opt/puppetlabs/pdk/bin $GOPATH/bin $GOROOT/bin ~/.emacs.d/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/local/bin ~/local/sbin)
 #for dir in $paths ; do
 #    if [ -d $dir ] ; then
 #        export PATH=$PATH:$dir
@@ -288,7 +288,10 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/hunner/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hunner/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'; fi
+
+#test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

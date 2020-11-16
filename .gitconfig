@@ -33,3 +33,7 @@
 	cookiefile = ~/.gitcookies
 [url "git@github.com:"]
   insteadOf = https://github.com/
+[pull]
+	ff = only
+[init]
+	defaultBranch = main

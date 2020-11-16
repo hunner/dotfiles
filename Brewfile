@@ -15,6 +15,8 @@ brew "ncdu" # Find big files
 brew "neovim" # Edit stuff. Then `curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
 brew "ripgrep" # Faster grep/ack/ag
 brew "socat" # Better netcat
+cask "iterm2" # Terminal emulator
+cask "serial" # Serial terminal emulator
 brew "tmux" # Terminal thingy
 brew "reattach-to-user-namespace" # For tmux
 brew "unrar" # Rar happens
@@ -34,12 +36,17 @@ brew "maven" # java package management
 #cask "visual-studio-code" # frontend dev
 brew "pyenv" # rbenv for py
 brew "pyenv-virtualenv" # rbenv for pyenv?
+cask "google-cloud-sdk" #gcloud suite
+brew "bat" # better cat
+brew "emacs-mac" # doom-emacs
+cask "talon" # voice control
 
 # Mac fun
 cask "aerial" # Screensaver
 cask "alfred" # Launcher
-tap "koekeishiya/formulae" ; brew "chunkwm" # Window manager
-brew "skhd" # Keyboard shortcuts
+#tap "koekeishiya/formulae" ; brew "chunkwm" # Window manager
+#brew "skhd" # Keyboard shortcuts
+cask "amethyst" # combination window manager and keyboard shortcus
 cask "cathode" # Silly terminal
 cask "ubersicht" # UI bar
 tap "homebrew/cask-fonts" # For fonts
@@ -50,6 +57,8 @@ cask "font-liberation-mono-for-powerline" # For neovim
 cask "angband" # Morgoth
 cask "brogue" # Less goth
 cask "steam" # Meta game
+cask "itch" # meta indy game
+brew "cataclysm" # zombie game
 
 # Life fun
 cask "1password" # Family accounts
@@ -65,6 +74,11 @@ cask "onedrive" # File sync
 cask "little-snitch" # Personal egress filtering
 cask "vlc" # Music videos
 brew "youtube-dl" # Music videos
+brew "ffmpeg" # better music videos
+brew "handbrake" # dvds?
+brew "libdvdcss" # dvds!?
+cask "makemkv" # mkvs?
+# gem install video_transcoding # mkvs!?
 cask "zerotier-one" # Personal network - reboot and approve kernel extension
 
 # Browsers
