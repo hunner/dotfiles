@@ -215,6 +215,12 @@
         "window-titles": []
       },
       {
+        "id": "",
+        "window-titles": [
+          "mplayer"
+        ]
+      },
+      {
         "id": "tandem.app",
         "window-titles": []
       },
@@ -271,7 +277,7 @@
     ],
     "floating-is-blacklist": true,
     "float-small-windows": true,
-    "mouse-follows-focus": false,
+    "mouse-follows-focus": true,
     "focus-follows-mouse": false,
     "enables-layout-hud": true,
     "enables-layout-hud-on-space-change": false,
