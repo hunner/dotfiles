@@ -23,6 +23,7 @@ import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
 import XMonad.Util.EZConfig
+import XMonad.Util.Paste as P
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
@@ -37,7 +38,7 @@ import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
 mTerminal      = "st"
-mBorderWidth   = 1
+mBorderWidth   = 2
 mModMask       = mod4Mask
 
 -- A tagging example:
@@ -49,12 +50,14 @@ mWorkspaces = map show [0 .. 9 :: Int]
 -- Border colors for unfocused and focused windows, respectively.
 --
 mNormalBorderColor  = "#222222"
-mFocusedBorderColor = "#005577"
+--mFocusedBorderColor = "#005577"
+mFocusedBorderColor = "#88c0d0"
 
 -- Custom keys
 --
 mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-t"   , sendMessage MirrorExpand  ) -- Shrink current window
+        , ("M-S-M1-<Tab>", P.sendKey (controlMask .|. shiftMask .|. mod1Mask .|. mod2Mask ) xK_Tab )
         , ("M-r"     , warpToCorner              ) -- Kill the rodent
         , ("M-b"     , withFocused toggleBorder  ) -- Toggle the border of the currently focused window
         , ("M-g"     , warpToCentre >> promptedWs) -- Gridselect to pick windows
@@ -62,6 +65,7 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("M-M1-C-8", spawn "xcalib -i -a"      ) -- Invert screen color
         , ("M-S-b"   , spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
         , ("M-p"     , spawn "dmenu_run")
+        , ("M-C-<Space>"     , spawn "/home/hunner/local/bin/emoji-menu")
         , ("M-C-c"   , spawn "CM_DIR=~/.config/clipmenu clipmenu")
         , ("<Scroll_lock>", spawn "xlock -mode fzort -echokeys -usefirst" ) -- SCReen LocK
 
@@ -195,6 +199,7 @@ mManageHook = composeAll
     , className =? "Gvba"           --> doFloat
     , className =? "Thunar"         --> doFloat
     , className =? "feh"            --> doFloat
+    , className =? "emoji-keyboard" --> doFloat
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
@@ -254,7 +259,7 @@ pickyFocusEventHook _ = return $ All True
 
 -- Define my configuration
 --
-mConfig = defaultConfig
+mConfig = ewmh def
   { terminal           = mTerminal
   , focusFollowsMouse  = mFocusFollowsMouse
   , borderWidth        = mBorderWidth
@@ -266,7 +271,7 @@ mConfig = defaultConfig
   , layoutHook         = mLayout
   --, manageHook         = manageSpawn sp <+> mManageHook
   , manageHook         = mManageHook
-  , handleEventHook    = pickyFocusEventHook
+  , handleEventHook    = handleEventHook def <+> fullscreenEventHook <+> pickyFocusEventHook
   , startupHook        = do
       ewmhDesktopsStartup >> setWMName "LG3D"
       return () >> checkKeymap mConfig mKeys
