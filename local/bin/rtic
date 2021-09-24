@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export AWS_ACCESS_KEY_ID=$(pass Linux/restic-aws-key-id)
+export AWS_SECRET_ACCESS_KEY=$(pass Linux/restic-aws-secret-access-key)
+export RESTIC_REPOSITORY=$(pass Linux/restic-repository)
+export RESTIC_PASSWORD=$(pass Linux/restic-password)
+
+exec restic "$@"
