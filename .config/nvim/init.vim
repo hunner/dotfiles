@@ -39,7 +39,7 @@ Plug 'simnalamburt/vim-mundo'
 
 " Netrw is nice, but so is this
 " Edit: this slows nvim's start-up time way down
-"Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 " Motions... need to actually document them otherwise I forget
 Plug 'easymotion/vim-easymotion'
@@ -76,15 +76,18 @@ Plug 'rodjek/vim-puppet'
 Plug 'keith/swift.vim'
 Plug 'darfink/vim-plist'
 Plug 'vim-ruby/vim-ruby'
+Plug 'jvirtanen/vim-hcl'
+Plug 'wlangstroth/vim-racket'
 Plug 'kchmck/vim-coffee-script'
 Plug 'jceb/vim-orgmode'
 Plug 'bfontaine/Brewfile.vim'
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-"Plug 'govim/govim'
 " For vim-orgmode
 Plug 'tpope/vim-speeddating'
 Plug 'zpieslak/vim-autofix'
+Plug 'juvenn/mustache.vim'
+Plug 'github/copilot.vim'
 call plug#end()
 
 " Because.
@@ -202,17 +205,21 @@ let g:go_highlight_string_spellcheck = 1
 let g:go_highlight_format_strings = 1
 let g:go_highlight_variable_declarations = 1
 let g:go_highlight_variable_assignments = 1
+au FileType go nmap <Leader>gor <Plug>(go-run)
+au FileType go nmap <Leader>gob <Plug>(go-build)
+au FileType go nmap <Leader>got <Plug>(go-test)
+au FileType go nmap <Leader>goc <Plug>(go-coverage)
 
 " Disable nerdtree because it's way slow and I don't use it. fzf4evr
-" "nnoremap <silent> <C-G> :NERDTreeToggle<CR>
-" function! ToggleNerdTreeFind()
-"   if(exists("b:NERDTree") && b:NERDTree.IsOpen())
-"     exec(':NERDTreeClose')
-"   else
-"     exec(':NERDTreeFind')
-"   endif
-" endfunction
-" nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
+nnoremap <silent> <C-G> :NERDTreeToggle<CR>
+function! ToggleNerdTreeFind()
+  if(exists("b:NERDTree") && b:NERDTree.IsOpen())
+    exec(':NERDTreeClose')
+  else
+    exec(':NERDTreeFind')
+  endif
+endfunction
+nnoremap <silent> <C-g> :call ToggleNerdTreeFind()<CR>
 
 " nerdtree alternative. I didn't finish this. https://shapeshed.com/vim-netrw/
 "let g:netrw_banner = 0
@@ -232,19 +239,19 @@ noremap <Leader>tod :e ~/Dropbox/todo.txt<CR>
 
 " TODO quickfix for ripgrep results
 " TODO quickfix for autolint and rake stuff
-"autocmd QuickFixCmdPost * botright cwindow 6
+autocmd QuickFixCmdPost * botright cwindow 6
 " quickfix things like '-'
 "nmap <Leader>cwc :cclose<CR>
 "nmap <Leader>cwo :botright copen 5<CR><C-w>p
 "nmap <Leader>cn  :cnext<CR>
 "nmap <Leader>cp  :cprevious<CR>
-"nmap -  :cnext<CR>
-"nmap _  :cprev<CR>
+nmap -  :cnext<CR>
+nmap _  :cprev<CR>
 "nmap <C--> :colder<CR>
 "nmap <C-_> :cnewer<CR>
 " neomake uses the location window rather than quickfix window
-noremap -  :lnext<CR>
-noremap _  :lprev<CR>
+"noremap -  :lnext<CR>
+"noremap _  :lprev<CR>
 " See ToggleLocationList below
 
 " Only lint when leaving insert or changing text in command mode
@@ -252,6 +259,7 @@ call neomake#configure#automake({
   \ 'InsertLeave': {'delay': 0},
   \ 'TextChanged': {},
   \ }, 500)
+let g:neomake_python_enabled_makers = ['pylint']
 let g:neomake_ruby_rubocop_maker = {
   \ 'args': ['exec', 'rubocop', '--format', 'emacs', '--force-exclusion', '--display-cop-names'],
   \ 'exe': 'bundle',
@@ -397,10 +405,17 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 let g:LanguageClient_serverCommands = {
       \ 'go': ['gopls'],
       \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+      \ 'python': ['pyls'],
       \ }
 
 " note that if you are using Plug mapping you should not use `noremap` mappings.
 nmap <F5> <Plug>(lcn-menu)
+
+" Delete a buffer but keep layout with ^w!
+if has("eval")
+  command! Kwbd enew|bw #
+  nmap     <C-w>!   :Kwbd<CR>
+endif
 
 " Don't send a stop signal to the server when exiting vim.
 " This is optional, but I don't like having to restart Solargraph
