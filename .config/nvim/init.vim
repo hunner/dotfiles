@@ -88,6 +88,7 @@ Plug 'tpope/vim-speeddating'
 Plug 'zpieslak/vim-autofix'
 Plug 'juvenn/mustache.vim'
 Plug 'github/copilot.vim'
+Plug 'hunner/vim-beancount'
 call plug#end()
 
 " Because.
@@ -126,6 +127,10 @@ noremap <Leader>gh :Gbrowse<CR>
 
 " Edit a file in the same directory as the current buffer
 noremap <Leader>e :e %:p:h/
+
+let g:beancount_separator_col = 60
+nnoremap <buffer> <leader>= :AlignCommodity<CR>
+vnoremap <buffer> <leader>= :AlignCommodity<CR>
 
 " --column: Show column number
 " --line-number: Show line number
