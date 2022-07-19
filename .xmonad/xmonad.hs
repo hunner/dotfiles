@@ -14,8 +14,8 @@ import XMonad.Layout.Magnifier
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
-import XMonad.Actions.CopyWindow
 import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.CopyWindow(copy, copyToAll, killAllOtherCopies)
 import XMonad.Actions.GridSelect
 import XMonad.Actions.NoBorders
 import XMonad.Actions.SpawnOn
@@ -37,7 +37,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -- mTerminal      = "urxvt;ps -U $USER |grep dzen2|awk '{print $1}'|xargs kill -USR1"
-mTerminal      = "st"
+mTerminal      = "alacritty"
 mBorderWidth   = 2
 mModMask       = mod4Mask
 
@@ -63,10 +63,10 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("M-g"     , warpToCentre >> promptedWs) -- Gridselect to pick windows
         --, ("M-s"     , shellPromptHere sp mXPConfig ) -- Shell prompt
         , ("M-M1-C-8", spawn "xcalib -i -a"      ) -- Invert screen color
-        , ("M-S-b"   , spawn "ps -U hunner|grep dzen2|awk '{print $1}'|xargs kill -USR1") -- Bring dzen to the front
-        , ("M-p"     , spawn "dmenu_run")
+        , ("M-S-b"   , spawn "restart_battery.sh") -- Bring dzen to the front
+        , ("M-p"     , spawn "rofi -show run"    ) -- Run rofi
         , ("M-C-<Space>"     , spawn "/home/hunner/local/bin/emoji-menu")
-        , ("M-C-c"   , spawn "CM_DIR=~/.config/clipmenu clipmenu")
+        , ("M-C-c"   , spawn "CM_LAUNCHER=rofi CM_DIR=~/.config/clipmenu clipmenu")
         , ("<Scroll_lock>", spawn "xlock -mode fzort -echokeys -usefirst" ) -- SCReen LocK
 
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
@@ -76,7 +76,8 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         -- Goes to window or bring up window
         --, ("M-S-g", gotoMenu)
         --, ("M-S-b", bringMenu)
-        , ("M-S-g", warpToCentre >> goToSelected gsConfig )
+        --, ("M-S-g", warpToCentre >> goToSelected gsConfig )
+        , ("M-S-g", spawn "rofi -show window")
 
         -- Multimedia
         , ("<XF86MonBrightnessUp>"   , spawn "xbacklight -inc 10"            ) -- Brightness up
@@ -162,7 +163,7 @@ gsConfig = defaultGSConfig
 -- Layouts:
 
 --mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
-mLayout = Mirror tiled ||| tiled ||| smartBorders Full ||| simplestFloat ||| Circle ||| magnifier Circle
+mLayout = Mirror tiled ||| tiled ||| smartBorders Full ||| Circle
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
@@ -200,6 +201,7 @@ mManageHook = composeAll
     , className =? "Thunar"         --> doFloat
     , className =? "feh"            --> doFloat
     , className =? "emoji-keyboard" --> doFloat
+    , title     =? "Talon Draft"    --> doFloat
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
