@@ -27,6 +27,7 @@
 ;; `load-theme' function. This is the default:
 ;(setq doom-theme 'doom-one)
 (setq doom-theme 'doom-nord)
+(setq doom-font (font-spec :family "Liberation Mono" :size 14))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -87,3 +88,43 @@
   '(defun flymake-json-command (filename)
      "Construct a command that flymake can use to check json source in FILENAME."
      (list "jsonlint" "-V" "/Users/hunner/.doom.d/draft-07.json" "-c" "-q" filename)))
+
+(after! org
+  (add-to-list 'org-export-backends 'confluence))
+
+;; for https://github.com/zerolfx/copilot.el
+;; accept completion from copilot and fallback to company
+(defun my-tab ()
+  (interactive)
+  (or (copilot-accept-completion)
+      (company-indent-or-complete-common nil)))
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+         ("C-<tab>" . 'copilot-accept-completion-by-word)
+         :map company-active-map
+         ("<tab>" . 'my-tab)
+         ("TAB" . 'my-tab)
+         :map company-mode-map
+         ("<tab>" . 'my-tab)
+         ("TAB" . 'my-tab)))
+
+;; From https://github.com/hlissner/doom-emacs/issues/581
+(defun dlukes/ediff-doom-config (file)
+  "ediff the current config with the examples in doom-emacs-dir
+
+There are multiple config files, so FILE specifies which one to
+diff.
+"
+  (interactive
+    (list (read-file-name "Config file to diff: " doom-private-dir)))
+  (let* ((stem (file-name-base file))
+          (customized-file (format "%s.el" stem))
+          (template-file-regex (format "^%s.example.el$" stem)))
+    (ediff-files
+      (concat doom-private-dir customized-file)
+      (car (directory-files-recursively
+             doom-emacs-dir
+             template-file-regex
+             nil
+             (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d)))))))))
