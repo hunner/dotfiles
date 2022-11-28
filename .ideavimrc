@@ -6,6 +6,8 @@ let mapleader = ","
 noremap <Leader>v :action SearchEverywhere<CR>
 noremap <Leader>c :action ActivateTerminalToolWindow<CR>
 noremap <Leader>bo :action CloseAllEditorsButActive<CR>
+noremap <Leader>r :action RecentFiles<CR>
+noremap <Leader>pre :action TogglePresentationMode<CR>
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k

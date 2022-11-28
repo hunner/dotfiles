@@ -67,6 +67,8 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("M-p"     , spawn "rofi -show run"    ) -- Run rofi
         , ("M-C-<Space>"     , spawn "/home/hunner/local/bin/emoji-menu")
         , ("M-C-c"   , spawn "CM_LAUNCHER=rofi CM_DIR=~/.config/clipmenu clipmenu")
+        , ("M-S-c"   , spawn "CM_LAUNCHER=rofi CM_DIR=~/.config/clipmenu clipmenu") -- Rebind to avoid closing windows
+        , ("M-C-S-c" , withFocused killWindow    ) -- make it harder to do accidentally
         , ("<Scroll_lock>", spawn "xlock -mode fzort -echokeys -usefirst" ) -- SCReen LocK
 
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
@@ -135,7 +137,7 @@ mKeysExt = [((m .|. mModMask, k), f i) -- changing workspaces with bébo
 -}
 
 mXPConfig :: XPConfig
-mXPConfig = defaultXPConfig { fgColor = "#005577", bgColor = "#222222", borderColor = "#005577" }
+mXPConfig = def { fgColor = "#005577", bgColor = "#222222", borderColor = "#005577" }
 
 {-
 gsConfig = defaultGSConfig
@@ -157,7 +159,7 @@ gsConfig = defaultGSConfig
         reset = M.singleton (0,xK_space) (const (0,0))
 -}
 
-gsConfig = defaultGSConfig
+gsConfig = def
 
 ------------------------------------------------------------------------
 -- Layouts:
@@ -202,6 +204,7 @@ mManageHook = composeAll
     , className =? "feh"            --> doFloat
     , className =? "emoji-keyboard" --> doFloat
     , title     =? "Talon Draft"    --> doFloat
+    , title     =? "Plover"         --> doFloat
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
@@ -273,9 +276,9 @@ mConfig = ewmh def
   , layoutHook         = mLayout
   --, manageHook         = manageSpawn sp <+> mManageHook
   , manageHook         = mManageHook
-  , handleEventHook    = handleEventHook def <+> fullscreenEventHook <+> pickyFocusEventHook
+  , handleEventHook    = handleEventHook def <+> pickyFocusEventHook
   , startupHook        = do
-      ewmhDesktopsStartup >> setWMName "LG3D"
+      setWMName "LG3D"
       return () >> checkKeymap mConfig mKeys
   } `additionalKeysP` mKeys `additionalKeys` mKeysExt
 

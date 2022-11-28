@@ -11,12 +11,12 @@ include "%L"
 <dead_acute> <sabovedot> : U1E65
 <dead_acute> <V> : U01D7
 <dead_acute> <v> : U01D8
-<dead_acute> <nobreakspace> : combining_acute
+#<dead_acute> <nobreakspace> : combining_acute
 <dead_belowdot> <Sabovedot> : U1E68
 <dead_belowdot> <sabovedot> : U1E69
-<dead_belowdot> <dead_belowdot> : combining_belowdot
-<dead_belowdot> <nobreakspace> : combining_belowdot
-<dead_belowdot> <space> : combining_belowdot
+#<dead_belowdot> <dead_belowdot> : combining_belowdot
+#<dead_belowdot> <nobreakspace> : combining_belowdot
+#<dead_belowdot> <space> : combining_belowdot
 <dead_breve> <Aacute> : Abreveacute
 <dead_breve> <Agrave> : Abrevegrave
 <dead_breve> <Ahook> : Abrevehook
@@ -152,7 +152,7 @@ include "%L"
 <dead_doubleacute> <nobreakspace> : U030B
 <dead_grave> <V> : U01DB
 <dead_grave> <v> : U01DC
-<dead_grave> <nobreakspace> : combining_grave
+#<dead_grave> <nobreakspace> : combining_grave
 <UFDD2> <A> : Greek_ALPHA
 <UFDD2> <a> : Greek_alpha
 <UFDD2> <B> : Greek_BETA
@@ -337,7 +337,7 @@ include "%L"
 <dead_tilde> <minus> : similarequal
 <dead_tilde> <less> : U2272
 <dead_tilde> <greater> : U2273
-<dead_tilde> <nobreakspace> : combining_tilde
+#<dead_tilde> <nobreakspace> : combining_tilde
 <dead_acute> <dead_abovedot> <S> : U1E64
 <dead_acute> <dead_abovedot> <s> : U1E65
 <dead_belowdot> <dead_abovedot> <S> : U1E68

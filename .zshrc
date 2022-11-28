@@ -13,7 +13,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 #typeset -u fpath
 
 # Options
-setopt prompt_subst appendhistory hist_ignore_space hist_ignore_all_dups extendedglob nomatch notify dvorak # correct
+setopt prompt_subst inc_append_history hist_ignore_space hist_ignore_all_dups hist_expire_dups_first hist_find_no_dups hist_save_no_dups hist_reduce_blanks extendedglob nomatch notify dvorak # correct
 unsetopt beep
 bindkey -e
 
@@ -44,9 +44,11 @@ case "$TERM" in
 esac
 
 # Go lang stuff
-export GOPATH=$HOME/Documents/work/git/go
-export GOROOT=/usr/local/opt/go/libexec
-export GO111MODULE=on
+#export GOPATH=$HOME/Documents/work/git/go
+#if whence go > /dev/null ; then
+#   export GOROOT=$(go env GOROOT)
+#fi
+#export GO111MODULE=on
 
 # Paths
 #export LD_LIBRARY_PATH=/opt/csw/lib
@@ -54,7 +56,7 @@ export GO111MODULE=on
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
-prepaths=(/opt/puppetlabs/pdk/bin $GOPATH/bin $GOROOT/bin ~/.emacs.d/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/local/bin ~/local/sbin)
+prepaths=(/opt/puppetlabs/pdk/bin ~/.emacs.d/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
 #for dir in $paths ; do
 #    if [ -d $dir ] ; then
 #        export PATH=$PATH:$dir
@@ -94,6 +96,7 @@ fi
 #for dir in `find /opt/*/bin|grep /bin$` `find /opt/csw/*/bin|grep /bin$` ; do
 #    export PATH=$PATH:$dir
 #done
+export XDG_DATA_DIRS="$HOME/.local/share:$XDG_DATA_DIRS"
 
 # Setting vars
 #TERM=rxvt
@@ -102,8 +105,8 @@ fi
 #export GEM_PATH="$GEM_HOME:/usr/lib/ruby/gems/1.8"
 #export GEM_PATH="/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8"
 zshhosts=(serenity.cat.pdx.edu hunner@mint.cic.pdx.edu drkatz.cat.pdx.edu walt.ece.pdx.edu bunny.cat.pdx.edu spof.cat.pdx.edu fops.cat.pdx.edu narsil.cat.pdx.edu hunner@odin.pdx.edu hunnur@alcmaeonllc.com mir.cat.pdx.edu geppetto.cat.pdx.edu)
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=100000000
+SAVEHIST=100000000
 HISTFILE=~/.history
 export GPGKEY="0x1CED67750173FC1C"
 if [ -f ~/.zsh/private ] ; then
@@ -116,6 +119,7 @@ export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 #export DOCKER_HOST='tcp://192.168.99.100:2375'
 if whence rg > /dev/null ; then
   export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!.git/*"'
+  export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 fi
 
 # Prompt
@@ -213,15 +217,17 @@ function init_coalsack_vars() {
 }
 
 # Functions
-function listtoken() { curl -u hunter --url vmpooler.delivery.puppetlabs.net/api/v1/token ; }
-function gettoken() { curl -X POST -u hunter --url vmpooler.delivery.puppetlabs.net/api/v1/token ; }
-function rmtoken() { curl -X DELETE -u hunter --url vmpooler.delivery.puppetlabs.net/api/v1/token/$1 ; }
-function listmyvm() { curl --url vmpooler.delivery.puppetlabs.net/api/v1/token/$(grep vmpooler_token ~/.fog | cut -d ' ' -f 4); }
+#VMHOST=vmpooler.delivery.puppetlabs.net
+VMHOST=vmpooler-prod.k8s.infracore.puppet.net
+function listtoken() { curl -u hunter --url $VMHOST/api/v1/token ; }
+function gettoken() { curl -X POST -u hunter --url $VMHOST/api/v1/token ; }
+function rmtoken() { curl -X DELETE -u hunter --url $VMHOST/api/v1/token/$1 ; }
+function listmyvm() { curl --url $VMHOST/api/v1/token/$(grep vmpooler_token ~/.fog | cut -d ' ' -f 4); }
 
-function listvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -s --url vmpooler.delivery.puppetlabs.net/api/v1/vm/ ; }
-function getvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -d --url vmpooler.delivery.puppetlabs.net/api/v1/vm/$1 ; }
+function listvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -s --url $VMHOST/api/v1/vm/ ; }
+function getvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -d --url $VMHOST/api/v1/vm/$1 ; }
 function sshvm() { ssh -i ~/.ssh/id_rsa-acceptance root@$1 ; }
-function rmvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -X DELETE --url vmpooler.delivery.puppetlabs.net/api/v1/vm/$1 ; }
+function rmvm() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -X DELETE --url $VMHOST/api/v1/vm/$1 ; }
 
 function migratetoken() { curl -X POST -d '' -u hunter --url "https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/token?token=$(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" }
 function listns() { curl -H "X-AUTH-TOKEN: $(grep vmpooler_token ~/.fog | cut -d ' ' -f 4)" -s -X GET --url https://nspooler-service-prod-1.delivery.puppetlabs.net/api/v1/status/ ; }
@@ -261,22 +267,31 @@ st+24bit|st+24bit terminal (X Window System):\
 EOF
 }
 
-if [ -d ~/.rbenv ] ; then
-  eval "$(rbenv init -)"
-fi
-if [ -d ~/.pyenv ] ; then
-  eval "$(command pyenv init - zsh)" # --no-rehash)"
-fi
+# replaced by asdf
+#if [ -d ~/.rbenv ] ; then
+#  eval "$(rbenv init -)"
+#fi
+#if [ -d ~/.pyenv ] ; then
+#  export PYENV_ROOT="$HOME/.pyenv"
+#  export PATH="$PYENV_ROOT/bin:$PATH"
+#  eval "$(pyenv init --path)"
+#  eval "$(command pyenv init - zsh)" # --no-rehash)"
+#fi
 #[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
+if [ -d ~/.asdf ] ; then
+  . $HOME/.asdf/asdf.sh
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-load-nvm() {
-  export NVM_DIR="$HOME/.nvm"
-  . "/usr/local/opt/nvm/nvm.sh"
-}
-alias nvm-lts="load-nvm && nvm install lts/* --latest-npm ----reinstall-packages-from=node && nvm alias default lts/*"
-alias nvm-latest="load-nvm && nvm install node --latest-npm ----reinstall-packages-from=node && nvm alias default node"
+
+# load-nvm() {
+#   export NVM_DIR="$HOME/.nvm"
+#   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# }
+# alias nvm-lts="load-nvm && nvm install lts/* --latest-npm ----reinstall-packages-from=node && nvm alias default lts/*"
+# alias nvm-latest="load-nvm && nvm install node --latest-npm ----reinstall-packages-from=node && nvm alias default node"
 
 # added by travis gem
 [ -f /Users/hunner/.travis/travis.sh ] && source /Users/hunner/.travis/travis.sh
@@ -287,11 +302,18 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
   exec 2>&3 3>&-
 fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'; fi
-
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
+# added by travis gem
+[ ! -s /home/hunner/.travis/travis.sh ] || source /home/hunner/.travis/travis.sh
+
+#eval "$(starship init zsh)"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# For 1.25 gke auth update
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/hunner/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

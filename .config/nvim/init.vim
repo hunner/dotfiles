@@ -71,16 +71,22 @@ Plug 'twerth/ir_black'
 " Generate UUIDs
 Plug 'kburdett/vim-nuuid'
 
+" Format js prettier
+Plug 'sbdchd/neoformat'
+
 " Various langs
 Plug 'rodjek/vim-puppet'
 Plug 'keith/swift.vim'
 Plug 'darfink/vim-plist'
 Plug 'vim-ruby/vim-ruby'
+Plug 'thoughtbot/vim-rspec'
 Plug 'jvirtanen/vim-hcl'
+Plug 'chrisbra/csv.vim'
 Plug 'wlangstroth/vim-racket'
 Plug 'kchmck/vim-coffee-script'
 Plug 'jceb/vim-orgmode'
 Plug 'bfontaine/Brewfile.vim'
+Plug 'pprovost/vim-ps1'
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " For vim-orgmode
@@ -123,7 +129,7 @@ noremap <F1> :Helptags<CR>
 noremap <Leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " From vim-rhubarb
-noremap <Leader>gh :Gbrowse<CR>
+noremap <Leader>gh :GBrowse<CR>
 
 " Edit a file in the same directory as the current buffer
 noremap <Leader>e :e %:p:h/
@@ -204,16 +210,31 @@ let g:go_highlight_function_parameters = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
+let g:go_highlight_extra_types = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 let g:go_highlight_string_spellcheck = 1
 let g:go_highlight_format_strings = 1
 let g:go_highlight_variable_declarations = 1
 let g:go_highlight_variable_assignments = 1
+let g:go_auto_type_info = 1
+let g:go_updatetime = 250
+let g:go_build_tags = 'wireinject' " include wire.go but not wire_gen.go in gopls scope
 au FileType go nmap <Leader>gor <Plug>(go-run)
 au FileType go nmap <Leader>gob <Plug>(go-build)
 au FileType go nmap <Leader>got <Plug>(go-test)
 au FileType go nmap <Leader>goc <Plug>(go-coverage)
+au FileType go nmap <C-M-b> :GoImplements<CR>
+au FileType go nmap <C-M-Right> :GoDef<CR>
+au FileType go nmap <C-M-Left> :GoDefPop<CR>
+
+" Neoformat search local node_modules prettier
+let g:neoformat_try_node_exe = 1
+" Use formatprg if available
+let g:neoformat_try_formatprg = 1
+autocmd FileType javascript setlocal formatprg=prettier\ --single-quote\ --trailing-comma\ es5
+" autocmd BufWritePre *.js Neoformat
+autocmd BufWritePre *.jsx Neoformat
 
 " Disable nerdtree because it's way slow and I don't use it. fzf4evr
 nnoremap <silent> <C-G> :NERDTreeToggle<CR>
@@ -274,6 +295,12 @@ let g:neomake_ruby_rubocop_maker = {
   \ }
 let g:neomake_ruby_rubocop_rails_maker = {
   \ }
+
+" RSpec.vim mappings
+map <Leader>rf :call RunCurrentSpecFile()<CR>
+map <Leader>rt :call RunNearestSpec()<CR>
+map <Leader>rl :call RunLastSpec()<CR>
+map <Leader>ra :call RunAllSpecs()<CR>
 
 let g:deoplete#enable_at_startup = 1
 

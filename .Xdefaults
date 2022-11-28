@@ -108,3 +108,5 @@ XClock*update:     1
 !XCalc*Background:    #222222
 XCalc*customization: -color
 XCalc*rpn:           True
+
+XTerm*VT100.cutNewLine: false

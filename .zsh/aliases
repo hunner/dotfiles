@@ -32,6 +32,7 @@ alias mutt="TERM=xterm-256color mutt"
 alias x="exit"
 alias v="vagrant"
 alias w="cd ~/Documents/work/git"
+alias cem="cd ~/Documents/work/git/cem"
 alias ssh-gpg="ssh -R ~/.gnupg/S.gpg-agent.extra:~/.gnupg/S-gpg-agent.extra -o 'StreamLocalBindUnlink=yes'"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
@@ -58,17 +59,19 @@ alias rm=rm; unalias rm #hack
 alias be="bundle exec"
 alias bi="bundle install"
 alias bu="bundle update"
+alias jr="JAVA_OPTS='--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED' jruby --server -J-Xms1g -J-Xmx1g -S "
 alias uzbl="uzbl-browser"
 alias hide="SetFile -a V"
 alias show="SetFile -a v"
-alias whyfail="tmux copy-mode && tmux send-keys -X search-backward fail"
+alias whyfail="tmux copy-mode && tmux send-keys -X search-backward '--- FAIL'"
+alias m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt m4b-tool'
 alias morserunner="docker-wine --sound=default --cache wine '.wine/drive_c/Program Files (x86)/Afreet/MorseRunner/MorseRunner.exe'"
-alias ryml="vim -R +'set ft=yaml'"
+alias ry="vim -R +'set ft=yaml'"
 alias superscript="tr '+−=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ' \
                       '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';"
 alias resize="printf '\33]50;%s%d\007' 'xft:DroidSansMonoDotted:pixelsize=' $1" # ':antialias=true'"
 #alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
-alias asdf="setxkbmap us dvorak ctrl:nocaps"
+alias asdfg="setxkbmap us dvorak ctrl:nocaps"
 kinesis_activate() {
   xmodmap -e "keycode 124 = NoSymbol Insert"
   xmodmap -e "keycode 62 = Scroll_Lock Scroll_Lock"
@@ -196,6 +199,9 @@ else
   if whence bat > /dev/null ; then
     alias cat=bat
   fi
+  if whence exa > /dev/null ; then
+    alias ls=exa
+  fi
 fi
 
 # Vim
@@ -254,9 +260,12 @@ alias gstp="git stash pop"
 alias gdw="git diff --color-words"
 alias gk="gitk --all&"
 alias gx="gitx --all"
+alias grt="git restore --staged "
 
 
 # Docker
+#alias docker="podman"
+alias d="docker"
 alias dh="echo 'dl                       -- list containers
 da [container] [command] -- attach to running container
 dr <image> [command]     -- run an image
@@ -283,6 +292,7 @@ alias d-c="docker-compose"
 
 
 # K8s
+alias kubectl="kubectl --context \${KUBE_CONTEXT:-\$(command kubectl config current-context)}"
 alias kh="echo 'k               -- kubectl
 kg              -- kubectl get ...
 kga             -- kubectl get all
@@ -291,15 +301,18 @@ kxl             -- list contexts
 knl             -- list namespaces
 kx <context>    -- switch context ...
 kn <namespace>  -- switch namespace ...
+klf <pod>       -- follow logs
 kat <pod> [cmd] -- attach and run cmd in pod'"
 alias k="kubectl"
-alias kg="kubectl get"
+alias kg="kubectl get --show-kind"
 alias kga="kubectl get all"
 alias kgan="kubectl --all-namespaces=true get all"
 alias kxl="kubectl config get-contexts"
 alias knl="kubectl get namespaces"
 alias kx="kubectl config use-context"
+function kxs() { export KUBE_CONTEXT="${1}" }
 alias kn="kubectl config set-context --current --namespace"
+alias klf="kubectl logs -f "
 function kat() {
   [ -z $1 ] && echo 'usage: kat <pod> [cmd]' && return 1
   cmd=$2 && [ -z $2 ] && cmd="/bin/sh"
@@ -307,10 +320,15 @@ function kat() {
 }
 #alias im='eval $(minikube docker-env)'
 alias rdk="relay dev kubectl"
+alias openapi="echo 'Serving ReDoc at http://localhost:8080' && docker run -it --rm -p 8080:80 -v ~/src/relay-api/openapi/latest.yaml:/usr/share/nginx/html/latest.yaml -e SPEC_URL=latest.yaml redocly/redoc"
 
 
 # Pathing
-alias gor="cd $GOPATH"
+export GO_DEV_ROOT="${DEV_ROOT}/go/src/github.com/puppetlabs"
+alias gor="cd $GO_DEV_ROOT"
+alias rapi="cd $GO_DEV_ROOT/relay-api"
+alias rui="cd $GO_DEV_ROOT/relay-ui"
+alias rcli="cd $GO_DEV_ROOT/relay"
 alias djm="cd $DEV_ROOT/DistelliJavaModels"
 alias k8s="cd $DEV_ROOT/K8SDashboard"
 alias pwf="cd $DEV_ROOT/pfc-web-framework"

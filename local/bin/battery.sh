@@ -13,8 +13,8 @@ GFG='#379' # color of the gauge
 GH=10      # height of the gauge
 GBG='#333' # color of gauge background
 #X=1807     # x position
-X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 1)"     # x position
-Y=1        # y position
+X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 2)"     # x position
+Y=2        # y position
 FN='xft:Liberation Mono:size=8' # font
 
 STATEFILE='/sys/class/power_supply/BAT0/status' # battery's state file
