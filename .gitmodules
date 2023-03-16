@@ -52,3 +52,15 @@
 [submodule ".vim/bundle/ag"]
 	path = .oldvim/vim/bundle/ag
 	url = https://github.com/rking/ag.vim
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = git@github.com:tmux-plugins/tpm
+[submodule ".tmux/plugins/tmux-sensible"]
+	path = .tmux/plugins/tmux-sensible
+	url = git@github.com:tmux-plugins/tmux-sensible
+[submodule ".tmux/plugins/tmux-prefix-highlight"]
+	path = .tmux/plugins/tmux-prefix-highlight
+	url = git@github.com:tmux-plugins/tmux-prefix-highlight
+[submodule ".tmux/plugins/nord-tmux"]
+	path = .tmux/plugins/nord-tmux
+	url = git@github.com:arcticicestudio/nord-tmux
