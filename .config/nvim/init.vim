@@ -17,10 +17,12 @@ Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
 
 " Language-aware fancy things. Needs lang server config. Used, but what for?
-Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
+" Migrating to nvim-lspconfig
+"Plug 'autozimu/LanguageClient-neovim', {
+"      \ 'branch': 'next',
+"      \ 'do': 'bash install.sh',
+"      \ }
+Plug 'neovim/nvim-lspconfig'
 
 " Fancy tab completion; did I ever use it? I think it needs other plugins
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -80,13 +82,17 @@ Plug 'keith/swift.vim'
 Plug 'darfink/vim-plist'
 Plug 'vim-ruby/vim-ruby'
 Plug 'thoughtbot/vim-rspec'
-Plug 'jvirtanen/vim-hcl'
+Plug 'hashivim/vim-terraform'
+Plug 'vim-syntastic/syntastic'
+Plug 'juliosueiras/vim-terraform-completion'
 Plug 'chrisbra/csv.vim'
 Plug 'wlangstroth/vim-racket'
 Plug 'kchmck/vim-coffee-script'
 Plug 'jceb/vim-orgmode'
 Plug 'bfontaine/Brewfile.vim'
 Plug 'pprovost/vim-ps1'
+" This needs nodejs 14.14 or greater
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " For vim-orgmode
@@ -271,13 +277,13 @@ autocmd QuickFixCmdPost * botright cwindow 6
 "nmap <Leader>cwo :botright copen 5<CR><C-w>p
 "nmap <Leader>cn  :cnext<CR>
 "nmap <Leader>cp  :cprevious<CR>
-nmap -  :cnext<CR>
-nmap _  :cprev<CR>
+"nmap -  :cnext<CR>
+"nmap _  :cprev<CR>
 "nmap <C--> :colder<CR>
 "nmap <C-_> :cnewer<CR>
 " neomake uses the location window rather than quickfix window
-"noremap -  :lnext<CR>
-"noremap _  :lprev<CR>
+noremap -  :lnext<CR>
+noremap _  :lprev<CR>
 " See ToggleLocationList below
 
 " Only lint when leaving insert or changing text in command mode
@@ -434,14 +440,14 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 " Languageserver settings from the solargraph readme
 " Tell the language client to use the default IP and port
 " that Solargraph runs on
-let g:LanguageClient_serverCommands = {
-      \ 'go': ['gopls'],
-      \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-      \ 'python': ['pyls'],
-      \ }
+"let g:LanguageClient_serverCommands = {
+"      \ 'go': ['gopls'],
+"      \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+"      \ 'python': ['pyls'],
+"      \ }
 
 " note that if you are using Plug mapping you should not use `noremap` mappings.
-nmap <F5> <Plug>(lcn-menu)
+"nmap <F5> <Plug>(lcn-menu)
 
 " Delete a buffer but keep layout with ^w!
 if has("eval")
@@ -455,7 +461,70 @@ endif
 "let g:LanguageClient_autoStop = 0
 
 " Configure ruby omni-completion to use the language client:
-autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+"autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
 
 " Run gofmt on save
-autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+"autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+
+
+" {{{ Adding some terraform stuff
+" Syntastic Config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" (Optional)Remove Info(Preview) window
+set completeopt-=preview
+
+" (Optional)Hide Info(Preview) window after completions
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+" (Optional) Enable terraform plan to be include in filter
+let g:syntastic_terraform_tffilter_plan = 1
+
+" (Optional) Default: 0, enable(1)/disable(0) plugin's keymapping
+let g:terraform_completion_keys = 1
+
+" (Optional) Default: 1, enable(1)/disable(0) terraform module registry completion
+let g:terraform_registry_module_completion = 0
+
+"let g:deoplete#omni_patterns = {}
+"let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
+"let g:deoplete#enable_at_startup = 1
+"call deoplete#initialize()
+" }}} end terraform
+source ~/.config/nvim/tf.lua
+
+" CoC stuff
+set updatetime=300 " faster than 4000ms
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+let g:copilot_no_tab_map = v:true
+imap <silent><script><expr> <C-e> coc#pum#visible() ? coc#pum#cancel() : copilot#Accept("\<C-e>")
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <c-space> coc#refresh()
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
