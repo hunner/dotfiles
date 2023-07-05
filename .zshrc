@@ -146,7 +146,15 @@ vcs_info_wrapper() {
     echo "%{$fg_bold[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
-RPROMPT=$'$(vcs_info_wrapper)${PTIME}'
+terraform_wrapper() {
+  if [[ -d .terraform ]]; then
+    local tf_workspace=$(terraform workspace show)
+    if [ -n "$tf_workspace" ]; then
+      echo "%{$fg_bold[grey]%}[%{$fg_no_bold[blue]%}${tf_workspace}%{$fg_bold[grey]%}]%{$reset_color%}$del"
+    fi
+  fi
+}
+RPROMPT=$'$(terraform_wrapper)$(vcs_info_wrapper)${PTIME}'
 
 if [ `uname -s` = "SunOS" ] ; then
     export LANG="C"

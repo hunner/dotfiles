@@ -13,7 +13,13 @@ GFG='#379' # color of the gauge
 GH=10      # height of the gauge
 GBG='#333' # color of gauge background
 #X=1807     # x position
-X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 2)"     # x position
+#X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 2)"     # x position
+PRIMARY="$(xrandr -q | grep primary)"     # x position
+if [ -z "${PRIMARY}" ]; then
+  X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 2)"     # x position
+else
+  X="$(expr "$(xrandr -q | grep primary | sed -r 's/^.+?[^0-9]+([0-9]+)x[0-9]+\+.*$/\1/')" - $W - 2)"     # x position
+fi
 Y=2        # y position
 FN='xft:Liberation Mono:size=8' # font
 
@@ -37,9 +43,9 @@ while true; do
     STATE=`cat $STATEFILE`;
 
     # draw the bar and pipe everything into dzen
-    if [ $RPERC -gt $LOWBAT ]; then GFGC=$GFG; fi
-    if [ $RPERC -le $LOWBAT ]; then GFGC=$LOWCOL; fi
-    if [ $STATE = "Charging" ]; then GFGC=$CHRGCOL; fi
+    if [ "${RPERC}" -gt $LOWBAT ]; then GFGC=$GFG; fi
+    if [ "${RPERC}" -le $LOWBAT ]; then GFGC=$LOWCOL; fi
+    if [ "${STATE}" = "Charging" ]; then GFGC=$CHRGCOL; fi
 
     case $RPERC in
         $LOWBAT)
