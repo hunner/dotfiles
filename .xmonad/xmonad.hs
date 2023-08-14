@@ -165,7 +165,7 @@ gsConfig = def
 -- Layouts:
 
 --mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
-mLayout = Mirror tiled ||| tiled ||| smartBorders Full ||| Circle
+mLayout = Mirror tiled ||| tiled ||| smartBorders Full ||| Circle ||| simplestFloat
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio

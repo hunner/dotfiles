@@ -14,7 +14,7 @@ GH=10      # height of the gauge
 GBG='#333' # color of gauge background
 #X=1807     # x position
 #X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 2)"     # x position
-PRIMARY="$(xrandr -q | grep primary)"     # x position
+PRIMARY="$(xrandr -q | grep primary | grep -v disconnected)"     # x position
 if [ -z "${PRIMARY}" ]; then
   X="$(expr "$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+)x[0-9]+.*$/\1/')" - $W - 2)"     # x position
 else

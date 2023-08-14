@@ -6,11 +6,12 @@ alias la="l -Fa"
 alias lla="ll -Fa"
 alias c="cd"
 alias pg="ps auxww|grep"
+alias pd="pwd"
 cl() { cd $@ && ls }
 bellme() { echo "Done! (bellme)" ; while :; do echo -ne '\a' ; sleep 2 ; done }
 #old linux aliases
-#alias s="TERM=xterm;ssh serenity.cat.pdx.edu"
-alias s="TERM=xterm ssh hunner@destiny.cat.pdx.edu"
+alias s="TERM=xterm;ssh serenity.cat.pdx.edu"
+#alias s="TERM=xterm ssh hunner@destiny.cat.pdx.edu"
 #alias f="TERM=xterm ssh hunner@firefly.cat.pdx.edu"
 alias f="find . | grep"
 alias z="TERM=xterm ssh hunner@zabava.cat.pdx.edu"
@@ -20,7 +21,6 @@ alias p="ping 8.8.8.8"
 alias pi="ping google.com"
 alias ph="ping pi.hole"
 alias pa="ping ads.google.com"
-alias pd="ping 192.168.194.93"
 alias pipe=pip # typos
 alias chandra="TERM=xterm ssh hunner@chandra.cs.pdx.edu"
 export CS=cs.pdx.edu
@@ -33,6 +33,7 @@ alias x="exit"
 alias v="vagrant"
 alias w="cd ~/Documents/work/git"
 alias cem="cd ~/Documents/work/git/cem"
+alias forge="cd ~/Documents/work/git/forge"
 alias ssh-gpg="ssh -R ~/.gnupg/S.gpg-agent.extra:~/.gnupg/S-gpg-agent.extra -o 'StreamLocalBindUnlink=yes'"
 alias gpg-add="/usr/libexec/gpg-preset-passphrase"
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
@@ -65,7 +66,7 @@ alias hide="SetFile -a V"
 alias show="SetFile -a v"
 alias whyfail="tmux copy-mode && tmux send-keys -X search-backward '--- FAIL'"
 alias m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt m4b-tool'
-alias morserunner="docker-wine --sound=default --cache wine '.wine/drive_c/Program Files (x86)/Afreet/MorseRunner/MorseRunner.exe'"
+alias morserunner="docker-wine --as-me --force-owner --sound=default --cache --volume=/home/hunner/Downloads/morserunner:/data --workdir=/data wine MorseRunner.exe"
 alias ry="vim -R +'set ft=yaml'"
 alias superscript="tr '+−=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ' \
                       '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';"
@@ -224,7 +225,7 @@ alias vd=${VIM}diff
 alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
-alias n=nvim
+alias n=lvim
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 
@@ -260,7 +261,7 @@ alias gstp="git stash pop"
 alias gdw="git diff --color-words"
 alias gk="gitk --all&"
 alias gx="gitx --all"
-alias grt="git restore --staged "
+alias grs="git restore --staged "
 
 
 # Docker
@@ -289,6 +290,16 @@ function dr() {
   docker run -it --rm $1 $cmd ${@:3}
 }
 alias d-c="docker-compose"
+
+# Terraform
+alias tfh="echo 'tf  -- terraform
+tfw -- terraform workspace 
+tfp -- terraform plan
+tfs -- terraform state'"
+alias tf="terraform"
+alias tfw="terraform workspace"
+alias tfp="terraform plan"
+alias tfs="terraform state"
 
 
 # K8s

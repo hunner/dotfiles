@@ -2,7 +2,6 @@
  THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
  `lvim` is the global options object
 ]]
-
 -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
@@ -12,7 +11,7 @@ vim.opt.relativenumber = false
 lvim.log.level = "info"
 lvim.format_on_save = {
   enabled = true,
-  -- pattern = "*.lua",
+  pattern = "*.tf",
   timeout = 1000,
 }
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -103,6 +102,13 @@ lvim.builtin.treesitter.auto_install = true
 --   },
 -- }
 
+
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
   -- {
@@ -127,7 +133,7 @@ lvim.plugins = {
       "Glgrep",
       "Gedit"
     },
-    ft = {"fugitive"}
+    ft = { "fugitive" }
   },
   { "tpope/vim-rhubarb" },
   { "rodjek/vim-puppet" },
@@ -145,21 +151,43 @@ lvim.plugins = {
       })
     end,
   },
-  { "zbirenbaum/copilot.lua",
+  {
+    "zbirenbaum/copilot.lua",
     event = { "VimEnter" },
     config = function()
       vim.defer_fn(function()
         require("copilot").setup {
           plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
+          suggestion = { enabled = false },
+          panel = { enabled = false },
         }
       end, 100)
     end,
   },
-  { "zbirenbaum/copilot-cmp",
+  {
+    "zbirenbaum/copilot-cmp",
     after = { "copilot.lua", "nvim-cmp" },
-    config = function ()
-      require("copilot_cmp").setup()
+    config = function()
+      require("copilot_cmp").setup({
+        mapping = {
+          ["<Tab>"] = vim.schedule_wrap(function(fallback)
+            if lvim.builtin.cmp.visible() and has_words_before() then
+              lvim.builtin.cmp.select_next_item({ behavior = lvim.builtin.cmp.SelectBehavior.Select })
+            else
+              fallback()
+            end
+          end),
+        },
+      })
     end
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && npm install",
+    ft = "markdown",
+    config = function()
+      vim.g.mkdp_auto_start = 1
+    end,
   },
   -- {
   --   "Pocco81/auto-save.nvim",

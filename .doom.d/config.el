@@ -109,6 +109,9 @@
          ("<tab>" . 'my-tab)
          ("TAB" . 'my-tab)))
 
+(use-package! ox-jira
+  :after org)
+
 ;; From https://github.com/hlissner/doom-emacs/issues/581
 (defun dlukes/ediff-doom-config (file)
   "ediff the current config with the examples in doom-emacs-dir
@@ -117,12 +120,12 @@ There are multiple config files, so FILE specifies which one to
 diff.
 "
   (interactive
-    (list (read-file-name "Config file to diff: " doom-private-dir)))
+    (list (read-file-name "Config file to diff: " doom-user-dir)))
   (let* ((stem (file-name-base file))
           (customized-file (format "%s.el" stem))
           (template-file-regex (format "^%s.example.el$" stem)))
     (ediff-files
-      (concat doom-private-dir customized-file)
+      (concat doom-user-dir customized-file)
       (car (directory-files-recursively
              doom-emacs-dir
              template-file-regex

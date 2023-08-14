@@ -5,7 +5,7 @@
 [color]
 	ui = true
 [alias]
-	lg = "log --decorate --pretty=format:'%C(yellow)%h%C(reset) %C(green)%G?%C(reset) %C(blue)%an%C(reset) %C(cyan)%cr%C(reset) %s %C(auto)%d%C(reset)' --graph --date-order"
+	lg = "log --decorate --pretty=format:'%C(yellow)%h%C(reset) %C(green)%G?%C(reset) %C(blue)%an%C(reset) %C(cyan)%ch%C(reset) %s %C(auto)%d%C(reset)' --graph --date-order"
 [diff]
 	tool = vimdiff
 	compactionHeuristic = true
