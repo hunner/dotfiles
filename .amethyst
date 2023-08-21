@@ -1,9 +1,8 @@
 {
   "layouts": [
     "tall",
-    "wide",
-    "fullscreen",
-    "column"
+    "bsp",
+    "fullscreen"
   ],
   "Valid modifiers are": [
     "option",
@@ -12,13 +11,13 @@
     "command"
   ],
   "mod1": [
-    "option",
-    "shift"
+    "control",
+    "option"
   ],
   "mod2": [
+    "control",
     "option",
-    "shift",
-    "control"
+    "shift"
   ],
   "screens": 4,
     "cycle-layout": {
@@ -31,19 +30,15 @@
     },
     "select-tall-layout": {
       "mod": "mod1",
-      "key": "a"
+      "key": "g"
     },
-    "select-wide-layout": {
+    "select-bsp-layout": {
       "mod": "mod1",
-      "key": "s"
+      "key": "c"
     },
     "select-fullscreen-layout": {
       "mod": "mod1",
-      "key": "d"
-    },
-    "select-column-layout": {
-      "mod": "mod1",
-      "key": "f"
+      "key": "r"
     },
     "focus-screen-ccw": {
       "mod": "mod1",
@@ -55,7 +50,7 @@
     },
     "focus-screen-1": {
       "mod": "mod1",
-      "key": "w"
+      "key": "o"
     },
     "focus-screen-2": {
       "mod": "mod1",
@@ -63,15 +58,15 @@
     },
     "focus-screen-3": {
       "mod": "mod1",
-      "key": "r"
+      "key": "u"
     },
     "focus-screen-4": {
       "mod": "mod1",
-      "key": "q"
+      "key": "i"
     },
     "throw-screen-1": {
       "mod": "mod2",
-      "key": "w"
+      "key": "o"
     },
     "throw-screen-2": {
       "mod": "mod2",
@@ -79,11 +74,11 @@
     },
     "throw-screen-3": {
       "mod": "mod2",
-      "key": "r"
+      "key": "u"
     },
     "throw-screen-4": {
       "mod": "mod2",
-      "key": "q"
+      "key": "i"
     },
     "shrink-main": {
       "mod": "mod1",
@@ -183,7 +178,7 @@
     },
     "toggle-float": {
       "mod": "mod1",
-      "key": "t"
+      "key": "f"
     },
     "toggle-tiling": {
       "mod": "mod2",
@@ -289,12 +284,13 @@
     "ignore-menu-bar": false,
     "use-canary-build": true,
     "new-windows-to-main": false,
-    "follow-space-thrown-windows": true,
+    "follow-space-thrown-windows": false,
     "send-crash-reports": true,
-    "screen-padding-top": 0,
+    "screen-padding-top": 33,
     "screen-padding-bottom": 0,
     "screen-padding-left": 0,
     "screen-padding-right": 0,
+    "disable-padding-on-builtin-display": true,
     "debug-layout-info": true,
     "restore-layouts-on-launch": true
 }

@@ -56,7 +56,7 @@ esac
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
-prepaths=(/opt/puppetlabs/pdk/bin ~/.emacs.d/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
+prepaths=(/opt/puppetlabs/pdk/bin ~/.emacs.d/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
 #for dir in $paths ; do
 #    if [ -d $dir ] ; then
 #        export PATH=$PATH:$dir
@@ -114,7 +114,8 @@ if [ -f ~/.zsh/private ] ; then
 fi
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export DEV_ROOT="$HOME/Documents/work/git/"
-[ -e /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
+# This causes messages on every start without java installed
+#[ -e /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
 export OVFTOOL='/Applications/VMware OVF Tool/ovftool'
 #export DOCKER_HOST='tcp://192.168.99.100:2375'
 if whence rg > /dev/null ; then
@@ -320,6 +321,8 @@ fi
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # For 1.25 gke auth update
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True

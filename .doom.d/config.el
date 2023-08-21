@@ -27,7 +27,7 @@
 ;; `load-theme' function. This is the default:
 ;(setq doom-theme 'doom-one)
 (setq doom-theme 'doom-nord)
-(setq doom-font (font-spec :family "Liberation Mono" :size 14))
+(setq doom-font (font-spec :family "LiterationMono Nerd Font" :size 14))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
