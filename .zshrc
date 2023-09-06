@@ -9,7 +9,7 @@ fi
 typeset -ga preexec_functions
 typeset -ga precmd_functions
 typeset -ga chpwd_functions
-fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=(/usr/local/share/zsh-completions /opt/homebrew/share/zsh/site-functions $fpath)
 #typeset -u fpath
 
 # Options
@@ -291,8 +291,20 @@ if [ -d ~/.asdf ] ; then
   . $HOME/.asdf/asdf.sh
 fi
 
+export PATH=$(go env GOPATH)/bin:$PATH
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+getadsktoken() {
+  TEMP_TOKEN=$(echo -n ${ADSK_HUNNER_CLI_CLIENT_ID}:${ADSK_HUNNER_CLI_CLIENT_SECRET} | base64)
+    curl -s 'https://developer.api.autodesk.com/authentication/v2/token' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'Accept: application/json' \
+    -H "Authorization: Basic ${TEMP_TOKEN}" \
+    -d 'grant_type=client_credentials' \
+    -d 'scope=data:read' \
+    | jq -r '.access_token'
+}
 
 # load-nvm() {
 #   export NVM_DIR="$HOME/.nvm"
