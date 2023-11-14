@@ -11,13 +11,13 @@
     "command"
   ],
   "mod1": [
-    "control",
-    "option"
-  ],
-  "mod2": [
-    "control",
     "option",
     "shift"
+  ],
+  "mod2": [
+    "option",
+    "shift",
+    "control"
   ],
   "screens": 4,
     "cycle-layout": {
@@ -98,11 +98,11 @@
     },
     "focus-ccw": {
       "mod": "mod1",
-      "key": "j"
+      "key": "k"
     },
     "focus-cw": {
       "mod": "mod1",
-      "key": "k"
+      "key": "j"
     },
     "focus-main": {
       "mod": "mod1",
@@ -118,14 +118,14 @@
     },
     "swap-ccw": {
       "mod": "mod2",
-      "key": "j"
+      "key": "k"
     },
     "swap-cw": {
       "mod": "mod2",
-      "key": "k"
+      "key": "j"
     },
     "swap-main": {
-      "mod": "mod1",
+      "mod": "mod2",
       "key": "enter"
     },
     "throw-space-1": {

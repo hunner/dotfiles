@@ -290,13 +290,42 @@ EOF
 if [ -d ~/.asdf ] ; then
   . $HOME/.asdf/asdf.sh
 fi
+enabledotnet() {
+  if [ -d ~/.dotnet/tools ] ; then
+    # Add .NET Core SDK tools
+    export PATH="$PATH:/Users/haugenh1/.dotnet/tools"
+    . ~/.asdf/plugins/dotnet/set-dotnet-env.zsh
+  fi
+}
 
 export PATH=$(go env GOPATH)/bin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-getadsktoken() {
-  TEMP_TOKEN=$(echo -n ${ADSK_HUNNER_CLI_CLIENT_ID}:${ADSK_HUNNER_CLI_CLIENT_SECRET} | base64)
+getstageadsktoken() {
+  TEMP_TOKEN=$(echo -n ${ADSK_HUNNER_STG_CLI_CLIENT_ID}:${ADSK_HUNNER_STG_CLI_CLIENT_SECRET} | base64)
+    curl -s 'https://developer-stg.api.autodesk.com/authentication/v2/token' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'Accept: application/json' \
+    -H "Authorization: Basic ${TEMP_TOKEN}" \
+    -d 'grant_type=client_credentials' \
+    -d 'scope=data:read' \
+    | jq -r '.access_token'
+}
+
+getdevadsktoken() {
+  TEMP_TOKEN=$(echo -n ${ADSK_HUNNER_DEV_CLI_CLIENT_ID}:${ADSK_HUNNER_DEV_CLI_CLIENT_SECRET} | base64)
+    curl -s 'https://developer-dev.api.autodesk.com/authentication/v2/token' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'Accept: application/json' \
+    -H "Authorization: Basic ${TEMP_TOKEN}" \
+    -d 'grant_type=client_credentials' \
+    -d 'scope=data:read' \
+    | jq -r '.access_token'
+}
+
+getprodadsktoken() {
+  TEMP_TOKEN=$(echo -n ${ADSK_HUNNER_PROD_CLI_CLIENT_ID}:${ADSK_HUNNER_PROD_CLI_CLIENT_SECRET} | base64)
     curl -s 'https://developer.api.autodesk.com/authentication/v2/token' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'Accept: application/json' \

@@ -64,6 +64,8 @@ alias jr="JAVA_OPTS='--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens ja
 alias uzbl="uzbl-browser"
 alias hide="SetFile -a V"
 alias show="SetFile -a v"
+base64url::encode () { base64 -w0 | tr '+/' '-_' | tr -d '='; }
+base64url::decode () { awk '{ if (length($0) % 4 == 3) print $0"="; else if (length($0) % 4 == 2) print $0"=="; else print $0; }' | tr -- '-_' '+/' | base64 -d; }
 alias whyfail="tmux copy-mode && tmux send-keys -X search-backward '--- FAIL'"
 alias m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt m4b-tool'
 alias morserunner="docker-wine --as-me --force-owner --sound=default --cache --volume=/home/hunner/Downloads/morserunner:/data --workdir=/data wine MorseRunner.exe"
