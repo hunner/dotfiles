@@ -335,6 +335,18 @@ getprodadsktoken() {
     | jq -r '.access_token'
 }
 
+devidlookup() {
+  curl -s -H "Authorization: Bearer ${$(getdevadsktoken)}" -H 'Content-Type: application/json' "https://developer-dev.api.autodesk.com/userprofile/v1/users/${1}" | jq -r .userId
+}
+
+stageidlookup() {
+  curl -s -H "Authorization: Bearer ${$(getstageadsktoken)}" -H 'Content-Type: application/json' "https://developer-stg.api.autodesk.com/userprofile/v1/users/${1}" | jq -r .userId
+}
+
+prodidlookup() {
+  curl -s -H "Authorization: Bearer ${$(getprodadsktoken)}" -H 'Content-Type: application/json' "https://developer.api.autodesk.com/userprofile/v1/users/${1}" | jq -r .userId
+}
+
 # load-nvm() {
 #   export NVM_DIR="$HOME/.nvm"
 #   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
