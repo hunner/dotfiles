@@ -13,7 +13,7 @@ fpath=(/usr/local/share/zsh-completions /opt/homebrew/share/zsh/site-functions $
 #typeset -u fpath
 
 # Options
-setopt prompt_subst inc_append_history hist_ignore_space hist_ignore_all_dups hist_expire_dups_first hist_find_no_dups hist_save_no_dups hist_reduce_blanks extendedglob nomatch notify dvorak # correct
+setopt prompt_subst inc_append_history hist_ignore_space hist_ignore_all_dups hist_expire_dups_first hist_find_no_dups hist_save_no_dups hist_reduce_blanks extendedglob nomatch notify dvorak interactive_comments # correct
 unsetopt beep
 bindkey -e
 
@@ -289,6 +289,9 @@ EOF
 #[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
 if [ -d ~/.asdf ] ; then
   . $HOME/.asdf/asdf.sh
+  if [ -d $HOME/.asdf/plugins/java ]; then
+    . $HOME/.asdf/plugins/java/set-java-home.zsh
+  fi
 fi
 enabledotnet() {
   if [ -d ~/.dotnet/tools ] ; then
@@ -298,7 +301,7 @@ enabledotnet() {
   fi
 }
 
-export PATH=$(go env GOPATH)/bin:$PATH
+#export PATH=$(go env GOPATH)/bin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -320,7 +323,7 @@ getdevadsktoken() {
     -H 'Accept: application/json' \
     -H "Authorization: Basic ${TEMP_TOKEN}" \
     -d 'grant_type=client_credentials' \
-    -d 'scope=data:read' \
+    -d 'scope=data:read data:write bucket:create bucket:read bucket:update bucket:delete' \
     | jq -r '.access_token'
 }
 
@@ -336,15 +339,15 @@ getprodadsktoken() {
 }
 
 devidlookup() {
-  curl -s -H "Authorization: Bearer ${$(getdevadsktoken)}" -H 'Content-Type: application/json' "https://developer-dev.api.autodesk.com/userprofile/v1/users/${1}" | jq -r .userId
+  curl -s -H "Authorization: Bearer ${$(getdevadsktoken)}" -H 'Content-Type: application/json' "https://developer-dev.api.autodesk.com/userprofile/v1/users/${1}" | jq -r '"\(.userId) \(.emailId)"'
 }
 
 stageidlookup() {
-  curl -s -H "Authorization: Bearer ${$(getstageadsktoken)}" -H 'Content-Type: application/json' "https://developer-stg.api.autodesk.com/userprofile/v1/users/${1}" | jq -r .userId
+  curl -s -H "Authorization: Bearer ${$(getstageadsktoken)}" -H 'Content-Type: application/json' "https://developer-stg.api.autodesk.com/userprofile/v1/users/${1}" | jq -r '"\(.userId) \(.emailId)"'
 }
 
 prodidlookup() {
-  curl -s -H "Authorization: Bearer ${$(getprodadsktoken)}" -H 'Content-Type: application/json' "https://developer.api.autodesk.com/userprofile/v1/users/${1}" | jq -r .userId
+  curl -s -H "Authorization: Bearer ${$(getprodadsktoken)}" -H 'Content-Type: application/json' "https://developer.api.autodesk.com/userprofile/v1/users/${1}" | jq -r '"\(.userId) \(.emailId)"'
 }
 
 # load-nvm() {

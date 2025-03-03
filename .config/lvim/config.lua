@@ -207,3 +207,11 @@ table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "Jenkinsfile" },
+  callback = function()
+    require("nvim-treesitter.highlight").attach(0, "groovy")
+    command = "set ft=groovy"
+  end,
+})

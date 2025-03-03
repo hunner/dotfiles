@@ -22,3 +22,5 @@ set smartcase
 set showmatch
 set hlsearch
 set incsearch
+
+" CMD-k o to open the current file in a new window

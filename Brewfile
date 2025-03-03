@@ -83,5 +83,6 @@ cask "onedrive" # File sync
 #cask "firefox" # Personal browsing
 #cask "firefox-nightly" # Work browsing
 cask "choosy" # Browser choosing
+cask "orion" # Better browser
 #cask "multifirefox" # Profile manager
 #cask "google-chrome" # Flash/music

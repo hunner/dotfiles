@@ -66,7 +66,7 @@ alias hide="SetFile -a V"
 alias show="SetFile -a v"
 base64url::encode () { base64 -w0 | tr '+/' '-_' | tr -d '='; }
 base64url::decode () { awk '{ if (length($0) % 4 == 3) print $0"="; else if (length($0) % 4 == 2) print $0"=="; else print $0; }' | tr -- '-_' '+/' | base64 -d; }
-alias whyfail="tmux copy-mode && tmux send-keys -X search-backward '--- FAIL'"
+alias whyfail="tmux copy-mode && tmux send-keys -X search-backward 'FAIL'"
 alias m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt m4b-tool'
 alias morserunner="docker-wine --as-me --force-owner --sound=default --cache --volume=/home/hunner/Downloads/morserunner:/data --workdir=/data wine MorseRunner.exe"
 alias ry="vim -R +'set ft=yaml'"
@@ -242,6 +242,25 @@ alias ecx="emacsclient --eval '(make-frame-on-display \"$DISPLAY\")'"
 
 
 # Git
+alias gh="echo 'ga <file>     -- git add file
+gb            -- git branch
+gc            -- git commit
+gca           -- git commit --amend
+gd            -- git diff
+gdc           -- git diff --cached
+gdw           -- git diff --color-words
+ge <branch>   -- git checkout branch
+geb <branch>  -- git checkout -b branch
+gfa           -- git fetch --all --prune
+gl            -- git short log
+gla           -- git short log all
+gp            -- git push
+gr            -- git remote -v show
+grs <file>    -- git restore --staged file
+gs            -- git status
+gst           -- git stash
+gstp          -- git stash pop
+gu            -- git pull'"
 alias git="hub"
 alias gs="git status"
 alias gl="git lg"

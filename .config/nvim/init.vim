@@ -101,6 +101,7 @@ Plug 'zpieslak/vim-autofix'
 Plug 'juvenn/mustache.vim'
 Plug 'github/copilot.vim'
 Plug 'hunner/vim-beancount'
+Plug 'prisma/vim-prisma'
 call plug#end()
 
 " Because.
