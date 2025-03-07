@@ -137,6 +137,7 @@ lvim.plugins = {
   },
   { "tpope/vim-rhubarb" },
   { "rodjek/vim-puppet" },
+  { "hunner/vim-beancount" },
   { "simnalamburt/vim-mundo" },
   {
     "ethanholz/nvim-lastplace",

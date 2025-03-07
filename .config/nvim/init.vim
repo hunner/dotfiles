@@ -527,5 +527,13 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" beancount macros
+au BufReadPost,BufNewFile *.beancount
+  \ let @f = 'joExpenses:Megs:Foodjj0zz' |
+  \ let @o = 'joExpenses:Megs:Otherjj0zz' |
+  \ let @p = 'joExpenses:Needs:Petroljj0zz' |
+  \ let @b = 'joAssets:ZeroSum:BankTransferjj0zz' |
+  \ let @w = 'kkkkA #wrong-cardjjjj'
+
 " Use K to show documentation in preview window
 nnoremap <silent> K :call ShowDocumentation()<CR>

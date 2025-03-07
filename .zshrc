@@ -80,6 +80,14 @@ if test -d /etc/profile.d/; then
     done
     unset profile
 fi
+# bison for beancount 3
+if [ -d /usr/local/opt/bison/bin ] ; then
+    export PATH=/usr/local/opt/bison/bin:$PATH
+    export LDFLAGS="-L/usr/local/opt/bison/lib"
+fi
+# for latex
+eval "$(/usr/libexec/path_helper)"
+
 #gem's path
 if [ -d ~/.gems/bin ] ; then
     export PATH="$HOME/.gems/bin:$PATH"
@@ -378,7 +386,7 @@ fi
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+#eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # For 1.25 gke auth update
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
