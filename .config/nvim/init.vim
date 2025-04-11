@@ -102,6 +102,7 @@ Plug 'juvenn/mustache.vim'
 Plug 'github/copilot.vim'
 Plug 'hunner/vim-beancount'
 Plug 'prisma/vim-prisma'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
 " Because.

@@ -56,7 +56,7 @@ esac
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
-prepaths=(/opt/puppetlabs/pdk/bin ~/.emacs.d/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
+prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
 #for dir in $paths ; do
 #    if [ -d $dir ] ; then
 #        export PATH=$PATH:$dir
@@ -86,7 +86,7 @@ if [ -d /usr/local/opt/bison/bin ] ; then
     export LDFLAGS="-L/usr/local/opt/bison/lib"
 fi
 # for latex
-eval "$(/usr/libexec/path_helper)"
+#eval "$(/usr/libexec/path_helper)"
 
 #gem's path
 if [ -d ~/.gems/bin ] ; then
