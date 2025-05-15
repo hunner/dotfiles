@@ -1,3 +1,9 @@
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin()
 " For git shortcuts below.
 Plug 'tpope/vim-fugitive'
@@ -501,7 +507,7 @@ let g:terraform_registry_module_completion = 0
 "let g:deoplete#enable_at_startup = 1
 "call deoplete#initialize()
 " }}} end terraform
-source ~/.config/nvim/tf.lua
+"source ~/.config/nvim/tf.lua
 
 " CoC stuff
 set updatetime=300 " faster than 4000ms
