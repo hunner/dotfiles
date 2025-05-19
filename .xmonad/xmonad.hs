@@ -18,6 +18,7 @@ import XMonad.Actions.CopyWindow(copy, copyToAll, killAllOtherCopies)
 import XMonad.Actions.GridSelect
 import XMonad.Actions.NoBorders
 import XMonad.Actions.SpawnOn
+import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Warp(warpToScreen)
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
@@ -81,8 +82,8 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         , ("M-S-g", spawn "rofi -show window")
 
         -- Multimedia
-        , ("<XF86MonBrightnessUp>"   , spawn "xbacklight -inc 10"            ) -- Brightness up
-        , ("<XF86MonBrightnessDown>" , spawn "xbacklight -dec 10"            ) -- Brightness down
+        , ("<XF86MonBrightnessUp>"   , spawn "brillo -A 10"            ) -- Brightness up
+        , ("<XF86MonBrightnessDown>" , spawn "brillo -U 10"            ) -- Brightness down
         , ("<XF86AudioPlay>"         , spawn "mpc toggle"                    ) -- play/pause mpd
         , ("<XF86AudioStop>"         , spawn "mpc stop"                      ) -- stop mpd
         , ("<XF86AudioPrev>"         , spawn "mpc prev"                      ) -- prev song
@@ -273,6 +274,7 @@ mConfig = ewmh def
   , normalBorderColor  = mNormalBorderColor
   , focusedBorderColor = mFocusedBorderColor
   , layoutHook         = mLayout
+  , logHook            = updatePointer (0.5, 0.5) (0, 0)
   --, manageHook         = manageSpawn sp <+> mManageHook
   , manageHook         = mManageHook
   , handleEventHook    = handleEventHook def <+> pickyFocusEventHook

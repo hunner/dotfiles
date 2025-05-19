@@ -23,8 +23,8 @@ fi
 Y=2        # y position
 FN='xft:Liberation Mono:size=8' # font
 
-STATEFILE='/sys/class/power_supply/BAT0/status' # battery's state file
-CAPFILE='/sys/class/power_supply/BAT0/capacity'   # battery's capacity file
+STATEFILE='/sys/class/power_supply/BAT1/status' # battery's state file
+CAPFILE='/sys/class/power_supply/BAT1/capacity'   # battery's capacity file
 
 CHRGCOL='#99ff00' # color when battery is charging
 LOWBAT=15        # percentage of battery life marked as low

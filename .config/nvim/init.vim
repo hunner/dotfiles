@@ -534,8 +534,12 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" Use ,b to jump with ace jump
+
 " beancount macros
-au BufReadPost,BufNewFile *.beancount
+"au BufRead,BufNewFile *.beancount,*.bean python3 import sys; sys.path.append('<venv path>/lib/python3.12/site-packages'); import beancount; sys.path.pop()
+au BufReadPost,BufNewFile *.beancount,*.bean
+  \ setlocal omnifunc=beancount#complete |
   \ let @f = 'joExpenses:Megs:Foodjj0zz' |
   \ let @o = 'joExpenses:Megs:Otherjj0zz' |
   \ let @p = 'joExpenses:Needs:Petroljj0zz' |
