@@ -261,14 +261,16 @@ gs            -- git status
 gst           -- git stash
 gstp          -- git stash pop
 gu            -- git pull'"
-alias git="hub"
+#alias git="hub"
 alias gs="git status"
 alias gl="git lg"
 alias gla="git lg --all"
 alias ge="git checkout"
+alias gesp="git checkout --patch"
 alias geb="git checkout -b"
 alias gb="git branch"
 alias ga="git add"
+alias gasp="git add --patch"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gc="git commit"
@@ -284,6 +286,73 @@ alias gk="gitk --all&"
 alias gx="gitx --all"
 alias grs="git restore --staged "
 
+alias dvh="echo 'dvt <lang> -- create a local dev template
+dva <lang> -- add a dev template
+dvr <lang> -- remove a dev template
+dvl        -- list dev templates'"
+function dvt() {
+  [ -z $1 ] && echo 'usage: dvt <lang>' && return 1
+  [ -f ".envrc" ] && echo "Already using a dev template." && return 1
+  nix flake init -t "github:the-nix-way/dev-templates#$1"
+  direnv allow
+}
+function dva() {
+  [ -z $1 ] && echo 'usage: dva <lang>' && return 1
+  [ -z $(dvl $1) ] && echo "Dev template $1 not found." && return 1
+  echo "use flake \"github:the-nix-way/dev-templates?dir=$1\"" >> .envrc
+  direnv allow
+}
+function dvr() {
+  [ -z $1 ] && echo 'usage: dvr <lang>' && return 1
+  [ ! -f ".envrc" ] && echo "No dev template found." && return 1
+  if ! grep -q "github:the-nix-way/dev-templates?dir=$1" .envrc; then
+    echo "Dev template $1 not found." && return 1
+  fi
+  sed -i "/use flake \"github:the-nix-way\/dev-templates?dir=$1\"/d" .envrc
+  direnv allow
+}
+function dve() {
+  if [ -f ".envrc" ]; then
+    grep -o 'github:the-nix-way/dev-templates?dir=[^"]*' .envrc | sed 's/github:the-nix-way\/dev-templates?dir=//g'
+  fi
+}
+function dvl() {
+  local enabled_templates=()
+  if [ -f ".envrc" ]; then
+    enabled_templates=($(grep -o 'github:the-nix-way/dev-templates?dir=[^"]*' .envrc | sed 's/github:the-nix-way\/dev-templates?dir=//g'))
+  fi
+
+  local templates
+  templates=$(curl -s https://api.github.com/repos/the-nix-way/dev-templates/contents | \
+    jq -r '.[] | select(.type == "dir") | select(.name != ".github") | .name')
+
+  if [ -z "$1" ]; then
+    echo "$templates" | while read -r template; do
+      [[ " ${enabled_templates[*]} " == *" $template "* ]] && echo "* $template" || echo "  $template"
+    done
+  else
+    echo "$templates" | grep -x "$1"
+  fi
+}
+function dvs() {
+  if [ -f "shell.nix" -o -f ".envrc" ]; then
+    echo "Dev shell already exists"
+    return 1
+  fi
+  echo "use nix" > .envrc
+  cat > shell.nix <<EOF
+let
+  pkgs = import <nixpkgs> { config.allowUnfree = true; };
+  #unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz") { 
+  #  config.allowUnfree = true;
+  #};
+in pkgs.mkShell {
+  packages = [
+  ];
+}
+EOF
+  direnv allow
+}
 
 # Docker
 #alias docker="podman"
@@ -329,16 +398,20 @@ alias kh="echo 'k               -- kubectl
 kg              -- kubectl get ...
 kga             -- kubectl get all
 kgan            -- kubectl get all in all namespaces
+kd              -- kubectl describe
 kxl             -- list contexts
 knl             -- list namespaces
 kx <context>    -- switch context ...
+kxs <context>   -- set \$KUBE_CONTEXT
 kn <namespace>  -- switch namespace ...
 klf <pod>       -- follow logs
 kat <pod> [cmd] -- attach and run cmd in pod'"
 alias k="kubectl"
 alias kg="kubectl get --show-kind"
+function kgj() { kubectl get -o json $@ | jq . | bat -pl json }
 alias kga="kubectl get all"
 alias kgan="kubectl --all-namespaces=true get all"
+function kd() { kubectl describe ${1} | bat -pl yaml }
 alias kxl="kubectl config get-contexts"
 alias knl="kubectl get namespaces"
 alias kx="kubectl config use-context"

@@ -13,7 +13,7 @@ fpath=(/usr/local/share/zsh-completions /opt/homebrew/share/zsh/site-functions $
 #typeset -u fpath
 
 # Options
-setopt prompt_subst inc_append_history hist_ignore_space hist_ignore_all_dups hist_expire_dups_first hist_find_no_dups hist_save_no_dups hist_reduce_blanks extendedglob nomatch notify dvorak interactive_comments # correct
+setopt prompt_subst append_history hist_ignore_space hist_ignore_all_dups hist_expire_dups_first hist_find_no_dups hist_save_no_dups hist_reduce_blanks extendedglob nomatch notify dvorak interactive_comments # correct
 unsetopt beep
 bindkey -e
 
@@ -53,8 +53,11 @@ esac
 # Paths
 #export LD_LIBRARY_PATH=/opt/csw/lib
 #zsh's path
-export PATH=/usr/sbin:/usr/bin:/sbin:/bin
-export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
+if whence systemctl > /dev/null ; then
+  systemctl --user import-environment PATH
+fi
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+#export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
 prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
 #for dir in $paths ; do
@@ -65,14 +68,14 @@ prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/loc
 #        export MANPATH=$MANPATH:${dir:a:h}/man
 #    fi
 #done
-for dir in $prepaths ; do
-    if [ -d $dir ] ; then
-        export PATH=$dir:$PATH
-    fi
-    if [ -d ${dir:a:h}/man ] ; then
-        export MANPATH=${dir:a:h}/man:$MANPATH
-    fi
-done
+#for dir in $prepaths ; do
+#    if [ -d $dir ] ; then
+#        export PATH=$dir:$PATH
+#    fi
+#    if [ -d ${dir:a:h}/man ] ; then
+#        export MANPATH=${dir:a:h}/man:$MANPATH
+#    fi
+#done
 # Load profiles from /etc/profile.d
 if test -d /etc/profile.d/; then
     for profile in /etc/profile.d/*.sh; do
@@ -105,6 +108,7 @@ fi
 #    export PATH=$PATH:$dir
 #done
 export XDG_DATA_DIRS="$HOME/.local/share:$XDG_DATA_DIRS"
+export CM_DIR="$HOME/.config/clipmenu"
 
 # Setting vars
 #TERM=rxvt
@@ -163,7 +167,16 @@ terraform_wrapper() {
     fi
   fi
 }
-RPROMPT=$'$(terraform_wrapper)$(vcs_info_wrapper)${PTIME}'
+kubectl_wrapper() {
+  if type -p kubectl > /dev/null ; then
+    local k8s_context=$(kubectl config current-context)
+    local k8s_namespace=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.namespace}')
+    if [ -n "$k8s_context" ]; then
+      echo "%{$fg_bold[grey]%}[%{$fg_no_bold[blue]%}${k8s_context}:${k8s_namespace}%{$fg_bold[grey]%}]%{$reset_color%}$del"
+    fi
+  fi
+}
+RPROMPT=$'$(kubectl_wrapper)$(terraform_wrapper)$(vcs_info_wrapper)${PTIME}'
 
 if [ `uname -s` = "SunOS" ] ; then
     export LANG="C"
@@ -295,12 +308,7 @@ EOF
 #  eval "$(command pyenv init - zsh)" # --no-rehash)"
 #fi
 #[ -f ~/.zsh-fuzzy-match/fuzzy-match.zsh ] && source ~/.zsh-fuzzy-match/fuzzy-match.zsh
-if [ -d ~/.asdf ] ; then
-  . $HOME/.asdf/asdf.sh
-  if [ -d $HOME/.asdf/plugins/java ]; then
-    . $HOME/.asdf/plugins/java/set-java-home.zsh
-  fi
-fi
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 enabledotnet() {
   if [ -d ~/.dotnet/tools ] ; then
     # Add .NET Core SDK tools
@@ -312,6 +320,11 @@ enabledotnet() {
 #export PATH=$(go env GOPATH)/bin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# and for nixos
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi
 
 getstageadsktoken() {
   TEMP_TOKEN=$(echo -n ${ADSK_HUNNER_STG_CLI_CLIENT_ID}:${ADSK_HUNNER_STG_CLI_CLIENT_SECRET} | base64)
@@ -382,6 +395,7 @@ fi
 [ ! -s /home/hunner/.travis/travis.sh ] || source /home/hunner/.travis/travis.sh
 
 #eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi
