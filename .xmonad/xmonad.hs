@@ -208,6 +208,7 @@ mManageHook = composeAll
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
+    , className =? ".alsa-scarlett-gui-wrapped" --> doFloat
     , isFullscreen                  --> doFullFloat ]
 
 ------------------------------------------------------------------------

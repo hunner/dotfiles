@@ -73,6 +73,7 @@ alias ry="vim -R +'set ft=yaml'"
 alias superscript="tr '+−=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ' \
                       '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';"
 alias resize="printf '\33]50;%s%d\007' 'xft:DroidSansMonoDotted:pixelsize=' $1" # ':antialias=true'"
+alias amp="npx @sourcegraph/amp@latest"
 #alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias asdfg="setxkbmap us dvorak ctrl:nocaps"
 kinesis_activate() {
@@ -289,7 +290,8 @@ alias grs="git restore --staged "
 alias dvh="echo 'dvt <lang> -- create a local dev template
 dva <lang> -- add a dev template
 dvr <lang> -- remove a dev template
-dvl        -- list dev templates'"
+dvl        -- list dev templates'
+dvs        -- create a dev shell"
 function dvt() {
   [ -z $1 ] && echo 'usage: dvt <lang>' && return 1
   [ -f ".envrc" ] && echo "Already using a dev template." && return 1
@@ -347,7 +349,7 @@ let
   #  config.allowUnfree = true;
   #};
 in pkgs.mkShell {
-  packages = [
+  packages = with pkgs; [
   ];
 }
 EOF
@@ -393,25 +395,34 @@ alias tfs="terraform state"
 
 
 # K8s
-alias kubectl="kubectl --context \${KUBE_CONTEXT:-\$(command kubectl config current-context)}"
+alias kubectl="kubectl --context \${KUBE_CONTEXT:-\$(command kubectl config current-context 2>/dev/null)}"
 alias kh="echo 'k               -- kubectl
-kg              -- kubectl get ...
+kg <obj>        -- kubectl get obj
+kgp <pod>       -- kubectl get pod
+kgj <obj>       -- kubectl get obj in json
+kgs <secret> <name> -- kubectl get secret by name
+kd <obj>        -- kubectl describe obj
 kga             -- kubectl get all
 kgan            -- kubectl get all in all namespaces
-kd              -- kubectl describe
 kxl             -- list contexts
 knl             -- list namespaces
 kx <context>    -- switch context ...
 kxs <context>   -- set \$KUBE_CONTEXT
 kn <namespace>  -- switch namespace ...
 klf <pod>       -- follow logs
-kat <pod> [cmd] -- attach and run cmd in pod'"
+kat <pod> [cmd] -- attach and run cmd in pod
+ks [image] [cmd -- start a new temporary pod'"
 alias k="kubectl"
 alias kg="kubectl get --show-kind"
+alias kgp="kubectl get pod --show-kind"
+function kgs() {
+  [ -z $1 ] && echo 'usage: kgs <secret> <name>' && return 1
+  kubectl get secret $1 -o jsonpath="{.data.$2}" | base64url::decode
+}
 function kgj() { kubectl get -o json $@ | jq . | bat -pl json }
+function kd() { kubectl describe ${1} | bat -pl yaml }
 alias kga="kubectl get all"
 alias kgan="kubectl --all-namespaces=true get all"
-function kd() { kubectl describe ${1} | bat -pl yaml }
 alias kxl="kubectl config get-contexts"
 alias knl="kubectl get namespaces"
 alias kx="kubectl config use-context"
@@ -422,6 +433,9 @@ function kat() {
   [ -z $1 ] && echo 'usage: kat <pod> [cmd]' && return 1
   cmd=$2 && [ -z $2 ] && cmd="/bin/sh"
   kubectl exec --stdin --tty $1 -- $cmd ${@:3}
+}
+function ks() {
+  kubectl run my-shell --rm -i --tty --image ${1:-alpine} -- ${2:-sh}
 }
 #alias im='eval $(minikube docker-env)'
 alias rdk="relay dev kubectl"
