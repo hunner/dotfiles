@@ -124,6 +124,9 @@ export GPGKEY="0x1CED67750173FC1C"
 if [ -f ~/.zsh/private ] ; then
   source ~/.zsh/private
 fi
+if [ -f ~/.zsh/secrets ] ; then
+  source ~/.zsh/secrets
+fi
 export NETHACKOPTIONS='autopickup,color,!cmdassist,!number_pad,hilite_pet,boulder:0,pickup_types:$"=/!?+,menustyle:partial,!legacy,suppress_alert:3.3.1'
 export DEV_ROOT="$HOME/Documents/work/git/"
 # This causes messages on every start without java installed
@@ -169,7 +172,10 @@ terraform_wrapper() {
 }
 kubectl_wrapper() {
   if type -p kubectl > /dev/null ; then
-    local k8s_context=$(kubectl config current-context)
+    local k8s_context=$(kubectl config current-context 2> /dev/null)
+    if [ -z "$k8s_context" ]; then
+      return
+    fi
     local k8s_namespace=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.namespace}')
     if [ -n "$k8s_context" ]; then
       echo "%{$fg_bold[grey]%}[%{$fg_no_bold[blue]%}${k8s_context}:${k8s_namespace}%{$fg_bold[grey]%}]%{$reset_color%}$del"
@@ -378,6 +384,8 @@ prodidlookup() {
 # }
 # alias nvm-lts="load-nvm && nvm install lts/* --latest-npm ----reinstall-packages-from=node && nvm alias default lts/*"
 # alias nvm-latest="load-nvm && nvm install node --latest-npm ----reinstall-packages-from=node && nvm alias default node"
+
+[ -f ~/.shellfishrc ] && source ~/.shellfishrc
 
 # added by travis gem
 [ -f /Users/hunner/.travis/travis.sh ] && source /Users/hunner/.travis/travis.sh
