@@ -36,6 +36,7 @@ xset s 1200
 #xss-lock -- slock &
 #xss-lock -- xlock -echokeys -usefirst &
 #xscreensaver &
+bluetooth-autolock.sh &
 
 
 exec xmonad
