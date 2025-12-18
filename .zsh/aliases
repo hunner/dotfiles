@@ -228,11 +228,20 @@ alias vd=${VIM}diff
 alias vir=vr
 alias vis=vs
 alias gvim="gvim -font 'APL385 Unicode 8' -c 'set keymap=uniapl385'"
-alias n=lvim
+#alias n=lvim
+alias n=nvim
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
+alias j=just
+alias song="yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail"
 
 
 # Emacs
+alias eh="echo 'e          -- emacs -nw -- in terminal
+eq         -- emacs -nw -q -- no init file
+et         -- emacsclient -t -- terminal
+ec         -- emacsclient -c -- new frame
+ed         -- emacsclient --eval (x-display-list) -- list displays
+ecx        -- emacsclient --eval (make-frame-on-display \"$DISPLAY\")'"
 alias e="TERM=xterm-256color emacs -nw"
 alias eq="e -q"
 alias et="TERM=xterm-256color emacsclient -t"
@@ -249,12 +258,14 @@ gc            -- git commit
 gca           -- git commit --amend
 gd            -- git diff
 gdc           -- git diff --cached
+gdf           -- git diff --stat
 gdw           -- git diff --color-words
 ge <branch>   -- git checkout branch
 geb <branch>  -- git checkout -b branch
 gfa           -- git fetch --all --prune
 gl            -- git short log
 gla           -- git short log all
+glf           -- git short log just file names
 gp            -- git push
 gr            -- git remote -v show
 grs <file>    -- git restore --staged file
@@ -266,6 +277,7 @@ gu            -- git pull'"
 alias gs="git status"
 alias gl="git lg"
 alias gla="git lg --all"
+alias glf="git lg --stat"
 alias ge="git checkout"
 alias gesp="git checkout --patch"
 alias geb="git checkout -b"
@@ -274,6 +286,7 @@ alias ga="git add"
 alias gasp="git add --patch"
 alias gd="git diff"
 alias gdc="git diff --cached"
+alias gdf="git diff --stat"
 alias gc="git commit"
 alias gca="git commit --amend"
 alias gfa="git fetch --all --prune"
@@ -301,7 +314,7 @@ function dvt() {
 function dva() {
   [ -z $1 ] && echo 'usage: dva <lang>' && return 1
   [ -z $(dvl $1) ] && echo "Dev template $1 not found." && return 1
-  echo "use flake \"github:the-nix-way/dev-templates?dir=$1\"" >> .envrc
+  echo "use flake \"github:the-nix-way/dev-templates?dir=$1\" --no-write-lock-file" >> .envrc
   direnv allow
 }
 function dvr() {
@@ -310,7 +323,7 @@ function dvr() {
   if ! grep -q "github:the-nix-way/dev-templates?dir=$1" .envrc; then
     echo "Dev template $1 not found." && return 1
   fi
-  sed -i "/use flake \"github:the-nix-way\/dev-templates?dir=$1\"/d" .envrc
+  sed -i "/use flake \"github:the-nix-way\/dev-templates?dir=$1\" --no-write-lock-file/d" .envrc
   direnv allow
 }
 function dve() {
