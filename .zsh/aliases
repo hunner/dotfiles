@@ -423,6 +423,7 @@ kx <context>    -- switch context ...
 kxs <context>   -- set \$KUBE_CONTEXT
 kn <namespace>  -- switch namespace ...
 klf <pod>       -- follow logs
+klfj <pod>      -- follow logs with json formatting
 kat <pod> [cmd] -- attach and run cmd in pod
 ks [image] [cmd -- start a new temporary pod'"
 alias k="kubectl"
@@ -442,6 +443,10 @@ alias kx="kubectl config use-context"
 function kxs() { export KUBE_CONTEXT="${1}" }
 alias kn="kubectl config set-context --current --namespace"
 alias klf="kubectl logs -f "
+function klfj() {
+  [ -z $1 ] && echo 'usage: klfj <pod>' && return 1
+  kubectl logs -f $@ | bat -ppl json
+}
 function kat() {
   [ -z $1 ] && echo 'usage: kat <pod> [cmd]' && return 1
   cmd=$2 && [ -z $2 ] && cmd="/bin/sh"
