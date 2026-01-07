@@ -172,7 +172,11 @@ terraform_wrapper() {
 }
 kubectl_wrapper() {
   if type -p kubectl > /dev/null ; then
-    local k8s_context=$(kubectl config current-context 2> /dev/null)
+    if [ -z "$KUBE_CONTEXT" ]; then
+      local k8s_context=$(kubectl config current-context 2> /dev/null)
+    else
+      local k8s_context="$KUBE_CONTEXT"
+    fi
     if [ -z "$k8s_context" ]; then
       return
     fi
