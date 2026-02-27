@@ -66,6 +66,31 @@ alias hide="SetFile -a V"
 alias show="SetFile -a v"
 base64url::encode () { base64 -w0 | tr '+/' '-_' | tr -d '='; }
 base64url::decode () { awk '{ if (length($0) % 4 == 3) print $0"="; else if (length($0) % 4 == 2) print $0"=="; else print $0; }' | tr -- '-_' '+/' | base64 -d; }
+jwtio() {
+  [ -z "$1" ] && echo "usage: jwtio '<jwt>'" && return 1
+
+  local token="$1"
+  local header_b64="${token%%.*}"
+  local rest="${token#*.}"
+  local payload_b64="${rest%%.*}"
+  local signature=""
+  [ "$rest" != "$payload_b64" ] && signature="${rest#*.}"
+
+  if [ -z "$header_b64" ] || [ -z "$payload_b64" ]; then
+    echo "invalid jwt: expected <header>.<payload>[.<signature>]" >&2
+    return 1
+  fi
+
+  local header_json payload_json
+  header_json=$(print -rn -- "$header_b64" | base64url::decode) || return 1
+  payload_json=$(print -rn -- "$payload_b64" | base64url::decode) || return 1
+
+  jq -n \
+    --argjson header "$header_json" \
+    --argjson payload "$payload_json" \
+    --arg signature "$signature" \
+    '{header: $header, payload: $payload, signature: $signature}'
+}
 alias whyfail="tmux copy-mode && tmux send-keys -X search-backward 'FAIL'"
 alias m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt m4b-tool'
 alias morserunner="docker-wine --as-me --force-owner --sound=default --cache --volume=/home/hunner/Downloads/morserunner:/data --workdir=/data wine MorseRunner.exe"
