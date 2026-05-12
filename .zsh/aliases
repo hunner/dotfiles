@@ -18,7 +18,7 @@ alias z="TERM=xterm ssh hunner@zabava.cat.pdx.edu"
 alias o="TERM=xterm ssh hunner@osiris.cat.pdx.edu"
 alias m="TERM=xterm ssh hunner@mint.cic.pdx.edu"
 alias p="ping 8.8.8.8"
-alias pi="ping google.com"
+#alias pi="ping google.com"
 alias ph="ping pi.hole"
 alias pa="ping ads.google.com"
 alias pipe=pip # typos
@@ -98,7 +98,8 @@ alias ry="vim -R +'set ft=yaml'"
 alias superscript="tr '+−=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ' \
                       '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';"
 alias resize="printf '\33]50;%s%d\007' 'xft:DroidSansMonoDotted:pixelsize=' $1" # ':antialias=true'"
-alias amp="npx @sourcegraph/amp@latest"
+#alias amp="npx @sourcegraph/amp@latest"
+alias kilo="npx @kilocode/cli@latest"
 #alias asdf="xkbcomp -w0 ~/keymaps/xkb/hunner.xkb $DISPLAY"
 alias asdfg="setxkbmap us dvorak ctrl:nocaps"
 kinesis_activate() {
@@ -242,7 +243,7 @@ else
     VIM=vi
 fi
 export VISUAL="$VIM -f"
-export EDITOR="$VIM -f"
+export EDITOR="$VIM"
 alias vh="mvim -c 'au VimLeave * maca hide:'"
 alias vi=$VIM
 alias vim=$VIM
@@ -294,6 +295,7 @@ glf           -- git short log just file names
 gp            -- git push
 gr            -- git remote -v show
 grs <file>    -- git restore --staged file
+grim          -- git rebase -i origin/main
 gs            -- git status
 gst           -- git stash
 gstp          -- git stash pop
@@ -316,6 +318,8 @@ alias gc="git commit"
 alias gca="git commit --amend"
 alias gfa="git fetch --all --prune"
 alias gr="git remote -v show"
+alias grs="git restore --staged "
+alias grim="git rebase -i origin/main"
 alias gp="git push"
 alias gu="git pull"
 alias gst="git stash"
@@ -323,7 +327,6 @@ alias gstp="git stash pop"
 alias gdw="git diff --color-words"
 alias gk="gitk --all&"
 alias gx="gitx --all"
-alias grs="git restore --staged "
 
 alias dvh="echo 'dvt <lang> -- create a local dev template
 dva <lang> -- add a dev template
@@ -419,7 +422,8 @@ function dr() {
   cmd=$2 && [ -z $2 ] && cmd="/bin/bash"
   docker run -it --rm $1 $cmd ${@:3}
 }
-alias d-c="docker-compose"
+alias d-c="docker compose"
+alias hx="hagent -x "
 
 # Terraform
 alias tfh="echo 'tf  -- terraform
@@ -433,7 +437,7 @@ alias tfs="terraform state"
 
 
 # K8s
-alias kubectl="kubectl --context \${KUBE_CONTEXT:-\$(command kubectl config current-context 2>/dev/null)}"
+alias kubectl="kubectl --context \${KUBE_CONTEXT:-\$(command kubectl config current-context 2>/dev/null)} --namespace \"\${KUBE_NAMESPACE:-\$(command kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)}\""
 alias kh="echo 'k               -- kubectl
 kg <obj>        -- kubectl get obj
 kgp <pod>       -- kubectl get pod
@@ -447,6 +451,7 @@ knl             -- list namespaces
 kx <context>    -- switch context ...
 kxs <context>   -- set \$KUBE_CONTEXT
 kn <namespace>  -- switch namespace ...
+kns <namespace> -- set \$KUBE_NAMESPACE
 klf <pod>       -- follow logs
 klfj <pod>      -- follow logs with json formatting
 kat <pod> [cmd] -- attach and run cmd in pod
@@ -466,7 +471,11 @@ alias kxl="kubectl config get-contexts"
 alias knl="kubectl get namespaces"
 alias kx="kubectl config use-context"
 function kxs() { export KUBE_CONTEXT="${1}" }
-alias kn="kubectl config set-context --current --namespace"
+function kns() { export KUBE_NAMESPACE="${1}" }
+function kn() {
+  #if [ -z "$KUBE_NAMESPACE"] ; then
+  kubectl config set-context --current --namespace $1
+}
 alias klf="kubectl logs -f "
 function klfj() {
   [ -z $1 ] && echo 'usage: klfj <pod>' && return 1
@@ -486,18 +495,59 @@ alias openapi="echo 'Serving ReDoc at http://localhost:8080' && docker run -it -
 
 
 # Pathing
-export GO_DEV_ROOT="${DEV_ROOT}/go/src/github.com/puppetlabs"
-alias gor="cd $GO_DEV_ROOT"
-alias rapi="cd $GO_DEV_ROOT/relay-api"
-alias rui="cd $GO_DEV_ROOT/relay-ui"
-alias rcli="cd $GO_DEV_ROOT/relay"
-alias djm="cd $DEV_ROOT/DistelliJavaModels"
-alias k8s="cd $DEV_ROOT/K8SDashboard"
-alias pwf="cd $DEV_ROOT/pfc-web-framework"
-alias pvs="cd $DEV_ROOT/pipelines-version-set"
-alias pfc="cd $DEV_ROOT/PipelinesForContainers"
-alias apm="cd $DEV_ROOT/AppPipelineManager"
-alias aem="cd $DEV_ROOT/AppEventsManager"
-alias dwu="cd $DEV_ROOT/DistelliWebUi"
-alias pac="cd $DEV_ROOT/PipelinesAsCode"
-alias hm="cd $DEV_ROOT/HelmManager"
+#export GO_DEV_ROOT="${DEV_ROOT}/go/src/github.com/puppetlabs"
+#alias gor="cd $GO_DEV_ROOT"
+#alias rapi="cd $GO_DEV_ROOT/relay-api"
+#alias rui="cd $GO_DEV_ROOT/relay-ui"
+#alias rcli="cd $GO_DEV_ROOT/relay"
+#alias djm="cd $DEV_ROOT/DistelliJavaModels"
+#alias k8s="cd $DEV_ROOT/K8SDashboard"
+#alias pwf="cd $DEV_ROOT/pfc-web-framework"
+#alias pvs="cd $DEV_ROOT/pipelines-version-set"
+#alias pfc="cd $DEV_ROOT/PipelinesForContainers"
+#alias apm="cd $DEV_ROOT/AppPipelineManager"
+#alias aem="cd $DEV_ROOT/AppEventsManager"
+#alias dwu="cd $DEV_ROOT/DistelliWebUi"
+#alias pac="cd $DEV_ROOT/PipelinesAsCode"
+#alias hm="cd $DEV_ROOT/HelmManager"
+alias hin="cd ${DEV_ROOT}/hindex"
+
+# Use separate `agents` user for running AI agents
+alias ah="echo 'agents                -- run an agent command as the agents user
+scodex                 -- run codex as the agents user, bypassing approvals and sandbox
+sclaude                -- run claude as the agents user, skipping permissions
+sopencode              -- run opencode as the agents user
+ad                     -- cd to ~agents
+aw                     -- cd to ~agents/validmind
+abk                    -- cd to ~agents/validmind/backend'"
+alias agents="sudo -u agents -i"
+alias scodex="agents codex --dangerously-bypass-approvals-and-sandbox"
+alias sclaude="agents claude --dangerously-skip-permissions"
+alias sopencode="agents opencode"
+alias ad="cd ~agents"
+alias aw="cd ~agents/validmind"
+alias abk="cd ~agents/validmind/backend"
+
+alias dcodex="codex --dangerously-bypass-approvals-and-sandbox"
+alias dclaude="claude --dangerously-skip-permissions"
+
+function op_set() {
+  if [ "$#" -ne 1 ]; then
+    echo "Usage: op_add <title>"
+    return 1
+  fi
+  echo -n "Value: "
+  read -s password
+  if op item get --account haugens --vault shell --fields password "$1" > /dev/null 2>&1; then
+    op item edit --account haugens --vault shell "$1" "password=$password"
+  else
+    op item create --account haugens --vault shell --category login --title "$1" "password=$password"
+  fi
+}
+function op_get() {
+  if [ "$#" -ne 1 ]; then
+    echo "Usage: op_get <title>"
+    return 1
+  fi
+  op item get --account haugens --vault shell --fields password --reveal "$1" 2>/dev/null
+}
