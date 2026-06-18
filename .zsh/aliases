@@ -278,7 +278,7 @@ alias ecx="emacsclient --eval '(make-frame-on-display \"$DISPLAY\")'"
 
 
 # Git
-alias gh="echo 'ga <file>     -- git add file
+alias ghelp="echo 'ga <file>     -- git add file
 gb            -- git branch
 gc            -- git commit
 gca           -- git commit --amend
@@ -295,7 +295,7 @@ glf           -- git short log just file names
 gp            -- git push
 gr            -- git remote -v show
 grs <file>    -- git restore --staged file
-grim          -- git rebase -i origin/main
+grom          -- git rebase -i origin/main
 gs            -- git status
 gst           -- git stash
 gstp          -- git stash pop
@@ -319,7 +319,7 @@ alias gca="git commit --amend"
 alias gfa="git fetch --all --prune"
 alias gr="git remote -v show"
 alias grs="git restore --staged "
-alias grim="git rebase -i origin/main"
+alias grom="git rebase -i origin/main"
 alias gp="git push"
 alias gu="git pull"
 alias gst="git stash"
@@ -531,6 +531,7 @@ alias abk="cd ~agents/validmind/backend"
 alias dcodex="codex --dangerously-bypass-approvals-and-sandbox"
 alias dclaude="claude --dangerously-skip-permissions"
 
+# 1Password
 function op_set() {
   if [ "$#" -ne 1 ]; then
     echo "Usage: op_add <title>"
@@ -551,3 +552,46 @@ function op_get() {
   fi
   op item get --account haugens --vault shell --fields password --reveal "$1" 2>/dev/null
 }
+function op_list() {
+  op item list --account haugens --vault shell --format json | jq -r '.[].title'|sort
+}
+
+# Codex
+#alias codex_profile_list="ls -d ~/.codex-*| sed -r 's/.*\.codex-(.+)\//\1/'"
+function codex_profile_list() {
+  #active_profile=$(ls -ld ~/.codex|awk -F '->' '{print $2}'|sed -r 's/.*\.codex-(.+)\//\1/')
+  #active_profile=
+  #for profile in ~/.codex-*; do
+  #  profile_name=$(basename "$profile" | sed 's/.*\.codex-//g')
+  #  if [ "$profile_name" = "$active_profile" ]; then
+  #    echo "* $profile_name"
+  #  else
+  #    echo "  $profile_name"
+  #  fi
+  #done
+  echo "active profile: $CODEX_HOME"
+  ls -d ~/.codex-*
+}
+function codex_profile_switch() {
+  if [ "$#" -ne 1 ]; then
+    echo "Usage: codex_profile_switch <profile_name>"
+    return 1
+  fi
+  if [ ! -d ~/.codex-$1 ]; then
+    echo "Profile not found. Available profiles:"
+    codex_profile_list
+    return 1
+  fi
+  #unlink ~/.codex 2>/dev/null && ln -s ~/.codex-$1 ~/.codex
+  #if [ $? -ne 0 ]; then
+  #  echo "Failed to switch profile. Please check permissions and try again."
+  #  return 1
+  #fi
+  export CODEX_HOME="/home/hunner/.codex-${1}"
+  echo "Switched to Codex profile: $1"
+}
+alias cpl="codex_profile_list"
+alias cps="codex_profile_switch"
+alias codex-use="codex_profile_switch"
+
+alias ,='source /home/hunner/local/bin/,'

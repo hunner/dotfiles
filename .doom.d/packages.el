@@ -51,8 +51,8 @@
 
 (package! puppet-mode)
 
-(package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+;(package! copilot
+;  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 (package! ox-jira
   :recipe (:host github :repo "stig/ox-jira.el" :files ("*.el")))

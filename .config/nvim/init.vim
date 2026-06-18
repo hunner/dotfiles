@@ -82,6 +82,9 @@ Plug 'kburdett/vim-nuuid'
 " Format js prettier
 Plug 'sbdchd/neoformat'
 
+" All langs
+Plug 'sheerun/vim-polyglot'
+
 " Various langs
 Plug 'rodjek/vim-puppet'
 Plug 'keith/swift.vim'
@@ -89,7 +92,7 @@ Plug 'darfink/vim-plist'
 Plug 'vim-ruby/vim-ruby'
 Plug 'thoughtbot/vim-rspec'
 Plug 'hashivim/vim-terraform'
-Plug 'vim-syntastic/syntastic'
+Plug 'dense-analysis/ale'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'chrisbra/csv.vim'
 Plug 'wlangstroth/vim-racket'
@@ -107,8 +110,35 @@ Plug 'zpieslak/vim-autofix'
 Plug 'juvenn/mustache.vim'
 Plug 'github/copilot.vim'
 Plug 'hunner/vim-beancount'
+Plug 'Coacher/vim-virtualenv'
 Plug 'prisma/vim-prisma'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'seanyeh/talon.vim'
+
+" " AI stuff
+" Plug 'ravitemer/mcphub.nvim'
+" 
+" " Aaaall avante stuff
+" " Deps
+" Plug 'nvim-treesitter/nvim-treesitter'
+" Plug 'stevearc/dressing.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'MunifTanjim/nui.nvim'
+" Plug 'MeanderingProgrammer/render-markdown.nvim'
+" 
+" " Optional deps
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'nvim-tree/nvim-web-devicons' "or Plug 'echasnovski/mini.icons'
+" Plug 'HakonHarnes/img-clip.nvim'
+" Plug 'zbirenbaum/copilot.lua'
+" 
+" " Yay, pass source=true if you want to build from source
+" Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
+" "autocmd! User avante.nvim lua << EOF
+" "require('avante').setup()
+" "EOF
+" End of Avante
+
 call plug#end()
 
 " Because.
@@ -132,6 +162,7 @@ noremap <Leader>v :GFiles<CR>
 " TODO I'd like to merge the history / buffers list
 noremap <Leader>b :Buffers<CR>
 noremap <Leader>h :History<CR>
+noremap <Leader>r :History<CR>
 noremap <Leader>gc :Commits<CR>
 noremap <Leader>gb :BCommits<CR>
 noremap <Leader>c :ChangeDir<CR>
@@ -293,6 +324,11 @@ autocmd QuickFixCmdPost * botright cwindow 6
 noremap -  :lnext<CR>
 noremap _  :lprev<CR>
 " See ToggleLocationList below
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
+let g:ale_open_list = 0
+let g:ale_keep_list_window_open = 0
+let g:ale_jump_to_first_issue = 0
 
 " Only lint when leaving insert or changing text in command mode
 call neomake#configure#automake({
@@ -476,15 +512,36 @@ endif
 
 
 " {{{ Adding some terraform stuff
-" Syntastic Config
+function! ALEStatus() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:errors = l:counts.error + l:counts.style_error
+  let l:warnings = l:counts.warning + l:counts.style_warning
+
+  if l:errors > 0
+    return printf('E:%d W:%d', l:errors, l:warnings)
+  endif
+
+  if l:warnings > 0
+    return printf('W:%d', l:warnings)
+  endif
+
+  return ''
+endfunction
+
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%{ALEStatus()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+\  'go': ['gopls'],
+\  'terraform': ['terraform', 'tflint'],
+\}
+let g:ale_fix_on_save = 0
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_save = 1
 
 " (Optional)Remove Info(Preview) window
 set completeopt-=preview
@@ -493,8 +550,8 @@ set completeopt-=preview
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-" (Optional) Enable terraform plan to be include in filter
-let g:syntastic_terraform_tffilter_plan = 1
+" (Optional) Enable terraform plan support in ALE's terraform linter
+let g:ale_terraform_terraform_use_plan = 1
 
 " (Optional) Default: 0, enable(1)/disable(0) plugin's keymapping
 let g:terraform_completion_keys = 1
@@ -508,6 +565,7 @@ let g:terraform_registry_module_completion = 0
 "call deoplete#initialize()
 " }}} end terraform
 "source ~/.config/nvim/tf.lua
+source ~/.config/nvim/lua/config/lspconfig.lua
 
 " CoC stuff
 set updatetime=300 " faster than 4000ms
@@ -537,14 +595,14 @@ nmap <silent> gr <Plug>(coc-references)
 " Use ,b to jump with ace jump
 
 " beancount macros
-"au BufRead,BufNewFile *.beancount,*.bean python3 import sys; sys.path.append('<venv path>/lib/python3.12/site-packages'); import beancount; sys.path.pop()
+au BufRead,BufNewFile *.beancount,*.bean python3 import sys; sys.path.append('.venv/lib/python3.12/site-packages'); import beancount; sys.path.pop()
 au BufReadPost,BufNewFile *.beancount,*.bean
   \ setlocal omnifunc=beancount#complete |
-  \ let @f = 'joExpenses:Megs:Foodjj0zz' |
-  \ let @o = 'joExpenses:Megs:Otherjj0zz' |
-  \ let @p = 'joExpenses:Needs:Petroljj0zz' |
-  \ let @b = 'joAssets:ZeroSum:BankTransferjj0zz' |
-  \ let @w = 'kkkkA #wrong-cardjjjj'
+  \ let @f = 'joExpenses:Megs:Foodjjj0zz' |
+  \ let @o = 'joExpenses:Megs:Otherjjj0zz' |
+  \ let @p = 'joExpenses:Needs:Petroljjj0zz' |
+  \ let @b = 'joAssets:ZeroSum:BankTransferjjj0zz' |
+  \ let @w = 'kkkkA #wrong-cardjjjjj'
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call ShowDocumentation()<CR>

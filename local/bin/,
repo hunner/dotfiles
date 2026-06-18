@@ -1,0 +1,77 @@
+#!/usr/bin/env zsh
+# , - describe what you want and get a shell command suggestion
+#
+# Usage:  , <description>
+# Example:  , find the 5 largest files
+#
+# When sourced from zsh, the generated command is inserted into the next prompt.
+# Example zshrc setup:
+#   alias ,='source /home/hunner/local/bin/,'
+
+__comma_sourced=false
+[[ ${ZSH_EVAL_CONTEXT:-} == *:file ]] && __comma_sourced=true
+# In zsh, $0 inside a function expands to the function name; %x is the script being sourced/executed.
+__comma_script_path="${${(%):-%x}:a}"
+
+__comma_main() {
+  if ! command -v pi &>/dev/null; then
+    echo "\`pi\` not found." >&2
+    return 1
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: , <description of what you want to do>" >&2
+    return 1
+  fi
+
+  local desc="$*"
+
+  # Ensure the questions working directory exists
+  local qdir="$HOME/.questions"
+  [[ -d "$qdir" ]] || mkdir -p "$qdir"
+
+  local system_prompt="You are a shell command suggestion engine running in a ZSH terminal on $(uname -s). Given the user's description of what they want to do, output exactly one shell command - the best one - with no numbering, no explanation, no markdown, no backticks. Just the raw command on a single line."
+
+  local generated_command
+  generated_command=$(cd "$qdir" && pi --print -p --no-tools --thinking off \
+    --system-prompt "$system_prompt" "$desc" 2>/dev/null)
+
+  if [[ $? -ne 0 || -z "$generated_command" ]]; then
+    echo "Failed." >&2
+    return 1
+  fi
+
+  # Strip backticks just in case
+  generated_command="${generated_command//\`/}"
+  # Strip leading/trailing whitespace
+  generated_command="${generated_command## }"
+  generated_command="${generated_command%% }"
+
+  if [ `uname -s` = "Darwin" ]; then
+     echo -n "$generated_command" | pbcopy
+  elif command -v xclip &>/dev/null; then
+     echo -n "$generated_command" | xclip -selection clipboard
+  else
+    # No clipboard tool found, just print the command
+  fi
+
+  if $__comma_sourced; then
+    print -z -- "$generated_command"
+    return 0
+  fi
+
+  echo "$generated_command"
+  print -P "%F{yellow}| Tip:%f add %F{cyan}alias ,='source $__comma_script_path'%f to ~/.zshrc to put it directly on the next prompt."
+}
+
+__comma_main "$@"
+__comma_status=$?
+unfunction __comma_main
+
+if $__comma_sourced; then
+  unset __comma_sourced __comma_script_path
+  return $__comma_status
+else
+  unset __comma_sourced __comma_script_path
+  exit $__comma_status
+fi

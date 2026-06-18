@@ -74,6 +74,8 @@ mKeys = [ ("M-S-n"   , sendMessage MirrorShrink  ) -- Expand current window
         -- Sticky/unsticky windows (does not work on workspaces created after the fact)
         , ("M-a"  , windows copyToAll)  -- Copy focused window to all workspaces
         , ("M-S-a", killAllOtherCopies) -- Uncopy focused window from all workspaces
+        , ("M-C-S-q", io (exitWith ExitSuccess)) -- Quit xmonad, but not as easy to hit by accident
+        , ("M-S-q", spawn "xmonad --recompile; xmonad --restart") -- Recompile and restart xmonad
 
         -- Goes to window or bring up window
         --, ("M-S-g", gotoMenu)
@@ -165,7 +167,7 @@ gsConfig = def
 -- Layouts:
 
 --mLayout = smartBorders Full ||| tiled ||| hintedTile Wide ||| simplestFloat ||| Circle ||| magnifier Circle
-mLayout = Mirror tiled ||| tiled ||| smartBorders Full ||| simplestFloat
+mLayout = Mirror tiled ||| tiled ||| smartBorders Full
   where
      -- default tiling algorithm partitions the screen into two panes
      --tiled   = Tall nmaster delta ratio
@@ -199,6 +201,7 @@ mManageHook = composeAll
     , className =? "Pidgin"         --> doFloat
     , className =? "mangclient"     --> doFloat
     , className =? "CellWriter"     --> doFloat
+    , title     =? "Kooha"          --> doFloat
     , className =? "Gvba"           --> doFloat
     , className =? "Thunar"         --> doFloat
     , className =? "feh"            --> doFloat
@@ -208,7 +211,16 @@ mManageHook = composeAll
     , className =? "Cellwriter"     --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
+    , isInProperty "_NET_WM_WINDOW_TYPE" "_NET_WM_WINDOW_TYPE_NOTIFICATION" --> doIgnore
+    , isInProperty "_NET_WM_WINDOW_TYPE" "_NET_WM_WINDOW_TYPE_UTILITY" <&&>
+    fmap not (className =? "firefox-dev") --> doIgnore
+    , isInProperty "_NET_WM_WINDOW_TYPE" "_NET_WM_WINDOW_TYPE_UTILITY" <&&>
+    (className =? "firefox-dev") --> doFloat
     , className =? ".alsa-scarlett-gui-wrapped" --> doFloat
+    , title =? "Recording"          --> doIgnore
+    , className =? "Plus42dec"      --> doFloat
+    , className =? "Plus42bin"      --> doFloat
+    , title     =? "Plus 42 Decmial" --> doFloat
     , isFullscreen                  --> doFullFloat ]
 
 ------------------------------------------------------------------------

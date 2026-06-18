@@ -57,3 +57,6 @@ y = -2
 
 [font.normal]
 family = "LiterationMono Nerd Font"
+
+[keyboard]
+bindings = [{ key = "Return", mods = "Shift", chars = "\u001b\r" }]

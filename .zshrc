@@ -19,7 +19,7 @@ bindkey -e
 
 zstyle ':completion:*' completer _complete
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-autoload -Uz compinit colors vcs_info select-word-style promptinit && colors && promptinit
+autoload -Uz compinit colors vcs_info select-word-style promptinit add-zsh-hook && colors && promptinit
 compinit -u
 
 zstyle :compinstall filename '~/.zshenv'
@@ -43,6 +43,17 @@ case "$TERM" in
     rxvt-256color) export TERM=rxvt;;
 esac
 
+set_workspace_umask() {
+  if [[ "$PWD" == /home/agents/validmind || "$PWD" == /home/agents/validmind/* ]]; then
+    umask 0002
+  else
+    umask 0022
+  fi
+}
+
+add-zsh-hook chpwd set_workspace_umask
+set_workspace_umask
+
 # Go lang stuff
 #export GOPATH=$HOME/Documents/work/git/go
 #if whence go > /dev/null ; then
@@ -59,7 +70,8 @@ fi
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 #export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
-prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
+#prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
+prepaths=(~/.config/emacs/bin /opt/homebrew/bin ~/.local/bin ~/local/talon ~/local/bin ~/local/sbin)
 #for dir in $paths ; do
 #    if [ -d $dir ] ; then
 #        export PATH=$PATH:$dir
@@ -68,14 +80,14 @@ prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/loc
 #        export MANPATH=$MANPATH:${dir:a:h}/man
 #    fi
 #done
-#for dir in $prepaths ; do
-#    if [ -d $dir ] ; then
-#        export PATH=$dir:$PATH
-#    fi
-#    if [ -d ${dir:a:h}/man ] ; then
-#        export MANPATH=${dir:a:h}/man:$MANPATH
-#    fi
-#done
+for dir in $prepaths ; do
+    if [ -d $dir ] ; then
+        export PATH=$dir:$PATH
+    fi
+    if [ -d ${dir:a:h}/man ] ; then
+        export MANPATH=${dir:a:h}/man:$MANPATH
+    fi
+done
 # Load profiles from /etc/profile.d
 if test -d /etc/profile.d/; then
     for profile in /etc/profile.d/*.sh; do
@@ -180,7 +192,11 @@ kubectl_wrapper() {
     if [ -z "$k8s_context" ]; then
       return
     fi
-    local k8s_namespace=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.namespace}')
+    if [ -z "$KUBE_NAMESPACE" ]; then
+      local k8s_namespace=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.namespace}')
+    else
+      local k8s_namespace="$KUBE_NAMESPACE"
+    fi
     if [ -n "$k8s_context" ]; then
       echo "%{$fg_bold[grey]%}[%{$fg_no_bold[blue]%}${k8s_context}:${k8s_namespace}%{$fg_bold[grey]%}]%{$reset_color%}$del"
     fi
@@ -418,3 +434,7 @@ if [ -f '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/hunner/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/hunner/.lmstudio/bin"
+# End of LM Studio CLI section

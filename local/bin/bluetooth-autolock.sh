@@ -2,7 +2,7 @@
 
 # Default configuration
 DEVICE_MAC="dc:10:57:6e:26:6b"  # Replace with your iPhone MAC
-DEFAULT_RSSI_THRESHOLD=-10      # Default RSSI threshold in dBm
+DEFAULT_RSSI_THRESHOLD=-14      # Default RSSI threshold in dBm
 DEFAULT_CHECK_INTERVAL=10       # Default check interval in seconds
 
 # Initialize variables with defaults

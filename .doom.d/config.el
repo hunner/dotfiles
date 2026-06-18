@@ -131,3 +131,66 @@ diff.
              template-file-regex
              nil
              (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d)))))))))
+
+;; allow using a bookmarklet from firefox to save links to org-mode
+;;  Create ~/.local/share/applications/org-protocol.desktop
+;; ```
+;; [Desktop Entry]
+;; Name=Org Protocol
+;; Exec=emacsclient %u
+;; Type=Application
+;; Terminal=false
+;; MimeType=x-scheme-handler/org-protocol;
+;; ```
+;;
+;; Then run: `xdg-mime default org-protocol.desktop x-scheme-handler/org-protocol`
+;; Create a Firefox bookmarklet:
+;; `javascript:location.href='org-protocol://capture?template=L&url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title);`
+(require 'org-protocol)
+(setq org-capture-templates
+      '(("L" "Link" entry (file+headline "~/org/links.org" "Uncategorized")
+         "** [[%:link][[%<%Y-%m-%d %a %H:%M>]]]\t:links:\n%:description\n" :immediate-finish t)))
+
+;; Keep Org typing responsive: debounce Org indent refresh and disable org-appear.
+(after! org
+  (defvar-local my/org-indent-refresh-timer nil)
+  (defvar-local my/org-indent-refresh-beg nil)
+  (defvar-local my/org-indent-refresh-end nil)
+
+  (defun my/org-indent-run-refresh (buffer)
+    (when (buffer-live-p buffer)
+      (with-current-buffer buffer
+        (setq my/org-indent-refresh-timer nil)
+        (when (and org-indent-mode my/org-indent-refresh-beg my/org-indent-refresh-end)
+          (let ((beg my/org-indent-refresh-beg)
+                (end my/org-indent-refresh-end))
+            (setq my/org-indent-refresh-beg nil
+                  my/org-indent-refresh-end nil)
+            (org-indent-refresh-maybe beg end 0))))))
+
+  (defun my/org-indent-refresh-debounced (beg end _len)
+    (when org-indent-mode
+      (setq my/org-indent-refresh-beg
+            (if my/org-indent-refresh-beg
+                (min my/org-indent-refresh-beg beg)
+              beg)
+            my/org-indent-refresh-end
+            (if my/org-indent-refresh-end
+                (max my/org-indent-refresh-end end)
+              end))
+      (when (timerp my/org-indent-refresh-timer)
+        (cancel-timer my/org-indent-refresh-timer))
+      (setq my/org-indent-refresh-timer
+            (run-with-idle-timer 0.25 nil #'my/org-indent-run-refresh (current-buffer)))))
+
+  (defun my/enable-debounced-org-indent ()
+    (org-indent-mode 1)
+    (remove-hook 'after-change-functions #'org-indent-refresh-maybe t)
+    (add-hook 'after-change-functions #'my/org-indent-refresh-debounced nil t)
+    (when (fboundp 'org-appear-mode)
+      (org-appear-mode -1)))
+
+  (setq org-startup-indented nil)
+  (remove-hook 'org-mode-hook #'org-indent-mode)
+  (remove-hook 'org-mode-hook #'org-appear-mode)
+  (add-hook 'org-mode-hook #'my/enable-debounced-org-indent))

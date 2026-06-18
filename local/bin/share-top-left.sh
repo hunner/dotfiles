@@ -8,7 +8,7 @@ if ! command -v xrandr >/dev/null 2>&1; then
 fi
 
 exec xrandr \
-  --output eDP \
+  --output DisplayPort-3 \
   --mode 2560x1600 \
   --pos 0x0 \
   --scale-from 1440x1280
