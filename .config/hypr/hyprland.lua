@@ -1,24 +1,130 @@
 -- Hyprland 0.55 Lua config.
 -- https://wiki.hypr.land/Configuring/Start/
 
-local terminal = "alacritty"
+local terminal = "ghostty"
 local fileManager = "dolphin"
 local menu = "rofi -show run"
 local mainMod = "SUPER"
 
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 hl.monitor({ output = "eDP-1", mode = "2560x1600@60", position = "auto", scale = 1.25 })
-hl.monitor({ output = "DP-2", mode = "2560x1440", position = "2560x0", scale = "auto" })
+hl.monitor({ output = "desc:Ugreen Group Ltd. UGREEN 0x20200210", mode = "1440x1280@60", position = "0x2560", scale = 1 })
 hl.monitor({ output = "DP-3", mode = "2560x1440", position = "0x0", scale = "auto" })
-hl.monitor({ output = "DP-4", mode = "2560x1440", position = "0x0", scale = 1 })
+
+-- Willo monitor
+hl.monitor({ output = "DP-4", mode = "2560x1440", position = "0x0", scale = "auto" })
+
+-- Regular
 hl.monitor({ output = "DP-9", mode = "2560x1440", position = "2560x0", scale = "auto" })
 hl.monitor({ output = "DP-10", mode = "2560x1440", position = "0x0", scale = "auto" })
+hl.monitor({ output = "DP-11", mode = "2560x1440", position = "2560x0", scale = "auto" })
+hl.monitor({ output = "DP-12", mode = "2560x1440", position = "0x0", scale = "auto" })
+
+-- Left Rotated
 --hl.monitor({ output = "DP-9", mode = "2560x1440", position = "1440x0", scale = "auto" })
 --hl.monitor({ output = "DP-10", mode = "2560x1440", position = "0x0", scale = "auto", transform = 3 })
---hl.monitor({ output = "DP-11", mode = "2560x1440", position = "2560x0", scale = "auto" })
---hl.monitor({ output = "DP-12", mode = "2560x1440", position = "0x0", scale = "auto" })
-hl.monitor({ output = "DP-11", mode = "2560x1440", position = "1440x0", scale = "auto" })
-hl.monitor({ output = "DP-12", mode = "2560x1440", position = "0x0", scale = "auto", transform = 3 })
+--hl.monitor({ output = "DP-11", mode = "2560x1440", position = "1440x0", scale = "auto" })
+--hl.monitor({ output = "DP-12", mode = "2560x1440", position = "0x0", scale = "auto", transform = 3 })
+
+local share_mirror_script = "/home/hunner/local/bin/share-mirror.sh"
+local ugreen_desc = "Ugreen Group Ltd. UGREEN"
+local ugreen_monitor_desc = "desc:Ugreen Group Ltd. UGREEN 0x20200210"
+local share_workspace = "name:screenshare"
+
+hl.workspace_rule({
+  workspace = share_workspace,
+  monitor = ugreen_monitor_desc,
+  default = true,
+  persistent = true,
+  gaps_in = 0,
+  gaps_out = 0,
+  no_border = true,
+})
+
+local function is_ugreen_dummy(monitor)
+  return monitor
+    and monitor.description
+    and string.find(monitor.description, ugreen_desc, 1, true) ~= nil
+end
+
+local function ensure_share_workspace(monitor)
+  hl.dispatch(hl.dsp.workspace.move({ workspace = share_workspace, monitor = monitor }))
+end
+
+local function start_share_mirror(monitor)
+  ensure_share_workspace(monitor)
+  hl.timer(function()
+    hl.exec_cmd(share_mirror_script .. " start " .. monitor.name)
+  end, { timeout = 500, type = "oneshot" })
+end
+
+local function stop_share_mirror()
+  hl.exec_cmd(share_mirror_script .. " stop")
+end
+
+local function repair_share_mirror()
+  local mirror = hl.get_window("class:wl-mirror")
+  if mirror == nil then
+    for _, monitor in ipairs(hl.get_monitors()) do
+      if is_ugreen_dummy(monitor) then
+        start_share_mirror(monitor)
+        return
+      end
+    end
+    return
+  end
+
+  local on_share_workspace = mirror.workspace and mirror.workspace.name == "screenshare"
+  if not mirror.fullscreen or not on_share_workspace then
+    hl.dispatch(hl.dsp.window.move({ workspace = share_workspace, window = "class:wl-mirror" }))
+    hl.dispatch(hl.dsp.window.fullscreen({ action = "set", window = "class:wl-mirror" }))
+  end
+end
+
+local function schedule_repair_share_mirror()
+  hl.timer(repair_share_mirror, { timeout = 150, type = "oneshot" })
+end
+
+hl.on("monitor.added", function(monitor)
+  if is_ugreen_dummy(monitor) then
+    start_share_mirror(monitor)
+  end
+end)
+
+hl.on("monitor.removed", function(monitor)
+  if is_ugreen_dummy(monitor) then
+    stop_share_mirror()
+  end
+end)
+
+hl.on("workspace.active", function(workspace)
+  if workspace.name == "screenshare" then
+    local monitor = hl.get_active_monitor()
+    if monitor and not is_ugreen_dummy(monitor) then
+      hl.dispatch(hl.dsp.focus({ workspace = "previous_per_monitor" }))
+      return
+    end
+  end
+  schedule_repair_share_mirror()
+end)
+
+hl.on("window.fullscreen", function(window)
+  if window.class == "wl-mirror" and not window.fullscreen then
+    schedule_repair_share_mirror()
+  end
+end)
+
+hl.on("window.move_to_workspace", function(window)
+  if window.class == "wl-mirror" then
+    schedule_repair_share_mirror()
+  end
+end)
+
+for _, monitor in ipairs(hl.get_monitors()) do
+  if is_ugreen_dummy(monitor) then
+    start_share_mirror(monitor)
+  end
+end
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("quickshell")
@@ -35,6 +141,10 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("wl-paste --watch wl-copy --primary")
   hl.exec_cmd('tmux setenv -g HYPRLAND_INSTANCE_SIGNATURE "$HYPRLAND_INSTANCE_SIGNATURE"')
   hl.exec_cmd("hypridle")
+  -- Soteria must stay alive or 1Password/polkit auth silently breaks (it has
+  -- segfaulted after system updates). Run it as a transient user unit with
+  -- Restart=on-failure; bare --setenv=NAME inherits Hyprland's session env.
+  hl.exec_cmd("sh -c 'systemctl --user stop soteria.service 2>/dev/null; exec systemd-run --user --collect --unit=soteria -p Restart=on-failure -p RestartSec=2 --setenv=XDG_SESSION_ID --setenv=WAYLAND_DISPLAY soteria'")
   hl.exec_cmd("1password --silent")
 end)
 
@@ -145,7 +255,12 @@ hl.bind(mod("SHIFT + Q"), hl.dsp.exit())
 hl.bind(mod("V"), hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mod("P"), hl.dsp.exec_cmd(menu))
 hl.bind(mod("CTRL + SPACE"), hl.dsp.exec_cmd("EMOJI_MENU_COMMAND=wl-copy /home/hunner/local/bin/emoji-menu"))
+hl.bind(mod("R"), hl.dsp.exec_cmd("/home/hunner/local/bin/hypr-cycle-layout.sh"))
 hl.bind(mod("SPACE"), hl.dsp.window.fullscreen({ mode = "maximized" }))
+-- Toggle focused window between real fullscreen (fills monitor) and "full
+-- window" (fullscreen kept inside its tile). Per-window equivalent of Firefox's
+-- full-screen-api.ignore-widgets. Trigger video fullscreen first, then this.
+hl.bind(mod("F"), hl.dsp.exec_cmd("/home/hunner/local/bin/hypr-toggle-fsmode.sh"))
 
 hl.bind(mod("RETURN"), hl.dsp.layout("swapwithmaster"))
 hl.bind(mod("J"), hl.dsp.layout("cyclenext"))
@@ -202,7 +317,7 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 -- hl.bind(mod("CTRL + C"), hl.dsp.exec_cmd("cliphist list | wofi --dmenu | cliphist decode | wl-copy"))
-hl.bind(mod("CTRL + C"), hl.dsp.exec_cmd("alacritty --class clipse -e 'clipse'"))
+hl.bind(mod("CTRL + C"), hl.dsp.exec_cmd("ghostty --class=dev.hunner.clipse -e 'clipse'"))
 hl.bind(mod("SHIFT + W"), hl.dsp.exec_cmd("sh -c 'quickshell kill --any-display; quickshell --daemonize'"))
 
 local function window_rule(name, match, effects)
@@ -213,7 +328,7 @@ local function window_rule(name, match, effects)
   hl.window_rule(rule)
 end
 
-window_rule("clipse", { class = "clipse" }, {
+window_rule("clipse", { class = "dev.hunner.clipse" }, {
   float = true,
   center = true,
   no_shadow = true,
@@ -237,9 +352,29 @@ window_rule("flameshot-overlay", { class = "(flameshot)", title = "(flameshot)" 
   float = true,
 })
 
+-- Example: pin a *specific* Firefox window to tiled "full window" fullscreen at
+-- open time. `fullscreen_state = "1 2"` = maximized internally, client told it's
+-- fullscreen. Note: this applies when the window opens, NOT when a video later
+-- requests fullscreen -- so scope it to an identifiable window (title/workspace),
+-- never all of Firefox, or normal browsing will think it's always fullscreen.
+-- For on-demand per-window control, use the SUPER+F keybind instead.
+-- window_rule("firefox-tiled-fs", { class = "^(firefox)$", title = ".*YouTube.*" }, {
+--   fullscreen_state = "1 2",
+-- })
+
 window_rule("jrpn15", { class = "^(jrpn15)$" }, {
   float = true,
   center = true,
+})
+
+window_rule("share-mirror", { class = "^(wl-mirror)$" }, {
+  workspace = "name:screenshare silent",
+  monitor = ugreen_monitor_desc .. " silent",
+  fullscreen = true,
+  no_focus = true,
+  border_size = 0,
+  no_shadow = true,
+  suppress_event = "fullscreen maximize",
 })
 
 window_rule("zoom-sharing-toolbar", { class = "^(Zoom( Workplace)?)$", title = "^(as_toolbar)$" }, {
@@ -325,4 +460,8 @@ window_rule("zoom-chat", { class = "^(Zoom( Workplace)?)$", title = "^(Meeting c
 window_rule("zoom-end-meeting-dialog", { class = "^(Zoom( Workplace)?)$", title = "^(Zoom( Workplace)?|Leave meeting panel)$" }, {
   float = true,
   stay_focused = false,
+})
+
+window_rule("plus42bin", { class = "^(plus42bin)$" }, {
+  float = true,
 })

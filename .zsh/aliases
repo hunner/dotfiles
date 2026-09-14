@@ -296,10 +296,13 @@ gp            -- git push
 gr            -- git remote -v show
 grs <file>    -- git restore --staged file
 grom          -- git rebase -i origin/main
+grod          -- git rebase -i origin/dev
 gs            -- git status
 gst           -- git stash
 gstp          -- git stash pop
-gu            -- git pull'"
+gu            -- git pull
+gwl           -- git worktree list
+gwr           -- git worktree remove'"
 #alias git="hub"
 alias gs="git status"
 alias gl="git lg"
@@ -320,6 +323,7 @@ alias gfa="git fetch --all --prune"
 alias gr="git remote -v show"
 alias grs="git restore --staged "
 alias grom="git rebase -i origin/main"
+alias grod="git rebase -i origin/dev"
 alias gp="git push"
 alias gu="git pull"
 alias gst="git stash"
@@ -327,6 +331,8 @@ alias gstp="git stash pop"
 alias gdw="git diff --color-words"
 alias gk="gitk --all&"
 alias gx="gitx --all"
+alias gwl="git worktree list"
+alias gwr="git worktree remove"
 
 alias dvh="echo 'dvt <lang> -- create a local dev template
 dva <lang> -- add a dev template
@@ -528,8 +534,8 @@ alias ad="cd ~agents"
 alias aw="cd ~agents/validmind"
 alias abk="cd ~agents/validmind/backend"
 
-alias dcodex="codex --dangerously-bypass-approvals-and-sandbox"
-alias dclaude="claude --dangerously-skip-permissions"
+alias codex="codex --dangerously-bypass-approvals-and-sandbox"
+alias claude="claude --dangerously-skip-permissions"
 
 # 1Password
 function op_set() {

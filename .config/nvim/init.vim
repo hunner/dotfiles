@@ -1,3 +1,9 @@
+" The nix/home-manager nvim wrapper injects --cmd 'vim.g.loaded_python3_provider=0'
+" (built with withPython3 = false); ncm2/yarp/vim-virtualenv need the provider.
+" Re-enable it against the uv-installed pynvim (`uv tool install pynvim`).
+unlet! g:loaded_python3_provider
+let g:python3_host_prog = expand('~/.local/bin/pynvim-python')
+
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'

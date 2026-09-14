@@ -56,3 +56,6 @@
 
 (package! ox-jira
   :recipe (:host github :repo "stig/ox-jira.el" :files ("*.el")))
+
+(package! org-agenda-kanban
+  :recipe (:host github :repo "greggroth/org-agenda-kanban"))
