@@ -67,7 +67,7 @@ set_workspace_umask
 if whence systemctl > /dev/null ; then
   systemctl --user import-environment PATH
 fi
-export PATH=/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+#export PATH=/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 #export MANPATH=~/local/share/man:/usr/man:/usr/share/man:/usr/local/share/man
 #paths=(/cat/bin)
 #prepaths=(/opt/puppetlabs/pdk/bin ~/.config/emacs/bin /opt/homebrew/bin /usr/local/bin /usr/local/sbin /usr/local/opt/node@8/bin ~/.local/bin ~/.rbenv/bin ~/local/talon ~/local/bin ~/local/sbin)
@@ -423,7 +423,7 @@ fi
 [ ! -s /home/hunner/.travis/travis.sh ] || source /home/hunner/.travis/travis.sh
 
 #eval "$(starship init zsh)"
-eval "$(direnv hook zsh)"
+#eval "$(direnv hook zsh)"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/hunner/Downloads/google-cloud-sdk/path.zsh.inc'; fi

@@ -35,7 +35,12 @@ alias w="cd ~/Documents/work/git"
 alias cem="cd ~/Documents/work/git/cem"
 alias forge="cd ~/Documents/work/git/forge"
 alias ssh-gpg="ssh -R ~/.gnupg/S.gpg-agent.extra:~/.gnupg/S-gpg-agent.extra -o 'StreamLocalBindUnlink=yes'"
-alias gpg-add="/usr/libexec/gpg-preset-passphrase"
+# gpg-preset-passphrase lives in gnupg's own libexec, whose location differs
+# per distro and per nix store path (/usr/libexec on RHEL, a store path under
+# nix). Ask gpgconf rather than hardcoding; this resolves on macOS and Linux.
+# NOTE: it takes a KEYGRIP, not a key file, and needs allow-preset-passphrase
+# in gpg-agent.conf. To load an on-disk SSH key: ssh-add ~/.ssh/<key>
+alias gpg-add='"$(gpgconf --list-dirs libexecdir)"/gpg-preset-passphrase'
 alias rsync="rsync -azPHe ssh" #-a equals -rlptgoD
 alias mang="cd ~/zips/mangband ; DISPLAY=\"\" ./mangclient"
 alias nh="export HISTFILE=/dev/null"
