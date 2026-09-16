@@ -33,8 +33,6 @@
 	cookiefile = ~/.gitcookies
 [url "git@github.com:"]
   insteadOf = https://github.com/
-[url "git@git.autodesk.com:"]
-  insteadOf = https://git.autodesk.com/
 [pull]
 	ff = only
 [init]

@@ -55,8 +55,12 @@ cursor-style-blink = false
 background-opacity = 0.93
 
 font-family = "LiterationMono Nerd Font"
-font-size = 9
+font-size = 14
 
 theme = Nord
 
 keybind = ctrl+enter=unbind
+
+# true/false/visible-menu/padded-notch
+macos-non-native-fullscreen = visible-menu
+macos-titlebar-style = hidden

@@ -20,7 +20,7 @@ bindkey -e
 zstyle ':completion:*' completer _complete
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
 autoload -Uz compinit colors vcs_info select-word-style promptinit add-zsh-hook && colors && promptinit
-compinit -u
+compinit -u -d "${ZDOTDIR:-$HOME}/.zcompdump-${ZSH_VERSION}"
 
 zstyle :compinstall filename '~/.zshenv'
 zstyle ':vcs_info:*' actionformats '%F{6}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
@@ -438,3 +438,8 @@ if [ -f '/home/hunner/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/hunner/.lmstudio/bin"
 # End of LM Studio CLI section
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/hunner/.docker/completions $fpath)
+autoload -Uz compinit
+(( ${+_comps[docker]} )) || compinit -d "${ZDOTDIR:-$HOME}/.zcompdump-${ZSH_VERSION}"
+# End of Docker CLI completions
