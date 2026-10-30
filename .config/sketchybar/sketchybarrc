@@ -33,29 +33,54 @@ default=(
 )
 sketchybar --default "${default[@]}"
 
-##### Adding Mission Control Space Indicators #####
-# Let's add some mission control spaces:
-# https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
-# to indicate active and available mission control spaces.
+##### AeroSpace Workspace Indicators #####
+# AeroSpace does not use native Mission Control Spaces, so sketchybar's `space`
+# item type cannot see its workspaces at all. These are plain items, repainted
+# by plugins/aerospace_workspaces.sh -- which AeroSpace runs on every workspace
+# change via exec-on-workspace-change (set in the nix repo at
+# hosts/slice/configuration.nix), and which is also run once below so the bar is
+# correct before the first switch.
+#
+# Every workspace gets an item on EVERY display, named space.<display>.<ws>.
+# A sketchybar item holds one state but is drawn on all displays, so a single
+# set of ten could only ever show the same highlight on both bars. Two sets,
+# each pinned with `display=`, lets each monitor highlight its own visible
+# workspace while both still list all ten.
+#
+# DISPLAYS covers more displays than are usually attached. Items for a display
+# that is not present never draw, so over-provisioning is harmless and undocking
+# or adding a monitor needs no edit here.
+#
+# Keep WORKSPACES in sync with the alt-N bindings in configuration.nix. Note the
+# tenth workspace is named "10" but is bound to alt-0.
 
-SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
-for i in "${!SPACE_ICONS[@]}"
+DISPLAYS="1 2 3 4"
+WORKSPACES="1 2 3 4 5 6 7 8 9 10"
+
+for did in $DISPLAYS
 do
-  sid="$(($i+1))"
-  space=(
-    space="$sid"
-    icon="${SPACE_ICONS[i]}"
-    icon.padding_left=7
-    icon.padding_right=7
-    background.color=0x40ffffff
-    background.corner_radius=5
-    background.height=25
-    label.drawing=off
-    script="$PLUGIN_DIR/space.sh"
-    click_script="yabai -m space --focus $sid"
-  )
-  sketchybar --add space space."$sid" left --set space."$sid" "${space[@]}"
+  for sid in $WORKSPACES
+  do
+    space=(
+      display="$did"
+      icon="$sid"
+      icon.padding_left=7
+      icon.padding_right=7
+      background.color=0x40ffffff
+      background.corner_radius=5
+      background.height=25
+      background.drawing=off
+      label.drawing=off
+      # No click_script here. It needs AeroSpace's monitor id, which is not the
+      # same number as sketchybar's display index and can differ per monitor
+      # arrangement, so plugins/aerospace_workspaces.sh sets it: that script
+      # already reads the mapping and so can get it right on every repaint.
+    )
+    sketchybar --add item space."$did"."$sid" left --set space."$did"."$sid" "${space[@]}"
+  done
 done
+
+"$PLUGIN_DIR"/aerospace_workspaces.sh
 
 ##### Adding Left Items #####
 # We add some regular items to the left side of the bar, where
@@ -86,6 +111,121 @@ sketchybar --add item clock right \
            --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
+
+##### Claude Subscription Usage #####
+# Three stacked bars: the rolling five hour session window, the weekly
+# allowance across all models, and the weekly allowance scoped to Fable.
+# plugins/claude_usage.sh fills them; see that file for the API and for what
+# happens when the request fails.
+#
+# The icon is cod-claude (U+EC82) from the Codicons set carried by Hack Nerd
+# Font, so it takes icon.color like every other icon on the bar and needs no
+# image asset. The plugin dims it on the age of the cached reading rather than
+# on whether the last request failed. The usage endpoint rate-limits from a
+# shared per-account bucket that empties for minutes at a time, so a rejected
+# poll sitting on top of a reading from two minutes ago means the bars are
+# still right, and dimming there would be a lie.
+#
+# update_freq is five minutes to keep this indicator's share of that bucket
+# small; the plugin's own header has the measurements. The windows drawn here
+# are five hours and a week wide, so polling faster buys no visible movement
+# while costing requests that would otherwise land.
+#
+# The system_woke subscription stays, because waking to a current reading is the
+# whole reason for it. The plugin gates every invocation through one backoff
+# window, whatever triggered it, so a wake landing just after a poll costs
+# nothing.
+#
+# The three sliders deliberately share one x. sketchybar lays items out
+# horizontally, so stacking them vertically means giving the first two width=0,
+# which draws them without advancing the cursor, and letting the last carry the
+# whole group's width. y_offset then separates them by 7pt within the 32pt bar.
+#
+# These come after battery because right-positioned items are laid out
+# right-to-left in the order they are added, so a later item sits further left.
+# Within the group the sliders are added before the icon for the same reason:
+# the icon is added last and therefore ends up leftmost.
+CLAUDE_BAR_WIDTH=46
+claude_slider=(
+  slider.background.height=3
+  slider.background.corner_radius=2
+  slider.background.color=0x33ffffff
+  slider.highlight_color=0xffffffff
+  slider.knob.drawing=off
+  label.drawing=off
+  icon.drawing=off
+)
+
+sketchybar --add slider claude.session right $CLAUDE_BAR_WIDTH \
+           --set claude.session width=0 y_offset=7 "${claude_slider[@]}" \
+           --add slider claude.week right $CLAUDE_BAR_WIDTH \
+           --set claude.week width=0 y_offset=0 "${claude_slider[@]}" \
+           --add slider claude.fable right $CLAUDE_BAR_WIDTH \
+           --set claude.fable width=$CLAUDE_BAR_WIDTH y_offset=-7 "${claude_slider[@]}" \
+           --add item claude.icon right \
+           --set claude.icon icon=$'\uec82' label.drawing=off \
+                            update_freq=300 script="$PLUGIN_DIR/claude_usage.sh" \
+           --subscribe claude.icon system_woke
+
+##### Codex Subscription Usage #####
+# Added after Claude so this group sits immediately to its left. Like Claude,
+# sliders share an x coordinate; only the final slider reserves their width.
+# The icon is cod-openai (U+EC81) from the Codicons set in the existing Nerd
+# Font, one codepoint below cod-claude, so both marks share a set and a weight.
+#
+# Which quota each bar stands for follows the account, because the API reports
+# whichever windows the plan happens to have rather than a fixed pair. The
+# bottom bar takes the longest window on offer, the week on every plan seen so
+# far, and the top bar takes the next one down, the five hour window where that
+# exists. Plans without a shorter window, which includes the current one, give
+# the top bar to the individual spend allowance instead of leaving it
+# permanently empty. A seat change rewrites all of this with no warning, so
+# plugins/codex_usage.sh works it out each poll and records what it drew in
+# ~/.cache/sketchybar-codex-usage.status rather than anything here assuming.
+#
+# A bar the plan reports no number for keeps a track faded almost to nothing,
+# since an empty bar and a bar reading zero are otherwise the same three
+# pixels. The status file above is the real answer; the faded track only has to
+# keep a missing number from passing for a healthy one at a glance.
+#
+# The icon carries the same three states as Claude's, and for the same reasons:
+# white for a current reading, dim for one that has aged out or a transient
+# failure, red for anything that waits on a person. Red covers a credential
+# only `codex login` can repair, a codex binary that has gone missing, and a
+# response the plugin has failed to make sense of several polls running, which
+# means the API moved and this plugin is what needs editing. It pulses once as
+# it arrives and then holds steady; plugins/codex_usage.sh carries the colour,
+# the error taxonomy, the escalation threshold and the backoff ladders.
+#
+# update_freq is five minutes rather than one. Every poll spawns an entire
+# `codex app-server` process to ask one question, which is far heavier than the
+# HTTP call the Claude indicator makes, and the shortest thing being drawn is
+# hours wide. Minute granularity bought nothing visible and cost a process
+# spawn a minute all day.
+#
+# The system_woke subscription stays, because waking to a current reading is the
+# whole reason for it. The plugin gates every invocation through one backoff
+# window, whatever triggered it, so a wake landing just after a poll costs
+# nothing.
+CODEX_BAR_WIDTH=46
+codex_slider=(
+  slider.background.height=3
+  slider.background.corner_radius=2
+  slider.background.color=0x33ffffff
+  slider.highlight_color=0xffffffff
+  slider.knob.drawing=off
+  label.drawing=off
+  icon.drawing=off
+)
+
+sketchybar --add slider codex.session right $CODEX_BAR_WIDTH \
+           --set codex.session width=0 y_offset=4 "${codex_slider[@]}" \
+           --add slider codex.week right $CODEX_BAR_WIDTH \
+           --set codex.week width=$CODEX_BAR_WIDTH y_offset=-4 "${codex_slider[@]}" \
+           --add item codex.icon right \
+           --set codex.icon icon=$'\uec81' label.drawing=off \
+                           update_freq=300 script="$PLUGIN_DIR/codex_usage.sh" \
+           --subscribe codex.icon system_woke
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
